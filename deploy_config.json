@@ -1,0 +1,12 @@
+{
+  "mode": "webhook",
+  "url": "git@github.com:GoldCity5/alien_front.git",
+  "localdir": "/var/www/project",
+  "branch": "main",
+  "port": 3100,
+  "rules": [{
+    "type": "commit",
+    "value": "#deploy"
+  }],
+  "posthook": "npm run build && pm2 reload all"
+}
