@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Typography, Space, Card, Row, Col, Divider } from 'antd';
+import {Typography, Card, Row, Col} from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 const { Title, Paragraph } = Typography;

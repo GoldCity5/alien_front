@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, message, Card, Typography, Row, Col } from 'antd';
-import { useNavigate } from 'react-router-dom';
 import { UserOutlined, LockOutlined, SendOutlined } from '@ant-design/icons';
 import request from '../utils/request';
 
@@ -13,7 +12,6 @@ interface LoginFormData {
 
 const LoginPage: React.FC = () => {
   const [form] = Form.useForm();
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [countdown, setCountdown] = useState(0);
 

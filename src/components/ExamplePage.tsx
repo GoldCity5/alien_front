@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Card, Radio, Form, Input, Space, Button, message, Typography, Spin, Divider, Row, Col } from 'antd';
+import { Card, Radio, Form, Input, Space, Button, message, Typography, Spin, Row, Col } from 'antd';
 import request from '../utils/request';
 import type { RadioChangeEvent } from 'antd';
 
-const { Title, Paragraph, Text } = Typography;
+const {Paragraph, Text } = Typography;
 
 type BusinessType = 'ip' | 'product';
 

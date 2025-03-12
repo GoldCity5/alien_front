@@ -6,12 +6,6 @@ import './GenerationPages.css';
 const { Title, Paragraph, Text } = Typography;
 const { TextArea } = Input;
 
-interface ApiResponse {
-  code: number;
-  message: string;
-  data?: any;
-}
-
 const ScriptGenerationPage: React.FC = () => {
   const [inputText, setInputText] = useState<string>('');
   const [outputText, setOutputText] = useState<string>('');

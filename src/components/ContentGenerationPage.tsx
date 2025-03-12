@@ -7,11 +7,6 @@ import './ContentGenerationPage.css'; // 引入特定CSS文件
 const { Title, Paragraph, Text } = Typography;
 const { TextArea } = Input;
 
-interface ApiResponse {
-  code: number;
-  message: string;
-  data?: any;
-}
 
 const ContentGenerationPage: React.FC = () => {
   const [inputText, setInputText] = useState<string>('');
