@@ -81,10 +81,7 @@ const TitleGenerationPage: React.FC = () => {
         }
       }
     } catch (error) {
-      if (error.name !== 'AbortError') {
-        console.error('Stream processing error:', error);
-        setError('处理流数据时出错: ' + error.message);
-      }
+      console.error('Stream processing error:', error);
     } finally {
       setIsLoading(false);
     }
@@ -102,7 +99,7 @@ const TitleGenerationPage: React.FC = () => {
     setError(null);
     setIsLoading(true);
 
-    const url = `${currentConfig.apiUrl}/title/generate/stream`;
+    const url = `${currentConfig.apiBaseUrl}/title/generate/stream`;
     const token = localStorage.getItem('token');
     const requestBody = JSON.stringify({ content: inputText.trim() });
 
@@ -133,7 +130,6 @@ const TitleGenerationPage: React.FC = () => {
       processStream(reader);
     } catch (err) {
       console.error('Error generating title:', err);
-      setError(err.message || '生成标题时出错');
       setIsLoading(false);
     }
   };
