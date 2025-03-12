@@ -12,7 +12,7 @@ const config: EnvConfig = {
         apiBaseUrl: 'http://127.0.0.1:8080/api',
     },
     production: {
-        apiBaseUrl: 'http://127.0.0.1:8080/api', // 这里替换为实际的生产环境API地址
+        apiBaseUrl: 'http://14.103.160.4:8080/api', // 这里替换为实际的生产环境API地址
     }
 };
 
