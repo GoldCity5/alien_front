@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Table, Button, Space, Tag, Input, Select, Form, Tabs } from 'antd';
-import { FileTextOutlined, SearchOutlined, DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
+import { SearchOutlined, DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -59,7 +59,7 @@ const ContentManagement: React.FC = () => {
     {
       title: '操作',
       key: 'action',
-      render: (_: any, record: any) => (
+      render: (_: any) => (
         <Space size="middle">
           <Button type="link" icon={<EyeOutlined />} size="small">查看</Button>
           <Button type="link" icon={<EditOutlined />} size="small">编辑</Button>

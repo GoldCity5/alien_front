@@ -41,7 +41,7 @@ const AdminProfile: React.FC = () => {
     setIsModalVisible(false);
   };
 
-  const handleUpdate = async (values: any) => {
+  const handleUpdate = async () => {
     message.success('个人信息更新成功');
     setIsModalVisible(false);
     // 这里可以添加更新管理员信息的API调用

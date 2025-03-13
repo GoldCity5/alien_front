@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Table, Button, Space, Tag, Input, Select, Form } from 'antd';
-import { UserOutlined, SearchOutlined, PlusOutlined } from '@ant-design/icons';
+import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 

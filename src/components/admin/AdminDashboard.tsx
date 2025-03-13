@@ -15,7 +15,7 @@ import { useNavigate, Outlet, Link, useLocation } from 'react-router-dom';
 import { getAdminInfo } from '../../services/adminService';
 
 const { Header, Sider, Content } = Layout;
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const AdminDashboard: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
