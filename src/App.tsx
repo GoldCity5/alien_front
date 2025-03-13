@@ -8,6 +8,13 @@ import LoginPage from './components/LoginPage';
 import ContentGenerationPage from './components/ContentGenerationPage';
 import TitleGenerationPage from './components/TitleGenerationPage';
 import ScriptGenerationPage from './components/ScriptGenerationPage';
+import MediaProfilePage from './components/mediaProfile/MediaProfilePage';
+import AdminLoginPage from './components/admin/AdminLoginPage';
+import AdminDashboard from './components/admin/AdminDashboard';
+import AdminProfile from './components/admin/AdminProfile';
+import UserManagement from './components/admin/UserManagement';
+import ContentManagement from './components/admin/ContentManagement';
+import SystemSettings from './components/admin/SystemSettings';
 import './App.css';
 
 const { Header, Content, Footer } = Layout;
@@ -53,6 +60,11 @@ const AppHeader = () => {
       key: '/script',
       icon: <VideoCameraOutlined />,
       label: '脚本生成',
+    },
+    {
+      key: '/media-profile',
+      icon: <UserOutlined />,
+      label: '自媒体策划',
     },
   ];
 
@@ -203,50 +215,121 @@ const AppFooter = () => {
   );
 };
 
-function App() {
+// 管理员路由保护组件
+const AdminProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const isAuthenticated = localStorage.getItem('token') && localStorage.getItem('isAdmin');
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/admin/login" replace />;
+  }
+  
+  return <>{children}</>;
+};
+
+// 用户路由保护组件
+const UserProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const isAuthenticated = localStorage.getItem('token');
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+  
+  return <>{children}</>;
+};
+
+// App 组件
+const App = () => {
   return (
     <Router>
-      <Layout style={{ 
-        width: '100vw', 
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'hidden'
-      }}>
-        <Routes>
-          <Route path="*" element={<AppHeader />} />
-        </Routes>
-        <Content style={{ 
-          flex: 1,
-          width: '100%',
-          padding: 0,
-          margin: 0,
-          display: 'flex',
-          flexDirection: 'column'
-        }}>
-          <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/" element={
-              localStorage.getItem('token') ? <HomePage /> : <Navigate to="/login" />
-            } />
-            <Route path="/example" element={
-              localStorage.getItem('token') ? <ExamplePage /> : <Navigate to="/login" />
-            } />
-            <Route path="/content" element={
-              localStorage.getItem('token') ? <ContentGenerationPage /> : <Navigate to="/login" />
-            } />
-            <Route path="/title" element={
-              localStorage.getItem('token') ? <TitleGenerationPage /> : <Navigate to="/login" />
-            } />
-            <Route path="/script" element={
-              localStorage.getItem('token') ? <ScriptGenerationPage /> : <Navigate to="/login" />
-            } />
-          </Routes>
-        </Content>
-        <AppFooter />
-      </Layout>
+      <Routes>
+        {/* 管理员路由 */}
+        <Route path="/admin/login" element={<AdminLoginPage />} />
+        <Route path="/admin" element={
+          <AdminProtectedRoute>
+            <AdminDashboard />
+          </AdminProtectedRoute>
+        }>
+          <Route path="dashboard" element={<></>} />
+          <Route path="profile" element={<AdminProfile />} />
+          <Route path="users" element={<UserManagement />} />
+          <Route path="content" element={<ContentManagement />} />
+          <Route path="settings" element={<SystemSettings />} />
+        </Route>
+        
+        {/* 用户路由 */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={
+          <Layout style={{ minHeight: '100vh' }}>
+            <AppHeader />
+            <Content style={{ padding: '0', minHeight: 'calc(100vh - 64px - 69px)' }}>
+              <UserProtectedRoute>
+                <HomePage />
+              </UserProtectedRoute>
+            </Content>
+            <AppFooter />
+          </Layout>
+        } />
+        <Route path="/example" element={
+          <Layout style={{ minHeight: '100vh' }}>
+            <AppHeader />
+            <Content style={{ padding: '0', minHeight: 'calc(100vh - 64px - 69px)' }}>
+              <UserProtectedRoute>
+                <ExamplePage />
+              </UserProtectedRoute>
+            </Content>
+            <AppFooter />
+          </Layout>
+        } />
+        <Route path="/content" element={
+          <Layout style={{ minHeight: '100vh' }}>
+            <AppHeader />
+            <Content style={{ padding: '0', minHeight: 'calc(100vh - 64px - 69px)' }}>
+              <UserProtectedRoute>
+                <ContentGenerationPage />
+              </UserProtectedRoute>
+            </Content>
+            <AppFooter />
+          </Layout>
+        } />
+        <Route path="/title" element={
+          <Layout style={{ minHeight: '100vh' }}>
+            <AppHeader />
+            <Content style={{ padding: '0', minHeight: 'calc(100vh - 64px - 69px)' }}>
+              <UserProtectedRoute>
+                <TitleGenerationPage />
+              </UserProtectedRoute>
+            </Content>
+            <AppFooter />
+          </Layout>
+        } />
+        <Route path="/script" element={
+          <Layout style={{ minHeight: '100vh' }}>
+            <AppHeader />
+            <Content style={{ padding: '0', minHeight: 'calc(100vh - 64px - 69px)' }}>
+              <UserProtectedRoute>
+                <ScriptGenerationPage />
+              </UserProtectedRoute>
+            </Content>
+            <AppFooter />
+          </Layout>
+        } />
+        <Route path="/media-profile" element={
+          <Layout style={{ minHeight: '100vh' }}>
+            <AppHeader />
+            <Content style={{ padding: '0', minHeight: 'calc(100vh - 64px - 69px)' }}>
+              <UserProtectedRoute>
+                <MediaProfilePage />
+              </UserProtectedRoute>
+            </Content>
+            <AppFooter />
+          </Layout>
+        } />
+        
+        {/* 默认重定向 */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
     </Router>
   );
-}
+};
 
 export default App;

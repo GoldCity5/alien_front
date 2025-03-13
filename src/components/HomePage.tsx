@@ -23,6 +23,10 @@ const HomePage: React.FC = () => {
     navigate('/script');
   };
 
+  const handleMediaProfileGeneration = () => {
+    navigate('/media-profile');
+  };
+
   return (
     <div 
       style={{ 
@@ -59,6 +63,47 @@ const HomePage: React.FC = () => {
             智能创作，让内容创作更简单高效
           </Paragraph>
         </div>
+      </div>
+
+      {/* 自媒体策划方案模块 */}
+      <div style={{
+        width: '100%',
+        maxWidth: '1200px',
+        padding: '0 20px',
+        marginBottom: '30px',
+      }}>
+        <Card
+          hoverable
+          onClick={handleMediaProfileGeneration}
+          style={{
+            borderRadius: '12px',
+            overflow: 'hidden',
+            boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
+            background: 'linear-gradient(135deg, #5ee7df 0%, #b490ca 100%)',
+          }}
+        >
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '10px',
+          }}>
+            <div style={{ color: 'white' }}>
+              <Title level={3} style={{ color: 'white', margin: '0' }}>生成我的专属自媒体策划方案</Title>
+              <Paragraph style={{ color: 'rgba(255,255,255,0.9)', margin: '10px 0 0 0' }}>
+                基于您的个人特点和目标，量身定制专业的自媒体发展策略
+              </Paragraph>
+            </div>
+            <div style={{
+              fontSize: '64px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              🚀
+            </div>
+          </div>
+        </Card>
       </div>
 
       {/* 主要内容区域 */}
@@ -201,8 +246,8 @@ const HomePage: React.FC = () => {
               bodyStyle={{ padding: '20px' }}
             >
               <Card.Meta
-                title={<span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>痛点分析</span>}
-                description={<span style={{ fontSize: '0.95rem' }}>深入分析用户痛点，提供针对性解决方案</span>}
+                title={<span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>探索更多</span>}
+                description={<span style={{ fontSize: '0.95rem' }}>探索更多AI内容创作功能和案例</span>}
               />
             </Card>
           </Col>
