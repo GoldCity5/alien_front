@@ -135,7 +135,7 @@ const AppHeader = () => {
       </div>
       
       {/* Navigation Menu - Desktop */}
-      {!isMobile && localStorage.getItem('token') && (
+      {!isMobile && localStorage.getItem('userToken') && (
         <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
           <Menu
             theme="dark"
@@ -158,7 +158,7 @@ const AppHeader = () => {
       )}
       
       {/* User Avatar - Desktop */}
-      {!isMobile && localStorage.getItem('token') && (
+      {!isMobile && localStorage.getItem('userToken') && (
         <Dropdown overlay={userMenu} placement="bottomRight">
           <Avatar 
             style={{ 
@@ -172,7 +172,7 @@ const AppHeader = () => {
       )}
       
       {/* Mobile Menu */}
-      {isMobile && localStorage.getItem('token') && (
+      {isMobile && localStorage.getItem('userToken') && (
         <Dropdown overlay={mobileMenu} placement="bottomRight" trigger={['click']}>
           <Button 
             type="text" 
@@ -218,10 +218,10 @@ const AppFooter = () => {
 
 // 管理员路由保护组件
 const AdminProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const isAuthenticated = localStorage.getItem('token') && localStorage.getItem('isAdmin') === 'true';
+  const isAuthenticated = localStorage.getItem('adminToken') && localStorage.getItem('isAdmin') === 'true';
   
   console.log('AdminProtectedRoute check:', { 
-    token: localStorage.getItem('token'),
+    token: localStorage.getItem('adminToken'),
     isAdmin: localStorage.getItem('isAdmin'),
     isAuthenticated
   });
@@ -237,7 +237,7 @@ const AdminProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
 // 用户路由保护组件
 const UserProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const isAuthenticated = localStorage.getItem('token');
+  const isAuthenticated = localStorage.getItem('userToken');
   
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;

@@ -66,7 +66,7 @@ export const generateMediaPlanWithSSE = (options: {
     url: `${request.defaults.baseURL}/media-profiles/${id}/generate-plan`,
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`
+      Authorization: `Bearer ${localStorage.getItem('userToken')}`
     },
     onMessage,
     onError,

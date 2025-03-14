@@ -79,7 +79,7 @@ const ContentGenerationPage: React.FC = () => {
     const requestBody = JSON.stringify({ content: inputText });
     
     // 获取token
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('userToken');
     
     // 创建URL，包含查询参数
     const url = `${currentConfig.apiBaseUrl}/content/optimize/stream`;
@@ -208,7 +208,7 @@ const ContentGenerationPage: React.FC = () => {
     const requestBody = JSON.stringify({ content: rewriteInputText });
     
     // 获取token
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('userToken');
     
     // 创建URL，包含查询参数
     const url = `${currentConfig.apiBaseUrl}/content/rewrite/stream`;
@@ -338,7 +338,7 @@ const ContentGenerationPage: React.FC = () => {
     const requestBody = JSON.stringify({ requirement: generateInputText });
     
     // 获取token
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('userToken');
     
     // 创建URL，包含查询参数
     const url = `${currentConfig.apiBaseUrl}/content/generate/stream`;

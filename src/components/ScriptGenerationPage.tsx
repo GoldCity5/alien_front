@@ -45,7 +45,7 @@ const ScriptGenerationPage: React.FC = () => {
     const requestBody = JSON.stringify({ topic: inputText });
     
     // 获取token
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('userToken');
     
     // 创建URL
     const url = `${currentConfig.apiBaseUrl}/script/generate/stream`;

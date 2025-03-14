@@ -42,7 +42,7 @@ const TitleGenerationPage: React.FC = () => {
     setIsLoading(true);
 
     const url = `${currentConfig.apiBaseUrl}/title/generate/stream`;
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('userToken');
     const requestBody = JSON.stringify({ content: inputText.trim() });
 
     // 创建新的AbortController
