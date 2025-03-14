@@ -68,7 +68,8 @@ const LoginPage: React.FC = () => {
         throw new Error('未获取到token');
       }
 
-      localStorage.setItem('token', token);
+      // 将token存储到userToken键中
+      localStorage.setItem('userToken', token);
       message.success('登录成功');
       window.location.href = '/';
     } catch (error) {

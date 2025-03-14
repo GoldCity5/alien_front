@@ -31,7 +31,8 @@ const AdminLoginPage: React.FC = () => {
         throw new Error('未获取到token');
       }
 
-      localStorage.setItem('token', token);
+      // 将管理员token存储到adminToken键中
+      localStorage.setItem('adminToken', token);
       localStorage.setItem('adminNickname', nickname);
       localStorage.setItem('isAdmin', 'true');
       

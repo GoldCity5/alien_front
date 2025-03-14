@@ -13,7 +13,12 @@ const request = axios.create({
 // 请求拦截器
 request.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('token');
+        // 判断请求路径是否包含 /admin，决定使用哪个 token
+        const isAdminRequest = config.url?.includes('/admin');
+        const token = isAdminRequest 
+            ? localStorage.getItem('adminToken') 
+            : localStorage.getItem('userToken');
+            
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -34,19 +39,20 @@ request.interceptors.response.use(
             switch (error.response.status) {
                 case 403:
                 case 401:
-                    message.error('登录已过期，请重新登录');
-                    // 检查是否为管理员用户
-                    const isAdmin = localStorage.getItem('isAdmin') === 'true';
-                    console.log('响应拦截器检测到未授权:', { isAdmin });
+                    // 检查是否为管理员请求
+                    const isAdminRequest = error.config.url?.includes('/admin');
+                    console.log('响应拦截器检测到未授权:', { isAdminRequest });
                     
-                    // 清除登录信息
-                    localStorage.removeItem('token');
-                    
-                    if (isAdmin) {
-                        localStorage.removeItem('isAdmin');
+                    // 根据请求类型清除相应的登录信息
+                    if (isAdminRequest) {
+                        localStorage.removeItem('adminToken');
                         localStorage.removeItem('adminNickname');
+                        localStorage.removeItem('isAdmin');
+                        message.error('管理员登录已过期，请重新登录');
                         window.location.href = '/admin/login';
                     } else {
+                        localStorage.removeItem('userToken');
+                        message.error('用户登录已过期，请重新登录');
                         window.location.href = '/login';
                     }
                     break;
