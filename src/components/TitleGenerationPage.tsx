@@ -29,60 +29,7 @@ const TitleGenerationPage: React.FC = () => {
     };
   }, []);
 
-  // 处理SSE流数据
-  const processStream = async (reader: ReadableStreamDefaultReader<Uint8Array>) => {
-    const decoder = new TextDecoder();
-    let buffer = '';
-    
-    try {
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        
-        // 解码并添加到缓冲区
-        buffer += decoder.decode(value, { stream: true });
-        
-        // 处理缓冲区中的每一行
-        const lines = buffer.split('\n');
-        buffer = lines.pop() || ''; // 最后一行可能不完整，保留到下一次处理
-        
-        // 处理每一行数据，每行都是一个完整的JSON
-        for (let i = 0; i < lines.length; i++) {
-          try {
-            const line = lines[i].trim();
-            if (!line) continue;
-            
-            // 解析JSON格式的SSE消息
-            const event = JSON.parse(line);
-            
-            // 根据事件类型处理
-            if (event.type === 'message') {
-              // 直接添加消息内容到输出
-              setOutputText(prev => prev + (event.content || ''));
-            } else if (event.type === 'error') {
-              console.error('处理SSE流时出错:', event.content);
-              setError('处理过程中出现错误: ' + (event.content || ''));
-              setIsLoading(false);
-              break;
-            } else if (event.type === 'done') {
-              setIsLoading(false);
-              message.success('标题生成完成');
-              break;
-            }
-          } catch (parseError) {
-            console.error('解析SSE JSON数据出错:', parseError, '原始数据:', lines[i]);
-            // 继续处理下一行，不中断整个流程
-          }
-        }
-      }
-    } catch (error) {
-      console.error('Stream processing error:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleGenerate = async () => {
+  const handleGenerate = () => {
     if (!inputText.trim()) {
       message.warning('请输入内容');
       return;
@@ -102,31 +49,105 @@ const TitleGenerationPage: React.FC = () => {
     const controller = new AbortController();
     abortControllerRef.current = controller;
 
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token ? `Bearer ${token}` : '',
-        },
-        body: requestBody,
-        signal: controller.signal
-      });
-
+    // 发送POST请求获取SSE连接
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token ? `Bearer ${token}` : '',
+      },
+      body: requestBody,
+      signal: controller.signal
+    })
+    .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
-      if (!response.body) {
-        throw new Error('Response body is null');
+      
+      // 使用响应的正文作为SSE流
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+      
+      if (!reader) {
+        throw new Error('无法读取响应流');
       }
+      
+      // 处理SSE流
+      const processStream = async () => {
+        try {
+          while (true) {
+            const { done, value } = await reader.read();
+            
+            if (done) {
+              setIsLoading(false);
+              message.success('标题生成完成');
+              break;
+            }
+            
+            const text = decoder.decode(value, { stream: true });
+            const lines = text.split('\n').filter(line => line.trim() !== '');
+            
+            // 处理每一行数据，每行都是一个完整的JSON
+            for (let i = 0; i < lines.length; i++) {
+              try {
+                const line = lines[i].trim();
+                if (!line) continue;
+                
+                if (line.startsWith('id:')) continue;
+                if (line.startsWith('event:')) continue;
 
-      const reader = response.body.getReader();
-      processStream(reader);
-    } catch (err) {
-      console.error('Error generating title:', err);
+                let event; // 使用 let 声明变量
+
+                // 解析JSON格式的SSE消息
+                if (line.startsWith('data:')) {
+                  console.log('line.slice(5)::', line.slice(5));
+                  if (line.slice(5) === '') continue;
+                  event = JSON.parse(line.slice(5)); // 不需要重新声明
+                } else if (line.startsWith('{')) {
+                  event = JSON.parse(line);
+                } else {
+                  continue; // 添加分号
+                }
+                
+                // 根据事件类型处理
+                if (event.type === 'message') {
+                  // 直接添加消息内容到输出
+                  setOutputText(prev => prev + (event.content || ''));
+                } else if (event.type === 'error') {
+                  console.error('处理SSE流时出错:', event.content);
+                  setError('处理过程中出现错误: ' + (event.content || ''));
+                  setIsLoading(false);
+                  break;
+                } else if (event.type === 'done') {
+                  setIsLoading(false);
+                  message.success('标题生成完成');
+                  break;
+                }
+              } catch (parseError) {
+                console.error('解析SSE JSON数据出错:', parseError, '原始数据:', lines[i]);
+                // 继续处理下一行，不中断整个流程
+              }
+            }
+          }
+        } catch (error) {
+          console.error('处理SSE流时出错:', error);
+          setError('处理过程中出现错误');
+          setIsLoading(false);
+        }
+      };
+      
+      processStream();
+      
+      return () => {
+        // 如果需要取消，可以在这里处理
+        reader.cancel();
+      };
+    })
+    .catch(error => {
+      console.error('请求错误:', error);
+      setError(error.message || '请求失败，请稍后重试');
       setIsLoading(false);
-    }
+    });
   };
 
   return (

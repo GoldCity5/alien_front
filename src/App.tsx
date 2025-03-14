@@ -15,6 +15,7 @@ import AdminProfile from './components/admin/AdminProfile';
 import UserManagement from './components/admin/UserManagement';
 import ContentManagement from './components/admin/ContentManagement';
 import SystemSettings from './components/admin/SystemSettings';
+import PromptManagement from './components/admin/PromptManagement';
 import './App.css';
 
 const { Header, Content, Footer } = Layout;
@@ -217,12 +218,20 @@ const AppFooter = () => {
 
 // 管理员路由保护组件
 const AdminProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const isAuthenticated = localStorage.getItem('token') && localStorage.getItem('isAdmin');
+  const isAuthenticated = localStorage.getItem('token') && localStorage.getItem('isAdmin') === 'true';
+  
+  console.log('AdminProtectedRoute check:', { 
+    token: localStorage.getItem('token'),
+    isAdmin: localStorage.getItem('isAdmin'),
+    isAuthenticated
+  });
   
   if (!isAuthenticated) {
+    console.log('AdminProtectedRoute: 认证失败，重定向到管理员登录页面');
     return <Navigate to="/admin/login" replace />;
   }
   
+  console.log('AdminProtectedRoute: 认证成功，显示子组件');
   return <>{children}</>;
 };
 
@@ -254,6 +263,7 @@ const App = () => {
           <Route path="users" element={<UserManagement />} />
           <Route path="content" element={<ContentManagement />} />
           <Route path="settings" element={<SystemSettings />} />
+          <Route path="prompt" element={<PromptManagement />} />
         </Route>
         
         {/* 用户路由 */}

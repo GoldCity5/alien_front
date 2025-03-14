@@ -35,8 +35,20 @@ request.interceptors.response.use(
                 case 403:
                 case 401:
                     message.error('登录已过期，请重新登录');
+                    // 检查是否为管理员用户
+                    const isAdmin = localStorage.getItem('isAdmin') === 'true';
+                    console.log('响应拦截器检测到未授权:', { isAdmin });
+                    
+                    // 清除登录信息
                     localStorage.removeItem('token');
-                    window.location.href = '/login';
+                    
+                    if (isAdmin) {
+                        localStorage.removeItem('isAdmin');
+                        localStorage.removeItem('adminNickname');
+                        window.location.href = '/admin/login';
+                    } else {
+                        window.location.href = '/login';
+                    }
                     break;
                 default:
                     message.error(error.response.data?.message || '请求失败');

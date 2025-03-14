@@ -9,7 +9,8 @@ import {
   TeamOutlined,
   FileAddOutlined,
   MenuUnfoldOutlined,
-  MenuFoldOutlined
+  MenuFoldOutlined,
+  FormOutlined
 } from '@ant-design/icons';
 import { useNavigate, Outlet, Link, useLocation } from 'react-router-dom';
 import { getAdminInfo } from '../../services/adminService';
@@ -101,6 +102,7 @@ const AdminDashboard: React.FC = () => {
       'settings': '系统设置',
       'users': '用户管理',
       'content': '内容管理',
+      'prompt': '提示词管理'
     };
     
     return titles[path] || path;
@@ -153,6 +155,9 @@ const AdminDashboard: React.FC = () => {
           </Menu.Item>
           <Menu.Item key="/admin/content" icon={<FileTextOutlined />}>
             <Link to="/admin/content">内容管理</Link>
+          </Menu.Item>
+          <Menu.Item key="/admin/prompt" icon={<FormOutlined />}>
+            <Link to="/admin/prompt">提示词管理</Link>
           </Menu.Item>
           <Menu.Item key="/admin/settings" icon={<SettingOutlined />}>
             <Link to="/admin/settings">系统设置</Link>

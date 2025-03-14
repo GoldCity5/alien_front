@@ -98,8 +98,21 @@ const ScriptGenerationPage: React.FC = () => {
                 const line = lines[i].trim();
                 if (!line) continue;
                 
+                if (line.startsWith('id:')) continue;
+                if (line.startsWith('event:')) continue;
+
+                let event; 
+
                 // 解析JSON格式的SSE消息
-                const event = JSON.parse(line);
+                if (line.startsWith('data:')) {
+                  console.log('line.slice(5)::', line.slice(5));
+                  if (line.slice(5) === '') continue;
+                  event = JSON.parse(line.slice(5)); 
+                } else if (line.startsWith('{')) {
+                  event = JSON.parse(line);
+                } else {
+                  continue; 
+                }
                 
                 // 根据事件类型处理
                 if (event.type === 'message') {

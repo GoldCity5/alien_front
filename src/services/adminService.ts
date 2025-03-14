@@ -9,3 +9,13 @@ export const adminLogin = (data: { username: string; password: string }) => {
 export const getAdminInfo = () => {
   return request.get('/admin/info');
 };
+
+// 获取提示词列表
+export const getPromptList = (params?: any) => {
+  return request.get('/admin/prompts', { params });
+};
+
+// 更新提示词
+export const updatePrompt = (data: any) => {
+  return request.put(`/admin/prompts/${data.id}`, data);
+};
