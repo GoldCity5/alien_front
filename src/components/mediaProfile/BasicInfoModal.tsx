@@ -1,31 +1,73 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Form, Input, InputNumber, Button, Select, message } from 'antd';
-import { createMediaProfileBasic } from '../../services/mediaProfileService';
+import { createMediaProfileBasic, updateMediaProfileBasic } from '../../services/mediaProfileService';
 
 interface BasicInfoModalProps {
   visible: boolean;
   onCancel: () => void;
   onSuccess: (profileId: string) => void;
+  initialValues?: any;
+  profileId?: string | null;
+  isEditing?: boolean;
 }
 
 const BasicInfoModal: React.FC<BasicInfoModalProps> = ({ 
   visible, 
   onCancel, 
-  onSuccess 
+  onSuccess,
+  initialValues,
+  profileId,
+  isEditing = false
 }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+
+  // 当弹窗显示且有初始值时，设置表单值
+  useEffect(() => {
+    if (visible && initialValues) {
+      form.setFieldsValue({
+        nickname: initialValues.nickname,
+        age: initialValues.age,
+        occupation: initialValues.occupation,
+        personalityTraits: initialValues.personalityTraits,
+        educationBackground: initialValues.educationBackground,
+        // 如果mediaPlat是数组，取第一个元素
+        mediaPlat: Array.isArray(initialValues.mediaPlat) && initialValues.mediaPlat.length > 0 
+          ? initialValues.mediaPlat[0] 
+          : initialValues.mediaPlat
+      });
+    } else if (visible && !initialValues) {
+      // 如果是新建，重置表单
+      form.resetFields();
+    }
+  }, [visible, initialValues, form]);
 
   const handleSubmit = async () => {
     try {
       const values = await form.validateFields();
       setLoading(true);
       
-      const response = await createMediaProfileBasic(values);
+      // 将mediaPlat转换为数组格式
+      const formattedValues = {
+        ...values,
+        mediaPlat: values.mediaPlat ? [values.mediaPlat] : []
+      };
+      
+      let response;
+      if (isEditing && profileId) {
+        // 编辑模式
+        response = await updateMediaProfileBasic(profileId, formattedValues);
+      } else {
+        // 新建模式
+        response = await createMediaProfileBasic(formattedValues);
+      }
+      
       if (response.data.code === 0) {
-        message.success('基本信息保存成功');
-        onSuccess(response.data.data.id);
-        form.resetFields();
+        message.success(isEditing ? '基本信息更新成功' : '基本信息保存成功');
+        onSuccess(response.data.data.id || profileId);
+        if (!isEditing) {
+          form.resetFields();
+        }
       } else {
         message.error(response.data.message || '保存失败');
       }
@@ -38,7 +80,7 @@ const BasicInfoModal: React.FC<BasicInfoModalProps> = ({
 
   return (
     <Modal
-      title="个人基本信息"
+      title={isEditing ? "编辑基本信息" : "个人基本信息"}
       open={visible}
       onCancel={onCancel}
       footer={[
@@ -51,7 +93,7 @@ const BasicInfoModal: React.FC<BasicInfoModalProps> = ({
           loading={loading} 
           onClick={handleSubmit}
         >
-          下一步
+          {isEditing ? "保存" : "下一步"}
         </Button>
       ]}
       maskClosable={false}
@@ -114,7 +156,6 @@ const BasicInfoModal: React.FC<BasicInfoModalProps> = ({
           rules={[{ required: true, message: '请选择自媒体平台' }]}
         >
           <Select
-            mode="multiple"
             placeholder="请选择您想要运营的自媒体平台"
             options={[
               { value: '抖音', label: '抖音' },

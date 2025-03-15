@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Typography, Button, List, Card, Empty, Spin, message } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
-import { getMediaProfiles, getMediaProfileDetail } from '../../services/mediaProfileService';
+import { Typography, Button, List, Card, Empty, Spin, message, Popconfirm } from 'antd';
+import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { getMediaProfiles, getMediaProfileDetail, deleteMediaProfile } from '../../services/mediaProfileService';
 import BasicInfoModal from './BasicInfoModal';
 import ExperienceInfoModal from './ExperienceInfoModal';
 import GoalsInfoModal from './GoalsInfoModal';
@@ -41,13 +41,21 @@ const MediaProfilePage: React.FC = () => {
   const [experienceModalVisible, setExperienceModalVisible] = useState(false);
   const [goalsModalVisible, setGoalsModalVisible] = useState(false);
   const [currentProfileId, setCurrentProfileId] = useState<string | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingProfile, setEditingProfile] = useState<MediaProfile | null>(null);
 
   // 获取档案列表
   const fetchProfiles = async () => {
     setLoading(true);
     try {
       const response = await getMediaProfiles();
-      setProfiles(response.data.data || []);
+      const profilesData = response.data.data || [];
+      setProfiles(profilesData);
+      
+      // 如果没有档案，自动打开新增档案弹窗
+      if (profilesData.length === 0) {
+        setBasicModalVisible(true);
+      }
     } catch (error) {
       console.error('获取档案列表失败:', error);
       message.error('获取档案列表失败');
@@ -76,7 +84,41 @@ const MediaProfilePage: React.FC = () => {
 
   // 创建新档案
   const handleCreateProfile = () => {
+    setIsEditing(false);
+    setEditingProfile(null);
     setBasicModalVisible(true);
+  };
+
+  // 编辑档案
+  const handleEditProfile = (profile: MediaProfile, e: React.MouseEvent) => {
+    e.stopPropagation(); // 阻止事件冒泡，避免触发选择档案
+    setIsEditing(true);
+    setEditingProfile(profile);
+    setCurrentProfileId(profile.id);
+    setBasicModalVisible(true);
+  };
+
+  // 删除档案
+  const handleDeleteProfile = async (profileId: string, e: React.MouseEvent) => {
+    e.stopPropagation(); // 阻止事件冒泡，避免触发选择档案
+    setLoading(true);
+    try {
+      await deleteMediaProfile(profileId);
+      message.success('档案删除成功');
+      
+      // 刷新档案列表
+      fetchProfiles();
+      
+      // 如果删除的是当前选中的档案，清空选中状态
+      if (selectedProfile && selectedProfile.id === profileId) {
+        setSelectedProfile(null);
+      }
+    } catch (error) {
+      console.error('删除档案失败:', error);
+      message.error('删除档案失败');
+    } finally {
+      setLoading(false);
+    }
   };
 
   // 选择档案
@@ -88,7 +130,19 @@ const MediaProfilePage: React.FC = () => {
   const handleBasicInfoSuccess = (profileId: string) => {
     setBasicModalVisible(false);
     setCurrentProfileId(profileId);
-    setExperienceModalVisible(true);
+    
+    if (!isEditing) {
+      // 如果是新建档案，继续展示经历信息弹窗
+      setExperienceModalVisible(true);
+    } else {
+      // 如果是编辑档案，刷新档案列表和详情
+      fetchProfiles();
+      if (profileId) {
+        fetchProfileDetail(profileId);
+      }
+      setIsEditing(false);
+      setEditingProfile(null);
+    }
   };
 
   // 经历信息提交成功
@@ -152,11 +206,35 @@ const MediaProfilePage: React.FC = () => {
                         backgroundColor: selectedProfile?.id === item.id ? '#e6f7ff' : 'transparent'
                       }}
                     >
-                      <div>
+                      <div style={{ flex: 1 }}>
                         <div style={{ fontWeight: 'bold' }}>{item.nickname}</div>
                         <div style={{ fontSize: '12px', color: '#888' }}>
                           {item.occupation} · {new Date(item.createdAt).toLocaleDateString()}
                         </div>
+                      </div>
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        <Button 
+                          type="text" 
+                          size="small" 
+                          icon={<EditOutlined />} 
+                          onClick={(e) => handleEditProfile(item, e)}
+                        />
+                        <Popconfirm
+                          title="确定删除该档案吗？"
+                          description="删除后无法恢复，相关的策划方案也将一并删除。"
+                          onConfirm={(e) => handleDeleteProfile(item.id, e as React.MouseEvent)}
+                          okText="确定"
+                          cancelText="取消"
+                          placement="left"
+                        >
+                          <Button 
+                            type="text" 
+                            size="small" 
+                            danger 
+                            icon={<DeleteOutlined />} 
+                            onClick={(e) => e.stopPropagation()}
+                          />
+                        </Popconfirm>
                       </div>
                     </List.Item>
                   )}
@@ -188,6 +266,9 @@ const MediaProfilePage: React.FC = () => {
         visible={basicModalVisible}
         onCancel={() => setBasicModalVisible(false)}
         onSuccess={handleBasicInfoSuccess}
+        initialValues={isEditing ? editingProfile : undefined}
+        profileId={isEditing ? currentProfileId : undefined}
+        isEditing={isEditing}
       />
 
       {currentProfileId && (

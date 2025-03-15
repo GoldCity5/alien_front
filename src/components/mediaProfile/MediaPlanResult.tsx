@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Spin, message, Typography, Divider, Tag, Space } from 'antd';
 import { generateMediaPlanWithSSE, saveMediaPlan } from '../../services/mediaProfileService';
+import { DownOutlined, UpOutlined } from '@ant-design/icons';
+import ReactMarkdown from 'react-markdown';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -35,6 +37,7 @@ const MediaPlanResult: React.FC<MediaPlanResultProps> = ({ profile }) => {
   const [planContent, setPlanContent] = useState<string>('');
   const [generating, setGenerating] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [detailsExpanded, setDetailsExpanded] = useState(false);
 
   // 使用 useEffect 确保内容更新时页面重新渲染
   useEffect(() => {
@@ -176,7 +179,20 @@ const MediaPlanResult: React.FC<MediaPlanResultProps> = ({ profile }) => {
             <Paragraph>{profile.educationBackground}</Paragraph>
           </div>
 
-          {profile.careerExperience && (
+          {(profile.careerExperience || profile.targetTrack) && (
+            <div style={{ textAlign: 'center', margin: '20px 0' }}>
+              <Button 
+                type="primary" 
+                ghost
+                onClick={() => setDetailsExpanded(!detailsExpanded)}
+                icon={detailsExpanded ? <UpOutlined /> : <DownOutlined />}
+              >
+                {detailsExpanded ? '收起详情' : '展开详情'}
+              </Button>
+            </div>
+          )}
+
+          {detailsExpanded && profile.careerExperience && (
             <>
               <Divider orientation="left">经历信息</Divider>
               <div>
@@ -200,7 +216,7 @@ const MediaPlanResult: React.FC<MediaPlanResultProps> = ({ profile }) => {
             </>
           )}
 
-          {profile.targetTrack && (
+          {detailsExpanded && profile.targetTrack && (
             <>
               <Divider orientation="left">目标信息</Divider>
               <div>
@@ -255,13 +271,12 @@ const MediaPlanResult: React.FC<MediaPlanResultProps> = ({ profile }) => {
           {planContent && (
             <div 
               style={{ 
-                whiteSpace: 'pre-wrap', 
                 padding: '10px',
                 lineHeight: '1.6',
                 fontSize: '14px'
               }}
             >
-              {planContent}
+              <ReactMarkdown>{planContent}</ReactMarkdown>
             </div>
           )}
         </Card>

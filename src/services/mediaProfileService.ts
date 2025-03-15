@@ -18,6 +18,18 @@ export const createMediaProfileBasic = (data: {
   return request.post('/media-profiles/basic', data);
 };
 
+// 更新媒体档案 - 基本信息
+export const updateMediaProfileBasic = (id: string, data: {
+  nickname: string;
+  age: number;
+  occupation: string;
+  personalityTraits: string;
+  educationBackground: string;
+  mediaPlat: string;
+}) => {
+  return request.put(`/media-profiles/${id}/basic`, data);
+};
+
 // 更新媒体档案 - 经历信息
 export const updateMediaProfileExperience = (id: string, data: {
   careerExperience: string;
@@ -78,4 +90,9 @@ export const generateMediaPlanWithSSE = (options: {
 // 保存媒体策划方案
 export const saveMediaPlan = (id: string, mediaPlan: string) => {
   return request.post(`/media-profiles/${id}/save-plan`, { mediaPlan });
+};
+
+// 删除媒体档案
+export const deleteMediaProfile = (id: string) => {
+  return request.delete(`/media-profiles/${id}`);
 };
