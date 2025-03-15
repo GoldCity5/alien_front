@@ -67,7 +67,7 @@ const GoalsInfoModal: React.FC<GoalsInfoModalProps> = ({
         <Form.Item
           name="targetTrack"
           label="想做的赛道"
-          rules={[{ required: true, message: '请输入想做的赛道' }]}
+          rules={[{ required: false, message: '请输入想做的赛道' }]}
         >
           <Input.TextArea 
             placeholder="请描述您想做的内容赛道，如美食、旅行、教育等" 
@@ -78,7 +78,7 @@ const GoalsInfoModal: React.FC<GoalsInfoModalProps> = ({
         <Form.Item
           name="targetAudience"
           label="想吸引的人群"
-          rules={[{ required: true, message: '请输入想吸引的人群' }]}
+          rules={[{ required: false, message: '请输入想吸引的人群' }]}
         >
           <Input.TextArea 
             placeholder="请描述您想吸引的目标受众，如年龄段、职业、兴趣等" 
@@ -111,7 +111,7 @@ const GoalsInfoModal: React.FC<GoalsInfoModalProps> = ({
         <Form.Item
           name="shortTermGoals"
           label="短期目标"
-          rules={[{ required: true, message: '请输入短期目标' }]}
+          rules={[{ required: false, message: '请输入短期目标' }]}
         >
           <Input.TextArea 
             placeholder="请描述您的短期目标，如粉丝数、收入等" 
@@ -122,7 +122,7 @@ const GoalsInfoModal: React.FC<GoalsInfoModalProps> = ({
         <Form.Item
           name="benchmarkAccounts"
           label="对标账号"
-          rules={[{ required: true, message: '请输入对标账号' }]}
+          rules={[{ required: false, message: '请输入对标账号' }]}
         >
           <Input.TextArea 
             placeholder="请列举您想要对标的账号，可以是具体账号名称或类型" 

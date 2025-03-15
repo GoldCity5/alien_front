@@ -77,22 +77,22 @@ const ExperienceInfoModal: React.FC<ExperienceInfoModalProps> = ({
 
         <Form.Item
           name="specialExperience"
-          label="特殊经历"
-          rules={[{ required: true, message: '请输入特殊经历' }]}
+          label="你有什么特殊的经历吗？"
+          rules={[{ required: false, message: '请输入特殊经历' }]}
         >
           <Input.TextArea 
-            placeholder="请描述您的特殊经历，如获奖经历、特殊项目等" 
+            placeholder="例如：创业十年/留学经历/获奖经历..." 
             rows={4}
           />
         </Form.Item>
 
         <Form.Item
           name="uniqueExperience"
-          label="特别经历"
-          rules={[{ required: true, message: '请输入特别经历' }]}
+          label="你有令你记忆深刻的挫折经历吗？"
+          rules={[{ required: false, message: '请输入特别经历' }]}
         >
           <Input.TextArea 
-            placeholder="请描述您的特别经历，如独特的人生经历、旅行等" 
+            placeholder="例如：离婚、失业、经历过生死、负债1000w..." 
             rows={4}
           />
         </Form.Item>

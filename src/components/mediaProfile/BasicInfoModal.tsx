@@ -100,7 +100,7 @@ const BasicInfoModal: React.FC<BasicInfoModalProps> = ({
         <Form.Item
           name="educationBackground"
           label="教育背景"
-          rules={[{ required: true, message: '请输入教育背景' }]}
+          rules={[{ required: false, message: '请输入教育背景' }]}
         >
           <Input.TextArea 
             placeholder="请描述您的教育背景，例如：学历、专业等" 
