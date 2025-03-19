@@ -19,3 +19,13 @@ export const getPromptList = (params?: any) => {
 export const updatePrompt = (data: any) => {
   return request.put(`/admin/prompts/${data.id}`, data);
 };
+
+// 获取记录列表
+export const getRecordList = (params: { current: number; size: number; }) => {
+  return request.get('/admin/record/list', { params });
+};
+
+// 获取记录详情
+export const getRecordDetail = (id: number) => {
+  return request.get('/admin/record/detail', { params: { id } });
+};
