@@ -32,7 +32,8 @@ const PromptManagement: React.FC = () => {
     { label: '文案仿写', value: 'COPYWRITING' },
     { label: '文案生成', value: 'GENERATE' },
     { label: '自媒体策划', value: 'MEDIA_PLAN' },
-    { label: '基础个人策划', value: 'BASIC_MEDIA_PLAN' }
+    { label: '基础个人策划', value: 'BASIC_MEDIA_PLAN' },
+    { label: '内容选题', value: 'CONTENT_TOPIC' }
   ];
 
   // 提示词类型选项
