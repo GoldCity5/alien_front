@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Layout, Menu, Dropdown, Button, Avatar, Space, Typography } from 'antd';
 import { BrowserRouter as Router, Routes, Route, Navigate, Link, useLocation, useNavigate } from 'react-router-dom';
-import { UserOutlined, HomeOutlined, FileTextOutlined, FormOutlined, VideoCameraOutlined, LogoutOutlined, MenuOutlined, GithubOutlined, BulbOutlined, MobileOutlined } from '@ant-design/icons';
+import { UserOutlined, HomeOutlined, FileTextOutlined, FormOutlined, VideoCameraOutlined, LogoutOutlined, MenuOutlined, GithubOutlined, BulbOutlined, MobileOutlined, ProfileOutlined } from '@ant-design/icons';
 import ExamplePage from './components/ExamplePage';
 import HomePage from './components/HomePage';
 import LoginPage from './components/LoginPage';
@@ -11,6 +11,7 @@ import ScriptGenerationPage from './components/ScriptGenerationPage';
 import MediaProfilePage from './components/mediaProfile/MediaProfilePage';
 import ContentTopicPage from './components/ContentTopicPage';
 import { MediaContentPage } from './components/mediaContent';
+import { MediaIntroductionPage } from './components/mediaIntroduction';
 import AdminLoginPage from './components/admin/AdminLoginPage';
 import AdminDashboard from './components/admin/AdminDashboard';
 import AdminProfile from './components/admin/AdminProfile';
@@ -78,6 +79,11 @@ const AppHeader = () => {
       key: '/media-content',
       icon: <MobileOutlined />,
       label: '自媒体文案',
+    },
+    {
+      key: '/media-introduction',
+      icon: <ProfileOutlined />,
+      label: '自媒体简介',
     },
   ];
 
@@ -363,6 +369,17 @@ const App = () => {
             <Content style={{ padding: '0', minHeight: 'calc(100vh - 64px - 69px)' }}>
               <UserProtectedRoute>
                 <MediaContentPage />
+              </UserProtectedRoute>
+            </Content>
+            <AppFooter />
+          </Layout>
+        } />
+        <Route path="/media-introduction" element={
+          <Layout style={{ minHeight: '100vh' }}>
+            <AppHeader />
+            <Content style={{ padding: '0', minHeight: 'calc(100vh - 64px - 69px)' }}>
+              <UserProtectedRoute>
+                <MediaIntroductionPage />
               </UserProtectedRoute>
             </Content>
             <AppFooter />

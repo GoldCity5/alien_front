@@ -35,6 +35,10 @@ const HomePage: React.FC = () => {
     navigate('/media-content');
   };
 
+  const handleMediaIntroductionGeneration = () => {
+    navigate('/media-introduction');
+  };
+
   return (
     <div 
       style={{ 
@@ -288,6 +292,37 @@ const HomePage: React.FC = () => {
               <Card.Meta
                 title={<span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>自媒体文案</span>}
                 description={<span style={{ fontSize: '0.95rem' }}>生成平台专属文案，提升内容传播效果</span>}
+              />
+            </Card>
+          </Col>
+          
+          <Col xs={24} sm={12} md={8} lg={6}>
+            <Card
+              hoverable
+              onClick={handleMediaIntroductionGeneration}
+              style={{ 
+                height: '100%',
+                borderRadius: '12px',
+                overflow: 'hidden',
+                boxShadow: '0 10px 20px rgba(0,0,0,0.05)',
+                transition: 'transform 0.3s, box-shadow 0.3s',
+              }}
+              cover={
+                <div style={{ 
+                  height: '180px', 
+                  background: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                }}>
+                  <span style={{ fontSize: '64px' }}>📝</span>
+                </div>
+              }
+              bodyStyle={{ padding: '20px' }}
+            >
+              <Card.Meta
+                title={<span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>自媒体简介</span>}
+                description={<span style={{ fontSize: '0.95rem' }}>生成专业账号简介，提升账号专业度和吸引力</span>}
               />
             </Card>
           </Col>

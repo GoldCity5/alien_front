@@ -34,7 +34,8 @@ const PromptManagement: React.FC = () => {
     { label: '自媒体策划', value: 'MEDIA_PLAN' },
     { label: '基础个人策划', value: 'BASIC_MEDIA_PLAN' },
     { label: '媒体文案生成', value: 'MEDIA_CONTENT' },
-    { label: '内容选题', value: 'CONTENT_TOPIC' }
+    { label: '内容选题', value: 'CONTENT_TOPIC' },
+    { label: '媒体介绍生成', value: 'MEDIA_INTRODUCTION' }
   ];
 
   // 提示词类型选项
