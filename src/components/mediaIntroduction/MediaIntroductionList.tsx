@@ -1,0 +1,259 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  List, 
+  Card, 
+  Tag, 
+  Button, 
+  message, 
+  Empty, 
+  Spin, 
+  Typography,
+  Modal,
+  Space,
+  Tooltip
+} from 'antd';
+import { 
+  CopyOutlined, 
+  EyeOutlined, 
+  DeleteOutlined,
+  CheckCircleOutlined
+} from '@ant-design/icons';
+import { getMediaIntroductionList, MediaIntroductionDTO } from '../../services/mediaIntroductionService';
+import ReactMarkdown from 'react-markdown';
+
+const { Text, Paragraph } = Typography;
+
+// 平台标签颜色映射
+const PLATFORM_COLORS: Record<string, string> = {
+  '抖音': 'magenta',
+  '快手': 'orange',
+  '小红书': 'red',
+  'B站': 'blue',
+  '视频号': 'green',
+};
+
+const MediaIntroductionList: React.FC = () => {
+  const [introductions, setIntroductions] = useState<MediaIntroductionDTO[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [viewModalVisible, setViewModalVisible] = useState(false);
+  const [currentIntroduction, setCurrentIntroduction] = useState<MediaIntroductionDTO | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  // 获取简介列表
+  const fetchIntroductions = async () => {
+    setLoading(true);
+    console.log('开始获取自媒体简介列表');
+    try {
+      const data = await getMediaIntroductionList();
+      console.log('获取到自媒体简介列表数据:', data);
+      setIntroductions(data);
+    } catch (error) {
+      console.error('获取简介列表失败:', error);
+      message.error('获取简介列表失败，请稍后重试');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    console.log('MediaIntroductionList组件已挂载，准备获取数据');
+    fetchIntroductions();
+  }, []);
+
+  // 查看简介详情
+  const handleViewIntroduction = (introduction: MediaIntroductionDTO) => {
+    setCurrentIntroduction(introduction);
+    setViewModalVisible(true);
+    setCopied(false);
+  };
+
+  // 复制简介内容
+  const handleCopyIntroduction = (introduction: MediaIntroductionDTO) => {
+    navigator.clipboard.writeText(introduction.content)
+      .then(() => {
+        message.success('简介已复制到剪贴板');
+        setCopied(true);
+      })
+      .catch(() => {
+        message.error('复制失败，请手动复制');
+      });
+  };
+
+  // 删除简介 (这里只是一个示例，实际需要调用后端API)
+  const handleDeleteIntroduction = (id: number) => {
+    // 这里应该调用删除API
+    message.success('简介删除成功');
+    // 更新列表
+    setIntroductions(introductions.filter(item => item.id !== id));
+  };
+
+  // 格式化日期
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('zh-CN', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  // 截断文本
+  const truncateText = (text: string, maxLength: number) => {
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
+  };
+
+  return (
+    <div>
+      {loading ? (
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          height: '300px' 
+        }}>
+          <Spin size="large" />
+        </div>
+      ) : introductions.length === 0 ? (
+        <Empty 
+          description="暂无简介记录" 
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+          style={{ margin: '40px 0' }}
+        />
+      ) : (
+        <List
+          grid={{ 
+            gutter: 16, 
+            xs: 1, 
+            sm: 1, 
+            md: 2, 
+            lg: 2, 
+            xl: 3, 
+            xxl: 3 
+          }}
+          dataSource={introductions}
+          renderItem={item => (
+            <List.Item>
+              <Card
+                hoverable
+                style={{ 
+                  marginBottom: '16px',
+                  borderRadius: '8px',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.06)'
+                }}
+                actions={[
+                  <Tooltip title="查看详情">
+                    <Button 
+                      type="text" 
+                      icon={<EyeOutlined />} 
+                      onClick={() => handleViewIntroduction(item)}
+                    />
+                  </Tooltip>,
+                  <Tooltip title="复制内容">
+                    <Button 
+                      type="text" 
+                      icon={<CopyOutlined />} 
+                      onClick={() => handleCopyIntroduction(item)}
+                    />
+                  </Tooltip>,
+                  <Tooltip title="删除">
+                    <Button 
+                      type="text" 
+                      danger 
+                      icon={<DeleteOutlined />} 
+                      onClick={() => handleDeleteIntroduction(item.id)}
+                    />
+                  </Tooltip>
+                ]}
+              >
+                <div style={{ marginBottom: '12px' }}>
+                  <Tag color={PLATFORM_COLORS[item.platform] || 'default'}>
+                    {item.platform}
+                  </Tag>
+                  <Text type="secondary" style={{ fontSize: '12px', marginLeft: '8px' }}>
+                    {formatDate(item.createdAt)}
+                  </Text>
+                </div>
+                <Paragraph 
+                  ellipsis={{ rows: 2 }} 
+                  style={{ marginBottom: '8px', fontSize: '14px' }}
+                >
+                  <Text strong>账号描述：</Text>
+                  {truncateText(item.accountDescription, 50)}
+                </Paragraph>
+                <Paragraph ellipsis={{ rows: 3 }}>
+                  {truncateText(item.content, 100)}
+                </Paragraph>
+              </Card>
+            </List.Item>
+          )}
+        />
+      )}
+
+      {/* 查看简介详情的弹窗 */}
+      <Modal
+        title={
+          <Space>
+            <span>简介详情</span>
+            {currentIntroduction && (
+              <Tag color={PLATFORM_COLORS[currentIntroduction.platform] || 'default'}>
+                {currentIntroduction.platform}
+              </Tag>
+            )}
+          </Space>
+        }
+        open={viewModalVisible}
+        onCancel={() => setViewModalVisible(false)}
+        footer={[
+          <Button key="close" onClick={() => setViewModalVisible(false)}>
+            关闭
+          </Button>,
+          <Button 
+            key="copy" 
+            type="primary" 
+            icon={copied ? <CheckCircleOutlined /> : <CopyOutlined />}
+            onClick={() => currentIntroduction && handleCopyIntroduction(currentIntroduction)}
+          >
+            {copied ? '已复制' : '复制内容'}
+          </Button>
+        ]}
+        width={700}
+      >
+        {currentIntroduction && (
+          <div>
+            <div style={{ marginBottom: '16px' }}>
+              <Text strong>账号描述：</Text>
+              <Paragraph style={{ marginTop: '8px', background: '#f5f5f5', padding: '12px', borderRadius: '4px' }}>
+                {currentIntroduction.accountDescription}
+              </Paragraph>
+            </div>
+            
+            <div>
+              <Text strong>生成的简介：</Text>
+              <div style={{ 
+                marginTop: '8px', 
+                background: '#f9f9f9', 
+                padding: '16px', 
+                borderRadius: '4px',
+                maxHeight: '400px',
+                overflow: 'auto'
+              }}>
+                <ReactMarkdown>{currentIntroduction.content}</ReactMarkdown>
+              </div>
+            </div>
+            
+            <div style={{ marginTop: '16px', textAlign: 'right' }}>
+              <Text type="secondary" style={{ fontSize: '12px' }}>
+                创建时间：{formatDate(currentIntroduction.createdAt)}
+              </Text>
+            </div>
+          </div>
+        )}
+      </Modal>
+    </div>
+  );
+};
+
+export default MediaIntroductionList;
