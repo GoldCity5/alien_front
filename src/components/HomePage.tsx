@@ -31,6 +31,10 @@ const HomePage: React.FC = () => {
     navigate('/content-topic');
   };
 
+  const handleMediaContentGeneration = () => {
+    navigate('/media-content');
+  };
+
   return (
     <div 
       style={{ 
@@ -209,19 +213,19 @@ const HomePage: React.FC = () => {
               cover={
                 <div style={{ 
                   height: '180px', 
-                  background: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
+                  background: 'linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)',
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'center',
                 }}>
-                  <span style={{ fontSize: '64px' }}>🎬</span>
+                  <span style={{ fontSize: '64px' }}>📝</span>
                 </div>
               }
               bodyStyle={{ padding: '20px' }}
             >
               <Card.Meta
                 title={<span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>脚本生成</span>}
-                description={<span style={{ fontSize: '0.95rem' }}>生成高质量脚本内容，适用于视频、直播等场景</span>}
+                description={<span style={{ fontSize: '0.95rem' }}>生成专业的视频脚本，提高内容质量</span>}
               />
             </Card>
           </Col>
@@ -240,7 +244,7 @@ const HomePage: React.FC = () => {
               cover={
                 <div style={{ 
                   height: '180px', 
-                  background: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)',
+                  background: 'linear-gradient(135deg, #f6d365 0%, #fda085 100%)',
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'center',
@@ -251,8 +255,39 @@ const HomePage: React.FC = () => {
               bodyStyle={{ padding: '20px' }}
             >
               <Card.Meta
-                title={<span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>内容选题</span>}
-                description={<span style={{ fontSize: '0.95rem' }}>智能推荐热门内容选题，提高创作效率</span>}
+                title={<span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>选题生成</span>}
+                description={<span style={{ fontSize: '0.95rem' }}>生成热门内容选题，紧跟市场热点</span>}
+              />
+            </Card>
+          </Col>
+          
+          <Col xs={24} sm={12} md={8} lg={6}>
+            <Card
+              hoverable
+              onClick={handleMediaContentGeneration}
+              style={{ 
+                height: '100%',
+                borderRadius: '12px',
+                overflow: 'hidden',
+                boxShadow: '0 10px 20px rgba(0,0,0,0.05)',
+                transition: 'transform 0.3s, box-shadow 0.3s',
+              }}
+              cover={
+                <div style={{ 
+                  height: '180px', 
+                  background: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)',
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                }}>
+                  <span style={{ fontSize: '64px' }}>📱</span>
+                </div>
+              }
+              bodyStyle={{ padding: '20px' }}
+            >
+              <Card.Meta
+                title={<span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>自媒体文案</span>}
+                description={<span style={{ fontSize: '0.95rem' }}>生成平台专属文案，提升内容传播效果</span>}
               />
             </Card>
           </Col>

@@ -146,6 +146,7 @@ const ContentManagement: React.FC = () => {
           'content-optimization': { color: 'purple', text: '内容优化' },
           'script-generation': { color: 'orange', text: '脚本生成' },
           'generate-content-topic': { color: 'red', text: '内容选题' },
+          'generate-media-content': { color: 'black', text: '媒体文案生成' },
         };
         const { color, text } = typeMap[type] || { color: 'default', text: type };
         return <Tag color={color}>{text}</Tag>;
@@ -210,6 +211,7 @@ const ContentManagement: React.FC = () => {
                 <Option value="content-optimization">内容优化</Option>
                 <Option value="script-generation">脚本生成</Option>
                 <Option value="generate-content-topic">内容选题</Option>
+                <Option value="generate-media-content">媒体文案生成</Option>
               </Select>
             </Form.Item>
             <Form.Item>
@@ -264,6 +266,7 @@ const ContentManagement: React.FC = () => {
                     'content-optimization': { color: 'purple', text: '内容优化' },
                     'script-generation': { color: 'orange', text: '脚本生成' },
                     'generate-content-topic': { color: 'red', text: '内容选题' },
+                    'generate-media-content': { color: 'black', text: '媒体文案生成' },
                   };
                   const { text } = typeMap[currentRecord.operationType] || 
                     { color: 'default', text: currentRecord.operationType };
