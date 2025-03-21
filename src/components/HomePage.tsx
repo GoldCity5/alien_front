@@ -27,6 +27,10 @@ const HomePage: React.FC = () => {
     navigate('/media-profile');
   };
 
+  const handleContentTopicGeneration = () => {
+    navigate('/content-topic');
+  };
+
   return (
     <div 
       style={{ 
@@ -65,13 +69,14 @@ const HomePage: React.FC = () => {
         </div>
       </div>
 
-      {/* 自媒体策划方案模块 */}
+      {/* 特色功能模块 */}
       <div style={{
         width: '100%',
         maxWidth: '1200px',
         padding: '0 20px',
         marginBottom: '30px',
       }}>
+        {/* 自媒体策划方案卡片 */}
         <Card
           hoverable
           onClick={handleMediaProfileGeneration}
@@ -217,6 +222,37 @@ const HomePage: React.FC = () => {
               <Card.Meta
                 title={<span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>脚本生成</span>}
                 description={<span style={{ fontSize: '0.95rem' }}>生成高质量脚本内容，适用于视频、直播等场景</span>}
+              />
+            </Card>
+          </Col>
+
+          <Col xs={24} sm={12} md={8} lg={6}>
+            <Card
+              hoverable
+              onClick={handleContentTopicGeneration}
+              style={{ 
+                height: '100%',
+                borderRadius: '12px',
+                overflow: 'hidden',
+                boxShadow: '0 10px 20px rgba(0,0,0,0.05)',
+                transition: 'transform 0.3s, box-shadow 0.3s',
+              }}
+              cover={
+                <div style={{ 
+                  height: '180px', 
+                  background: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)',
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                }}>
+                  <span style={{ fontSize: '64px' }}>💡</span>
+                </div>
+              }
+              bodyStyle={{ padding: '20px' }}
+            >
+              <Card.Meta
+                title={<span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>内容选题</span>}
+                description={<span style={{ fontSize: '0.95rem' }}>智能推荐热门内容选题，提高创作效率</span>}
               />
             </Card>
           </Col>

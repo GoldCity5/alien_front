@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Typography, Button, List, Card, Empty, Spin, message, Popconfirm } from 'antd';
-import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Typography, Button, List, Card, Empty, Spin, message, Popconfirm, Modal, Tag } from 'antd';
+import { PlusOutlined, EditOutlined, DeleteOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { getMediaProfiles, getMediaProfileDetail, deleteMediaProfile } from '../../services/mediaProfileService';
 import BasicInfoModal from './BasicInfoModal';
 import ExperienceInfoModal from './ExperienceInfoModal';
@@ -43,6 +43,7 @@ const MediaProfilePage: React.FC = () => {
   const [currentProfileId, setCurrentProfileId] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editingProfile, setEditingProfile] = useState<MediaProfile | null>(null);
+  const [profileDetailVisible, setProfileDetailVisible] = useState(false);
 
   // 获取档案列表
   const fetchProfiles = async () => {
@@ -160,6 +161,18 @@ const MediaProfilePage: React.FC = () => {
     }
   };
 
+  // 查看档案详情
+  const handleViewProfileDetail = () => {
+    if (selectedProfile) {
+      setProfileDetailVisible(true);
+    }
+  };
+
+  // 关闭档案详情弹窗
+  const handleCloseProfileDetail = () => {
+    setProfileDetailVisible(false);
+  };
+
   return (
     <div style={{ 
       padding: '20px', 
@@ -185,7 +198,7 @@ const MediaProfilePage: React.FC = () => {
 
       <div style={{ display: 'flex', gap: '20px' }}>
         {/* 左侧档案列表 */}
-        <div style={{ width: '300px', flexShrink: 0 }}>
+        <div style={{ width: '250px', flexShrink: 0 }}>
           <Card 
             title="我的档案" 
             style={{ marginBottom: '20px' }}
@@ -213,6 +226,16 @@ const MediaProfilePage: React.FC = () => {
                         </div>
                       </div>
                       <div style={{ display: 'flex', gap: '8px' }}>
+                        <Button 
+                          type="text" 
+                          size="small" 
+                          icon={<InfoCircleOutlined />} 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleSelectProfile(item);
+                            setProfileDetailVisible(true);
+                          }}
+                        />
                         <Button 
                           type="text" 
                           size="small" 
@@ -246,10 +269,10 @@ const MediaProfilePage: React.FC = () => {
           </Card>
         </div>
 
-        {/* 右侧档案详情和生成结果 */}
+        {/* 中间策划方案内容 */}
         <div style={{ flex: 1 }}>
           {selectedProfile ? (
-            <MediaPlanResult profile={selectedProfile} />
+            <MediaPlanResult profile={selectedProfile} onViewDetail={handleViewProfileDetail} />
           ) : (
             <Card>
               <Empty 
@@ -258,6 +281,11 @@ const MediaProfilePage: React.FC = () => {
               />
             </Card>
           )}
+        </div>
+
+        {/* 右侧预留区域 */}
+        <div style={{ width: '200px', flexShrink: 0 }}>
+          {/* 预留区域，后续可添加功能按钮 */}
         </div>
       </div>
 
@@ -287,6 +315,93 @@ const MediaProfilePage: React.FC = () => {
             onSuccess={handleGoalsInfoSuccess}
           />
         </>
+      )}
+
+      {/* 档案详情弹窗 */}
+      {selectedProfile && (
+        <Modal
+          title="档案详情"
+          open={profileDetailVisible}
+          onCancel={handleCloseProfileDetail}
+          footer={[
+            <Button key="close" onClick={handleCloseProfileDetail}>
+              关闭
+            </Button>
+          ]}
+          width={700}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div>
+              <Title level={4}>{selectedProfile.nickname}</Title>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
+                <Tag color="blue">{selectedProfile.age}岁</Tag>
+                <Tag color="purple">{selectedProfile.occupation}</Tag>
+                {Array.isArray(selectedProfile.mediaPlat) 
+                  ? selectedProfile.mediaPlat.map((plat: string) => (
+                      <Tag key={plat} color="green">{plat}</Tag>
+                    ))
+                  : typeof selectedProfile.mediaPlat === 'string' && selectedProfile.mediaPlat.split(',').map((plat: string) => (
+                      <Tag key={plat} color="green">{plat.trim()}</Tag>
+                    ))
+                }
+              </div>
+            </div>
+
+            <div>
+              <Title level={5}>基本信息</Title>
+              <div style={{ marginTop: '8px' }}>
+                <div><strong>性格特点：</strong>{selectedProfile.personalityTraits}</div>
+                <div style={{ marginTop: '8px' }}><strong>教育背景：</strong>{selectedProfile.educationBackground}</div>
+              </div>
+            </div>
+
+            {(selectedProfile.careerExperience || selectedProfile.specialExperience || selectedProfile.uniqueExperience) && (
+              <div>
+                <Title level={5}>经历信息</Title>
+                <div style={{ marginTop: '8px' }}>
+                  {selectedProfile.careerExperience && (
+                    <div><strong>职业经历：</strong>{selectedProfile.careerExperience}</div>
+                  )}
+                  {selectedProfile.specialExperience && (
+                    <div style={{ marginTop: '8px' }}><strong>特殊经历：</strong>{selectedProfile.specialExperience}</div>
+                  )}
+                  {selectedProfile.uniqueExperience && (
+                    <div style={{ marginTop: '8px' }}><strong>特别经历：</strong>{selectedProfile.uniqueExperience}</div>
+                  )}
+                  {selectedProfile.interests && (
+                    <div style={{ marginTop: '8px' }}><strong>兴趣爱好：</strong>{selectedProfile.interests}</div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {(selectedProfile.targetTrack || selectedProfile.targetAudience) && (
+              <div>
+                <Title level={5}>目标信息</Title>
+                <div style={{ marginTop: '8px' }}>
+                  {selectedProfile.targetTrack && (
+                    <div><strong>想做的赛道：</strong>{selectedProfile.targetTrack}</div>
+                  )}
+                  {selectedProfile.targetAudience && (
+                    <div style={{ marginTop: '8px' }}><strong>目标受众：</strong>{selectedProfile.targetAudience}</div>
+                  )}
+                  {selectedProfile.contentCreationAbility && (
+                    <div style={{ marginTop: '8px' }}><strong>内容创作能力：</strong>{selectedProfile.contentCreationAbility}</div>
+                  )}
+                  {selectedProfile.accountPurpose && (
+                    <div style={{ marginTop: '8px' }}><strong>做账号的原因：</strong>{selectedProfile.accountPurpose}</div>
+                  )}
+                  {selectedProfile.shortTermGoals && (
+                    <div style={{ marginTop: '8px' }}><strong>短期目标：</strong>{selectedProfile.shortTermGoals}</div>
+                  )}
+                  {selectedProfile.benchmarkAccounts && (
+                    <div style={{ marginTop: '8px' }}><strong>对标账号：</strong>{selectedProfile.benchmarkAccounts}</div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </Modal>
       )}
     </div>
   );
