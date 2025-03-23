@@ -19,6 +19,7 @@ import {
 } from '@ant-design/icons';
 import { getMediaContentList, MediaContentDTO } from '../../services/mediaContentService';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import dayjs from 'dayjs';
 
 const { Title, Paragraph, Text } = Typography;
@@ -280,7 +281,48 @@ const MediaContentList: React.FC = () => {
                 overflow: 'auto'
               }}
             >
-              <ReactMarkdown>{currentContent.content}</ReactMarkdown>
+              <ReactMarkdown 
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  // Add custom styling for table elements
+                  table: ({node, ...props}) => (
+                    <table style={{borderCollapse: 'collapse', width: '100%', margin: '10px 0'}} {...props} />
+                  ),
+                  thead: ({node, ...props}) => (
+                    <thead style={{backgroundColor: '#f0f0f0'}} {...props} />
+                  ),
+                  th: ({node, ...props}) => (
+                    <th style={{border: '1px solid #ddd', padding: '8px', textAlign: 'left'}} {...props} />
+                  ),
+                  td: ({node, ...props}) => (
+                    <td style={{border: '1px solid #ddd', padding: '8px', textAlign: 'left'}} {...props} />
+                  ),
+                  // Ensure all text elements are left-aligned
+                  p: ({node, ...props}) => (
+                    <p style={{textAlign: 'left', margin: '8px 0'}} {...props} />
+                  ),
+                  h1: ({node, ...props}) => (
+                    <h1 style={{textAlign: 'left', margin: '16px 0 8px'}} {...props} />
+                  ),
+                  h2: ({node, ...props}) => (
+                    <h2 style={{textAlign: 'left', margin: '14px 0 7px'}} {...props} />
+                  ),
+                  h3: ({node, ...props}) => (
+                    <h3 style={{textAlign: 'left', margin: '12px 0 6px'}} {...props} />
+                  ),
+                  h4: ({node, ...props}) => (
+                    <h4 style={{textAlign: 'left', margin: '10px 0 5px'}} {...props} />
+                  ),
+                  ul: ({node, ...props}) => (
+                    <ul style={{textAlign: 'left', paddingLeft: '20px'}} {...props} />
+                  ),
+                  ol: ({node, ...props}) => (
+                    <ol style={{textAlign: 'left', paddingLeft: '20px'}} {...props} />
+                  )
+                }}
+              >
+                {currentContent.content}
+              </ReactMarkdown>
             </Card>
             <div style={{ marginTop: '16px', textAlign: 'right' }}>
               <Text type="secondary">
