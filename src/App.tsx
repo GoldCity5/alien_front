@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Layout, Menu, Dropdown, Button, Avatar, Space, Typography } from 'antd';
 import { BrowserRouter as Router, Routes, Route, Navigate, Link, useLocation, useNavigate } from 'react-router-dom';
-import { UserOutlined, HomeOutlined, FileTextOutlined, FormOutlined, VideoCameraOutlined, LogoutOutlined, MenuOutlined, GithubOutlined, BulbOutlined, MobileOutlined, ProfileOutlined } from '@ant-design/icons';
+import { UserOutlined, HomeOutlined, FileTextOutlined, FormOutlined, VideoCameraOutlined, LogoutOutlined, MenuOutlined, GithubOutlined, BulbOutlined, MobileOutlined, ProfileOutlined, WalletOutlined } from '@ant-design/icons';
 import ExamplePage from './components/ExamplePage';
 import HomePage from './components/HomePage';
 import LoginPage from './components/LoginPage';
@@ -12,6 +12,7 @@ import MediaProfilePage from './components/mediaProfile/MediaProfilePage';
 import ContentTopicPage from './components/ContentTopicPage';
 import { MediaContentPage } from './components/mediaContent';
 import { MediaIntroductionPage } from './components/mediaIntroduction';
+import UserPointsPage from './components/points/UserPointsPage';
 import AdminLoginPage from './components/admin/AdminLoginPage';
 import AdminDashboard from './components/admin/AdminDashboard';
 import AdminProfile from './components/admin/AdminProfile';
@@ -19,6 +20,7 @@ import UserManagement from './components/admin/UserManagement';
 import ContentManagement from './components/admin/ContentManagement';
 import SystemSettings from './components/admin/SystemSettings';
 import PromptManagement from './components/admin/PromptManagement';
+import PointsManagement from './components/admin/PointsManagement';
 import './App.css';
 
 const { Header, Content, Footer } = Layout;
@@ -84,6 +86,11 @@ const AppHeader = () => {
       key: '/media-introduction',
       icon: <ProfileOutlined />,
       label: '自媒体简介',
+    },
+    {
+      key: '/user-points',
+      icon: <WalletOutlined />,
+      label: '用户积分',
     },
   ];
 
@@ -282,6 +289,7 @@ const App = () => {
           <Route path="content" element={<ContentManagement />} />
           <Route path="settings" element={<SystemSettings />} />
           <Route path="prompt" element={<PromptManagement />} />
+          <Route path="points" element={<PointsManagement />} />
         </Route>
         
         {/* 用户路由 */}
@@ -380,6 +388,17 @@ const App = () => {
             <Content style={{ padding: '0', minHeight: 'calc(100vh - 64px - 69px)' }}>
               <UserProtectedRoute>
                 <MediaIntroductionPage />
+              </UserProtectedRoute>
+            </Content>
+            <AppFooter />
+          </Layout>
+        } />
+        <Route path="/user-points" element={
+          <Layout style={{ minHeight: '100vh' }}>
+            <AppHeader />
+            <Content style={{ padding: '0', minHeight: 'calc(100vh - 64px - 69px)' }}>
+              <UserProtectedRoute>
+                <UserPointsPage />
               </UserProtectedRoute>
             </Content>
             <AppFooter />
