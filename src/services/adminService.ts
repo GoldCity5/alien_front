@@ -10,6 +10,34 @@ export const getAdminInfo = () => {
   return request.get('/admin/info');
 };
 
+// 获取仪表盘数据
+export const getDashboardData = () => {
+  return request.get('/admin/dashboard');
+};
+
+// 获取用户列表
+export interface UserListRequestParams {
+  pageNum: number;
+  pageSize: number;
+  nickname?: string;
+  phone?: string;
+  status?: number;
+}
+
+export const getUserList = (params: UserListRequestParams) => {
+  return request.get('/admin/users', { params });
+};
+
+// 更新用户状态
+export interface UserStatusUpdateParams {
+  userId: number;  // 修改回userId
+  status: number; // 1-正常，0-禁用
+}
+
+export const updateUserStatus = (data: UserStatusUpdateParams) => {
+  return request.put('/admin/users/status', data);
+};
+
 // 获取提示词列表
 export const getPromptList = (params?: any) => {
   return request.get('/admin/prompts', { params });

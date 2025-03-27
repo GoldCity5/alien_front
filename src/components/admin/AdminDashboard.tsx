@@ -14,7 +14,7 @@ import {
   WalletOutlined
 } from '@ant-design/icons';
 import { useNavigate, Outlet, Link, useLocation } from 'react-router-dom';
-import { getAdminInfo } from '../../services/adminService';
+import { getAdminInfo, getDashboardData } from '../../services/adminService';
 
 const { Header, Sider, Content } = Layout;
 const { Title } = Typography;
@@ -23,6 +23,12 @@ const AdminDashboard: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [adminInfo, setAdminInfo] = useState<any>(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [dashboardData, setDashboardData] = useState<any>({
+    totalUsers: 0,
+    totalContents: 0,
+    newUsersToday: 0,
+    newContentsToday: 0
+  });
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -37,8 +43,12 @@ const AdminDashboard: React.FC = () => {
     window.addEventListener('resize', handleResize);
     fetchAdminInfo();
     
+    if (location.pathname === '/admin/dashboard') {
+      fetchDashboardData();
+    }
+    
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [location.pathname]);
 
   const fetchAdminInfo = async () => {
     try {
@@ -48,6 +58,17 @@ const AdminDashboard: React.FC = () => {
       }
     } catch (error) {
       console.error('获取管理员信息失败:', error);
+    }
+  };
+
+  const fetchDashboardData = async () => {
+    try {
+      const response = await getDashboardData();
+      if (response?.data?.code === 0) {
+        setDashboardData(response.data.data);
+      }
+    } catch (error) {
+      console.error('获取仪表盘数据失败:', error);
     }
   };
 
@@ -221,7 +242,7 @@ const AdminDashboard: React.FC = () => {
                   <Card>
                     <Statistic
                       title="用户总数"
-                      value={1256}
+                      value={dashboardData.totalUsers}
                       prefix={<TeamOutlined />}
                     />
                   </Card>
@@ -230,7 +251,7 @@ const AdminDashboard: React.FC = () => {
                   <Card>
                     <Statistic
                       title="内容总数"
-                      value={3218}
+                      value={dashboardData.totalContents}
                       prefix={<FileTextOutlined />}
                     />
                   </Card>
@@ -239,7 +260,7 @@ const AdminDashboard: React.FC = () => {
                   <Card>
                     <Statistic
                       title="今日新增用户"
-                      value={26}
+                      value={dashboardData.newUsersToday}
                       prefix={<UserOutlined />}
                     />
                   </Card>
@@ -248,7 +269,7 @@ const AdminDashboard: React.FC = () => {
                   <Card>
                     <Statistic
                       title="今日新增内容"
-                      value={128}
+                      value={dashboardData.newContentsToday}
                       prefix={<FileAddOutlined />}
                     />
                   </Card>
