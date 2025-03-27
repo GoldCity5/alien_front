@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Table, Button, Space, Tag, Input, Select, Form, message, Modal } from 'antd';
-import { SearchOutlined, PlusOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { Card, Table, Button, Space, Tag, Input, Select, Form, message } from 'antd';
+import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
 import { getUserList, updateUserStatus, UserListRequestParams } from '../../services/adminService';
 
 const { Option } = Select;
