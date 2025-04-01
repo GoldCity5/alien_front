@@ -16,7 +16,7 @@ import {
   Row,
   Col
 } from 'antd';
-import { ReloadOutlined, WalletOutlined, HistoryOutlined, PlusOutlined, SettingOutlined } from '@ant-design/icons';
+import { ReloadOutlined, WalletOutlined, HistoryOutlined, PlusOutlined, SettingOutlined, ShoppingOutlined } from '@ant-design/icons';
 import { 
   getAdminUserPointsList, 
   getAdminPointsTransactions, 
@@ -25,6 +25,7 @@ import {
   PointsTransaction
 } from '../../services/pointsService';
 import PointsFeatureManagement from './PointsFeatureManagement';
+import PointsPackageManagement from './PointsPackageManagement';
 
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
@@ -343,6 +344,18 @@ const PointsManagement: React.FC = () => {
           key="3"
         >
           <PointsFeatureManagement />
+        </TabPane>
+
+        <TabPane
+          tab={
+            <span>
+              <ShoppingOutlined />
+              积分套餐配置
+            </span>
+          }
+          key="4"
+        >
+          <PointsPackageManagement />
         </TabPane>
       </Tabs>
 

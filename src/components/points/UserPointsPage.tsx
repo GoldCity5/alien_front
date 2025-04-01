@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Typography, Tabs, Table, Tag, Statistic, Row, Col, Select, Empty, Alert } from 'antd';
-import { WalletOutlined, HistoryOutlined } from '@ant-design/icons';
+import { WalletOutlined, HistoryOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { getUserPointsInfo, getUserPointsTransactions, PointsTransaction } from '../../services/pointsService';
+import PointsPackages from './PointsPackages';
 
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
@@ -15,6 +16,7 @@ const UserPointsPage: React.FC = () => {
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10, total: 0 });
   const [transactionType, setTransactionType] = useState<number | undefined>(undefined);
   const [error, setError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState('1');
 
   // 获取用户积分信息
   const fetchPointsInfo = async () => {
@@ -66,6 +68,17 @@ const UserPointsPage: React.FC = () => {
   const handleTypeChange = (value: number | undefined) => {
     setTransactionType(value);
     fetchTransactions(1, pagination.pageSize, value);
+  };
+
+  // 处理标签页切换
+  const handleTabChange = (key: string) => {
+    setActiveTab(key);
+  };
+
+  // 刷新积分信息（用于支付成功后刷新）
+  const refreshPointsInfo = () => {
+    fetchPointsInfo();
+    fetchTransactions(1, pagination.pageSize, transactionType);
   };
 
   // 交易记录表格列定义
@@ -140,14 +153,25 @@ const UserPointsPage: React.FC = () => {
             <div style={{ marginTop: '8px' }}>
               <Text type="secondary">积分可用于平台各项功能，如自媒体内容生成、账号定位等。</Text>
               <br />
-              <Text type="secondary">如需更多积分，请联系管理员充值。</Text>
+              <Text type="secondary">您可以通过购买积分套餐来获取更多积分。</Text>
             </div>
           </Col>
         </Row>
       </Card>
 
       <Card>
-        <Tabs defaultActiveKey="1">
+        <Tabs activeKey={activeTab} onChange={handleTabChange}>
+          <TabPane
+            tab={
+              <span>
+                <ShoppingCartOutlined />
+                购买积分
+              </span>
+            }
+            key="0"
+          >
+            <PointsPackages onPaymentSuccess={refreshPointsInfo} />
+          </TabPane>
           <TabPane
             tab={
               <span>
