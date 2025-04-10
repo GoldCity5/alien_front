@@ -21,6 +21,7 @@ import ContentManagement from './components/admin/ContentManagement';
 import SystemSettings from './components/admin/SystemSettings';
 import PromptManagement from './components/admin/PromptManagement';
 import PointsManagement from './components/admin/PointsManagement';
+import { getUserPointsInfo } from './services/pointsService';
 import './App.css';
 
 const { Header, Content, Footer } = Layout;
@@ -31,6 +32,7 @@ const AppHeader = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [userPoints, setUserPoints] = useState<number>(0);
   
   useEffect(() => {
     const handleResize = () => {
@@ -41,69 +43,51 @@ const AppHeader = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // 获取用户的积分信息
+  useEffect(() => {
+    const fetchUserPoints = async () => {
+      if (localStorage.getItem('userToken')) {
+        try {
+          const pointsData = await getUserPointsInfo();
+          setUserPoints(pointsData.totalPoints);
+        } catch (error) {
+          console.error('获取积分信息失败:', error);
+          // 如果API请求失败，保持现有积分不变
+        }
+      }
+    };
+
+    fetchUserPoints();
+  }, []);
+
   /**
    * 处理用户登出操作
-   * 清除本地存储中的token并导航到登录页面
+   * 清除本地存储中的token和用户积分，并导航到登录页面
    */
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('userToken');
+    localStorage.removeItem('userPoints'); // 清除积分数据
     navigate('/login');
+    window.location.reload(); // 刷新页面以确保状态重置
   };
 
   /**
-   * 菜单项配置
-   * 定义导航菜单的各个选项
+   * 处理积分点击事件
+   * 导航到用户积分页面
    */
-  const menuItems = [
-    {
-      key: '/',
-      icon: <HomeOutlined />,
-      label: '首页',
-    },
-    {
-      key: '/content',
-      icon: <FileTextOutlined />,
-      label: '内容优化',
-    },
-    {
-      key: '/title',
-      icon: <FormOutlined />,
-      label: '标题生成',
-    },
-    {
-      key: '/script',
-      icon: <VideoCameraOutlined />,
-      label: '脚本生成',
-    },
-    {
-      key: '/media-profile',
-      icon: <UserOutlined />,
-      label: '自媒体策划',
-    },
-    {
-      key: '/content-topic',
-      icon: <BulbOutlined />,
-      label: '内容选题',
-    },
-    {
-      key: '/media-content',
-      icon: <MobileOutlined />,
-      label: '自媒体文案',
-    },
-    {
-      key: '/media-introduction',
-      icon: <ProfileOutlined />,
-      label: '自媒体简介',
-    },
-    {
-      key: '/user-points',
-      icon: <WalletOutlined />,
-      label: '用户积分',
-    },
-  ];
+  const handlePointsClick = () => {
+    navigate('/user-points');
+  };
 
   const userMenu = (
     <Menu>
+      <Menu.Item key="profile" icon={<UserOutlined />} onClick={() => navigate('/user-profile')}>
+        个人中心
+      </Menu.Item>
+      <Menu.Item key="points" icon={<WalletOutlined />} onClick={handlePointsClick}>
+        我的积分
+      </Menu.Item>
+      <Menu.Divider />
       <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout}>
         退出登录
       </Menu.Item>
@@ -112,11 +96,12 @@ const AppHeader = () => {
 
   const mobileMenu = (
     <Menu>
-      {menuItems.map(item => (
-        <Menu.Item key={item.key} icon={item.icon} onClick={() => navigate(item.key)}>
-          {item.label}
-        </Menu.Item>
-      ))}
+      <Menu.Item key="profile" icon={<UserOutlined />} onClick={() => navigate('/user-profile')}>
+        个人中心
+      </Menu.Item>
+      <Menu.Item key="points" icon={<WalletOutlined />} onClick={handlePointsClick}>
+        我的积分
+      </Menu.Item>
       <Menu.Divider />
       <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout}>
         退出登录
@@ -125,95 +110,55 @@ const AppHeader = () => {
   );
 
   return (
-    <Header style={{ 
-      color: 'white', 
-      fontSize: '18px',
-      padding: '0 20px',
-      background: 'linear-gradient(90deg, #1a237e 0%, #283593 100%)',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      height: '64px',
-      position: 'sticky',
-      top: 0,
-      zIndex: 1000,
-      width: '100%'
-    }}>
-      {/* Logo and Title */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '10px',
-        fontWeight: 'bold',
-        fontSize: '20px'
-      }}>
-        <div style={{
-          width: '32px',
-          height: '32px',
-          borderRadius: '50%',
-          background: 'white',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#1a237e',
-          fontWeight: 'bold',
-          fontSize: '18px'
-        }}>
-          AI
+    <Header className="navbar">
+      <div className="navbar-container">
+        {/* Logo和产品名称 */}
+        <div className="logo">
+          <div className="logo-circle">
+            AI
+          </div>
+          {!isMobile && (
+            <div className="logo-text">小巷创意</div>
+          )}
+          {!isMobile && (
+            <div className="sub-title">AI内容创作平台</div>
+          )}
         </div>
-        {!isMobile && (
-          <span>AI内容创作平台</span>
+        
+        {/* 用户信息区域 */}
+        {localStorage.getItem('userToken') && (
+          <div className="user-info">
+            {/* 积分显示 - 可点击 */}
+            <div className="points" onClick={handlePointsClick}>
+              积分: {userPoints}
+            </div>
+            
+            {/* 用户头像 - 桌面版 */}
+            {!isMobile && (
+              <Dropdown overlay={userMenu} placement="bottomRight">
+                <div className="avatar-container">
+                  <Avatar 
+                    className="avatar"
+                    icon={<UserOutlined style={{ color: '#66bb6a', fontSize: '20px' }} />}
+                    style={{ backgroundColor: '#fff' }}
+                  />
+                </div>
+              </Dropdown>
+            )}
+            
+            {/* 移动端菜单 */}
+            {isMobile && (
+              <Dropdown overlay={mobileMenu} placement="bottomRight" trigger={['click']}>
+                <Button 
+                  type="text" 
+                  icon={<MenuOutlined />} 
+                  className="mobile-menu-button"
+                />
+              </Dropdown>
+            )}
+          </div>
         )}
       </div>
-      
-      {/* Navigation Menu - Desktop */}
-      {!isMobile && localStorage.getItem('userToken') && (
-        <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-          <Menu
-            theme="dark"
-            mode="horizontal"
-            selectedKeys={[location.pathname]}
-            style={{ 
-              background: 'transparent',
-              borderBottom: 'none',
-              display: 'flex',
-              justifyContent: 'center'
-            }}
-          >
-            {menuItems.map(item => (
-              <Menu.Item key={item.key} icon={item.icon}>
-                <Link to={item.key}>{item.label}</Link>
-              </Menu.Item>
-            ))}
-          </Menu>
-        </div>
-      )}
-      
-      {/* User Avatar - Desktop */}
-      {!isMobile && localStorage.getItem('userToken') && (
-        <Dropdown overlay={userMenu} placement="bottomRight">
-          <Avatar 
-            style={{ 
-              backgroundColor: '#fff', 
-              color: '#1a237e',
-              cursor: 'pointer'
-            }} 
-            icon={<UserOutlined />} 
-          />
-        </Dropdown>
-      )}
-      
-      {/* Mobile Menu */}
-      {isMobile && localStorage.getItem('userToken') && (
-        <Dropdown overlay={mobileMenu} placement="bottomRight" trigger={['click']}>
-          <Button 
-            type="text" 
-            icon={<MenuOutlined />} 
-            style={{ color: 'white', fontSize: '18px' }}
-          />
-        </Dropdown>
-      )}
     </Header>
   );
 };
@@ -223,27 +168,24 @@ const AppFooter = () => {
   const currentYear = new Date().getFullYear();
   
   return (
-    <Footer style={{ 
-      textAlign: 'center', 
-      background: '#f0f2f5',
-      padding: '24px',
-      borderTop: '1px solid #e8e8e8'
-    }}>
-      <div style={{ marginBottom: '8px' }}>
-        <Text strong>AI内容创作平台</Text> - <Text type="secondary">智能内容生成解决方案</Text>
-      </div>
-      <div>
-        <Space split={<span style={{ margin: '0 8px' }}>|</span>}>
-          <AntLink href="#" target="_blank">关于我们</AntLink>
-          <AntLink href="#" target="_blank">使用指南</AntLink>
-          <AntLink href="#" target="_blank">API文档</AntLink>
-          <AntLink href="https://github.com" target="_blank">
-            <GithubOutlined /> GitHub
-          </AntLink>
-        </Space>
-      </div>
-      <div style={{ marginTop: '16px' }}>
-        <Text type="secondary"> {currentYear} AI内容创作平台. 保留所有权利.</Text>
+    <Footer className="app-footer">
+      <div className="footer-content">
+        <div className="footer-brand">
+          <Text strong>小巷创意</Text> - <Text type="secondary">AI内容创作平台</Text>
+        </div>
+        <div className="footer-links">
+          <Space split={<span className="footer-divider">|</span>}>
+            <AntLink href="#" target="_blank">关于我们</AntLink>
+            <AntLink href="#" target="_blank">使用指南</AntLink>
+            <AntLink href="#" target="_blank">API文档</AntLink>
+            <AntLink href="https://github.com" target="_blank">
+              <GithubOutlined /> GitHub
+            </AntLink>
+          </Space>
+        </div>
+        <div className="footer-copyright">
+          <Text type="secondary">© {currentYear} 小巷创意. 保留所有权利.</Text>
+        </div>
       </div>
     </Footer>
   );
@@ -305,7 +247,7 @@ const App = () => {
         <Route path="/" element={
           <Layout style={{ minHeight: '100vh' }}>
             <AppHeader />
-            <Content style={{ padding: '0', minHeight: 'calc(100vh - 64px - 69px)' }}>
+            <Content className="main-content-container">
               <UserProtectedRoute>
                 <HomePage />
               </UserProtectedRoute>
@@ -316,7 +258,7 @@ const App = () => {
         <Route path="/example" element={
           <Layout style={{ minHeight: '100vh' }}>
             <AppHeader />
-            <Content style={{ padding: '0', minHeight: 'calc(100vh - 64px - 69px)' }}>
+            <Content className="main-content-container">
               <UserProtectedRoute>
                 <ExamplePage />
               </UserProtectedRoute>
@@ -327,7 +269,7 @@ const App = () => {
         <Route path="/content" element={
           <Layout style={{ minHeight: '100vh' }}>
             <AppHeader />
-            <Content style={{ padding: '0', minHeight: 'calc(100vh - 64px - 69px)' }}>
+            <Content className="main-content-container">
               <UserProtectedRoute>
                 <ContentGenerationPage />
               </UserProtectedRoute>
@@ -338,7 +280,7 @@ const App = () => {
         <Route path="/title" element={
           <Layout style={{ minHeight: '100vh' }}>
             <AppHeader />
-            <Content style={{ padding: '0', minHeight: 'calc(100vh - 64px - 69px)' }}>
+            <Content className="main-content-container">
               <UserProtectedRoute>
                 <TitleGenerationPage />
               </UserProtectedRoute>
@@ -349,7 +291,7 @@ const App = () => {
         <Route path="/script" element={
           <Layout style={{ minHeight: '100vh' }}>
             <AppHeader />
-            <Content style={{ padding: '0', minHeight: 'calc(100vh - 64px - 69px)' }}>
+            <Content className="main-content-container">
               <UserProtectedRoute>
                 <ScriptGenerationPage />
               </UserProtectedRoute>
@@ -360,7 +302,7 @@ const App = () => {
         <Route path="/media-profile" element={
           <Layout style={{ minHeight: '100vh' }}>
             <AppHeader />
-            <Content style={{ padding: '0', minHeight: 'calc(100vh - 64px - 69px)' }}>
+            <Content className="main-content-container">
               <UserProtectedRoute>
                 <MediaProfilePage />
               </UserProtectedRoute>
@@ -371,7 +313,7 @@ const App = () => {
         <Route path="/content-topic" element={
           <Layout style={{ minHeight: '100vh' }}>
             <AppHeader />
-            <Content style={{ padding: '0', minHeight: 'calc(100vh - 64px - 69px)' }}>
+            <Content className="main-content-container">
               <UserProtectedRoute>
                 <ContentTopicPage />
               </UserProtectedRoute>
@@ -382,7 +324,7 @@ const App = () => {
         <Route path="/media-content" element={
           <Layout style={{ minHeight: '100vh' }}>
             <AppHeader />
-            <Content style={{ padding: '0', minHeight: 'calc(100vh - 64px - 69px)' }}>
+            <Content className="main-content-container">
               <UserProtectedRoute>
                 <MediaContentPage />
               </UserProtectedRoute>
@@ -393,7 +335,7 @@ const App = () => {
         <Route path="/media-introduction" element={
           <Layout style={{ minHeight: '100vh' }}>
             <AppHeader />
-            <Content style={{ padding: '0', minHeight: 'calc(100vh - 64px - 69px)' }}>
+            <Content className="main-content-container">
               <UserProtectedRoute>
                 <MediaIntroductionPage />
               </UserProtectedRoute>
@@ -404,7 +346,7 @@ const App = () => {
         <Route path="/user-points" element={
           <Layout style={{ minHeight: '100vh' }}>
             <AppHeader />
-            <Content style={{ padding: '0', minHeight: 'calc(100vh - 64px - 69px)' }}>
+            <Content className="main-content-container">
               <UserProtectedRoute>
                 <UserPointsPage />
               </UserProtectedRoute>

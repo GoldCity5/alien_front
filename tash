@@ -1,0 +1,104 @@
+[1mdiff --git a/src/components/HomePage.tsx b/src/components/HomePage.tsx[m
+[1mindex 756635c..15f38e8 100644[m
+[1m--- a/src/components/HomePage.tsx[m
+[1m+++ b/src/components/HomePage.tsx[m
+[36m@@ -10,22 +10,27 @@[m [mconst HomePage: React.FC = () => {[m
+   const [profileModalVisible, setProfileModalVisible] = useState(false);[m
+   const [, setLoading] = useState(false);[m
+ [m
+[32m+[m[32m  // 导航到示例页面[m
+   const handleExplore = () => {[m
+     navigate('/example');[m
+   };[m
+ [m
+[32m+[m[32m  // 导航到内容生成页面[m
+   const handleContentGeneration = () => {[m
+     navigate('/content');[m
+   };[m
+ [m
+[32m+[m[32m  // 导航到标题生成页面[m
+   const handleTitleGeneration = () => {[m
+     navigate('/title');[m
+   };[m
+ [m
+[32m+[m[32m  // 导航到脚本生成页面[m
+   const handleScriptGeneration = () => {[m
+     navigate('/script');[m
+   };[m
+ [m
+[32m+[m[32m  // 导航到媒体档案生成页面[m
+   const handleMediaProfileGeneration = async () => {[m
+     setLoading(true);[m
+     try {[m
+[36m@@ -48,6 +53,7 @@[m [mconst HomePage: React.FC = () => {[m
+     }[m
+   };[m
+ [m
+[32m+[m[32m  // 导航到内容选题生成页面[m
+   const handleContentTopicGeneration = () => {[m
+     navigate('/content-topic');[m
+   };[m
+[36m@@ -61,6 +67,7 @@[m [mconst HomePage: React.FC = () => {[m
+     navigate('/media-content');[m
+   };[m
+ [m
+[32m+[m[32m  // 导航到自媒体简介生成页面[m
+   const handleMediaIntroductionGeneration = () => {[m
+     navigate('/media-introduction');[m
+   };[m
+[36m@@ -167,6 +174,7 @@[m [mconst HomePage: React.FC = () => {[m
+ [m
+         {/* 功能卡片区域 */}[m
+         <Row gutter={[24, 24]} justify="center">[m
+[32m+[m[32m          {/* 内容生成卡片 */}[m
+           <Col xs={24} sm={12} md={8} lg={6}>[m
+             <Card[m
+               hoverable[m
+[36m@@ -198,6 +206,7 @@[m [mconst HomePage: React.FC = () => {[m
+             </Card>[m
+           </Col>[m
+ [m
+[32m+[m[32m          {/* 爆款标题卡片 */}[m
+           <Col xs={24} sm={12} md={8} lg={6}>[m
+             <Card[m
+               hoverable[m
+[36m@@ -229,6 +238,7 @@[m [mconst HomePage: React.FC = () => {[m
+             </Card>[m
+           </Col>[m
+ [m
+[32m+[m[32m          {/* 脚本生成卡片 */}[m
+           <Col xs={24} sm={12} md={8} lg={6}>[m
+             <Card[m
+               hoverable[m
+[36m@@ -260,6 +270,7 @@[m [mconst HomePage: React.FC = () => {[m
+             </Card>[m
+           </Col>[m
+ [m
+[32m+[m[32m          {/* 选题生成卡片 */}[m
+           <Col xs={24} sm={12} md={8} lg={6}>[m
+             <Card[m
+               hoverable[m
+[36m@@ -291,6 +302,7 @@[m [mconst HomePage: React.FC = () => {[m
+             </Card>[m
+           </Col>[m
+           [m
+[32m+[m[32m          {/* 自媒体文案卡片 */}[m
+           <Col xs={24} sm={12} md={8} lg={6}>[m
+             <Card[m
+               hoverable[m
+[36m@@ -322,6 +334,7 @@[m [mconst HomePage: React.FC = () => {[m
+             </Card>[m
+           </Col>[m
+           [m
+[32m+[m[32m          {/* 自媒体简介卡片 */}[m
+           <Col xs={24} sm={12} md={8} lg={6}>[m
+             <Card[m
+               hoverable[m
+[36m@@ -353,6 +366,7 @@[m [mconst HomePage: React.FC = () => {[m
+             </Card>[m
+           </Col>[m
+ [m
+[32m+[m[32m          {/* 探索更多卡片 */}[m
+           <Col xs={24} sm={12} md={8} lg={6}>[m
+             <Card[m
+               hoverable[m
