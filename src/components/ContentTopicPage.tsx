@@ -197,7 +197,10 @@ const ContentTopicPage: React.FC = () => {
                   label="您想做的内容方向"
                   rules={[{ required: true, message: '请输入您想做的内容方向' }]}
                 >
-                  <Input placeholder="例如：旅行账号、美妆分享" />
+                  <TextArea 
+                    placeholder="例如：去全国各地旅行，分享一路所见所闻/用最简单的食材，教大家做美味的食物...写的越详细越好哦。" 
+                    autoSize={{ minRows: 4, maxRows: 8 }}
+                  />
                 </Form.Item>
                 
                 <Form.Item

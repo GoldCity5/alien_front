@@ -135,8 +135,8 @@ const ContentGenerationForm: React.FC = () => {
               rules={[{ required: true, message: '请输入内容主题' }]}
             >
               <TextArea 
-                placeholder="请输入您内容主题。例如：徒步旅行川西，一路遇到的美丽风景和挑战。" 
-                autoSize={{ minRows: 2, maxRows: 4 }}
+                placeholder="例如：徒步旅行川西，经过巍峨雪山群，秘境海子等美丽风景，一路上受伤、生病等等困难都克服了...加入细节描述，文案不仅更真实，还会会更有感染力哦。" 
+                autoSize={{ minRows: 4, maxRows: 8 }}
               />
             </Form.Item>
 
@@ -146,7 +146,7 @@ const ContentGenerationForm: React.FC = () => {
               rules={[{ required: true, message: '请输入关键词' }]}
             >
               <TextArea 
-                placeholder="请输入内容主题相关的关键词。例如：挑战、希望、成长。（主题为徒步旅行川西，一路遇到的美丽风景和挑战）" 
+                placeholder="例如：挑战、希望、成长（主题为徒步旅行川西）" 
                 autoSize={{ minRows: 2, maxRows: 4 }}
               />
             </Form.Item>
