@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Typography, Input, Button, Card, Avatar, Statistic, Row, Col, List, Image, Tag, Spin, message } from 'antd';
+import { Typography, Input, Card, Avatar, Statistic, Row, Col, List, Image, Tag, Spin, message } from 'antd';
 import { UserOutlined, HeartOutlined, MessageOutlined, ShareAltOutlined, StarOutlined } from '@ant-design/icons';
 import { getDouyinProfile, getDouyinVideos } from '../../services/douyinService';
 
