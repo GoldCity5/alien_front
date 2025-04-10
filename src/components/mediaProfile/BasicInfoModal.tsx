@@ -28,6 +28,7 @@ const BasicInfoModal: React.FC<BasicInfoModalProps> = ({
       form.setFieldsValue({
         nickname: initialValues.nickname,
         age: initialValues.age,
+        gender: initialValues.gender,
         occupation: initialValues.occupation,
         personalityTraits: initialValues.personalityTraits,
         educationBackground: initialValues.educationBackground,
@@ -99,6 +100,9 @@ const BasicInfoModal: React.FC<BasicInfoModalProps> = ({
       maskClosable={false}
       width={600}
     >
+      <div style={{ marginBottom: '16px', color: '#666' }}>
+        请按示例填写您的信息
+      </div>
       <Form
         form={form}
         layout="vertical"
@@ -121,11 +125,26 @@ const BasicInfoModal: React.FC<BasicInfoModalProps> = ({
         </Form.Item>
 
         <Form.Item
+          name="gender"
+          label="性别"
+          rules={[{ required: true, message: '请选择性别' }]}
+        >
+          <Select
+            placeholder="请选择您的性别"
+            options={[
+              { value: '男', label: '男' },
+              { value: '女', label: '女' },
+              { value: '其他', label: '其他' }
+            ]}
+          />
+        </Form.Item>
+
+        <Form.Item
           name="occupation"
-          label="职业（主标签）"
+          label="主标签（身份职业）"
           rules={[{ required: true, message: '请输入职业' }]}
         >
-          <Input placeholder="例如：设计师、教师、程序员等" />
+          <Input placeholder="例如：摆烂大学生、居家宝妈、多情程序员、感性律师..." />
         </Form.Item>
 
         <Form.Item
@@ -134,7 +153,8 @@ const BasicInfoModal: React.FC<BasicInfoModalProps> = ({
           rules={[{ required: true, message: '请输入性格特点' }]}
         >
           <Input.TextArea 
-            placeholder="请描述您的性格特点，例如：开朗、内向、细心等" 
+            placeholder="请描述您的性格特点,例如:高冷、毒舌、幽默、乐观、内向、外向
+果敢、优柔寡断、务实、腹黑、外冷内热等" 
             rows={3}
           />
         </Form.Item>
@@ -145,7 +165,7 @@ const BasicInfoModal: React.FC<BasicInfoModalProps> = ({
           rules={[{ required: false, message: '请输入教育背景' }]}
         >
           <Input.TextArea 
-            placeholder="请描述您的教育背景，例如：学历、专业等" 
+            placeholder="请描述您的教育背景,例如:心理学本科、哲学硕士等,不填也没关系哦" 
             rows={3}
           />
         </Form.Item>

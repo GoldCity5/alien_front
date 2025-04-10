@@ -40,7 +40,9 @@ const ExperienceInfoModal: React.FC<ExperienceInfoModalProps> = ({
 
   return (
     <Modal
-      title="个人经历信息"
+      title="第一无二的经历(必填)
+
+把你独特而又精彩的故事告诉天天,让天天成为最懂你的人"
       open={visible}
       onCancel={onCancel}
       footer={[
@@ -59,6 +61,9 @@ const ExperienceInfoModal: React.FC<ExperienceInfoModalProps> = ({
       maskClosable={false}
       width={600}
     >
+      <div style={{ marginBottom: '16px', color: '#666' }}>
+      把你独特而又精彩的故事告诉天天,让天天成为最懂你的人
+      </div>
       <Form
         form={form}
         layout="vertical"
@@ -66,11 +71,11 @@ const ExperienceInfoModal: React.FC<ExperienceInfoModalProps> = ({
       >
         <Form.Item
           name="careerExperience"
-          label="职业经历"
+          label="你的真实故事(职业经历或成长史)"
           rules={[{ required: true, message: '请输入职业经历' }]}
         >
           <Input.TextArea 
-            placeholder="请描述您的职业经历，包括工作内容、成就等" 
+            placeholder="请描述您的过往的经历,可以是职业经历、求学经历、社会经历万等等,写的越详细,天天越能帮助你,了解你。" 
             rows={4}
           />
         </Form.Item>
@@ -81,7 +86,7 @@ const ExperienceInfoModal: React.FC<ExperienceInfoModalProps> = ({
           rules={[{ required: false, message: '请输入特殊经历' }]}
         >
           <Input.TextArea 
-            placeholder="例如：创业十年/留学经历/获奖经历..." 
+            placeholder="例如:支教/留学经历/获奖经历/创业十年...可能你觉得这些经历不算什么,不是的!这些都是你散发出来的耀眼光芒。你就是一个优秀的人!" 
             rows={4}
           />
         </Form.Item>
@@ -92,7 +97,7 @@ const ExperienceInfoModal: React.FC<ExperienceInfoModalProps> = ({
           rules={[{ required: false, message: '请输入特别经历' }]}
         >
           <Input.TextArea 
-            placeholder="例如：离婚、失业、经历过生死、负债1000w..." 
+            placeholder="例如:离婚、失业、经历过生死、负债1000w...我们都要感谢这些挫折,没有它们,就没有现在坚韧的自己,你远比自己以为的更扛造!" 
             rows={4}
           />
         </Form.Item>
@@ -103,7 +108,7 @@ const ExperienceInfoModal: React.FC<ExperienceInfoModalProps> = ({
           extra="如果不想把兴趣作为素材，可以不填"
         >
           <Input.TextArea 
-            placeholder="请描述您的兴趣爱好" 
+            placeholder="请描述您的兴趣爱好,例如烹饪、摄影、骑行、编程等等" 
             rows={3}
           />
         </Form.Item>

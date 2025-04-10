@@ -1,11 +1,14 @@
-import React from 'react';
-import {Typography, Card, Row, Col} from 'antd';
+import React, { useState } from 'react';
+import {Typography, Card, Row, Col, Modal, Button} from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { getMediaProfiles } from '../services/mediaProfileService';
 
 const { Title, Paragraph } = Typography;
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
+  const [profileModalVisible, setProfileModalVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleExplore = () => {
     navigate('/example');
@@ -23,12 +26,35 @@ const HomePage: React.FC = () => {
     navigate('/script');
   };
 
-  const handleMediaProfileGeneration = () => {
-    navigate('/media-profile');
+  const handleMediaProfileGeneration = async () => {
+    setLoading(true);
+    try {
+      const response = await getMediaProfiles();
+      const profilesData = response.data.data || [];
+      
+      if (profilesData.length === 0) {
+        // 没有档案，显示提示弹窗
+        setProfileModalVisible(true);
+      } else {
+        // 有档案，直接跳转到策划方案页面
+        navigate('/media-profile');
+      }
+    } catch (error) {
+      console.error('获取档案列表失败:', error);
+      // 出错时也跳转到档案页面，让用户在那里处理
+      navigate('/media-profile');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleContentTopicGeneration = () => {
     navigate('/content-topic');
+  };
+
+  const handleCreateProfile = () => {
+    setProfileModalVisible(false);
+    navigate('/media-profile');
   };
 
   const handleMediaContentGeneration = () => {
@@ -375,6 +401,20 @@ const HomePage: React.FC = () => {
           </Paragraph>
         </div>
       </div>
+
+      {/* 没有档案时的提示弹窗 */}
+      <Modal
+        title="提示"
+        open={profileModalVisible}
+        onCancel={() => setProfileModalVisible(false)}
+        footer={[
+          <Button key="submit" type="primary" onClick={handleCreateProfile}>
+            写档案
+          </Button>
+        ]}
+      >
+        <p>去填写您的个人档案，让"天天"为您生成专属自媒体策划方案</p>
+      </Modal>
     </div>
   );
 };
