@@ -65,6 +65,10 @@ const HomePage: React.FC = () => {
     navigate('/media-introduction');
   };
 
+  const handleDouyinAnalysis = () => {
+    navigate('/douyin-analysis');
+  };
+
   return (
     <div 
       style={{ 
@@ -349,6 +353,37 @@ const HomePage: React.FC = () => {
               <Card.Meta
                 title={<span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>自媒体简介</span>}
                 description={<span style={{ fontSize: '0.95rem' }}>生成专业账号简介，提升账号专业度和吸引力</span>}
+              />
+            </Card>
+          </Col>
+
+          <Col xs={24} sm={12} md={8} lg={6}>
+            <Card
+              hoverable
+              onClick={handleDouyinAnalysis}
+              style={{ 
+                height: '100%',
+                borderRadius: '12px',
+                overflow: 'hidden',
+                boxShadow: '0 10px 20px rgba(0,0,0,0.05)',
+                transition: 'transform 0.3s, box-shadow 0.3s',
+              }}
+              cover={
+                <div style={{ 
+                  height: '180px', 
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                }}>
+                  <span style={{ fontSize: '64px' }}>📊</span>
+                </div>
+              }
+              bodyStyle={{ padding: '20px' }}
+            >
+              <Card.Meta
+                title={<span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>抖音账号分析</span>}
+                description={<span style={{ fontSize: '0.95rem' }}>分析抖音账号数据，了解内容表现和粉丝特征</span>}
               />
             </Card>
           </Col>

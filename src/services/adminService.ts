@@ -57,3 +57,8 @@ export const getRecordList = (params: { current: number; size: number; }) => {
 export const getRecordDetail = (id: number) => {
   return request.get('/admin/record/detail', { params: { id } });
 };
+
+// 设置抖音cookie
+export const setDouyinCookie = (cookie: string) => {
+  return request.get('/admin/douyin/setCookie', { params: { cookie } });
+};
