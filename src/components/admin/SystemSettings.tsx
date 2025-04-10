@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Form, Input, Button, Switch, InputNumber, Tabs, message, Divider } from 'antd';
 import { SaveOutlined, ReloadOutlined } from '@ant-design/icons';
+import { setDouyinCookie } from '../../services/adminService';
 
 const { TabPane } = Tabs;
 
@@ -220,6 +221,88 @@ const SystemSettings: React.FC = () => {
                 style={{ marginLeft: 8 }} 
                 icon={<ReloadOutlined />}
                 onClick={() => form.resetFields()}
+              >
+                重置
+              </Button>
+            </Form.Item>
+          </Form>
+        </TabPane>
+        <TabPane tab="抖音设置" key="douyin">
+          <Form
+            layout="vertical"
+            onFinish={(values) => {
+              setLoading(true);
+              // 直接在表单提交时显示一个提示，确保有反应
+              message.loading('正在设置抖音Cookie...', 1);
+              
+              // 测试提示消息
+              console.log('正在设置抖音Cookie:', values.douyinCookie);
+              
+              // 使用原生的fetch请求代替服务调用，以排除服务封装的问题
+              fetch(`/admin/douyin/setCookie?cookie=${encodeURIComponent(values.douyinCookie)}`)
+                .then(res => res.json())
+                .then(data => {
+                  console.log('抖音Cookie原生fetch响应:', data);
+                  
+                  // 直接显示成功提示
+                  if (data.code === 0) {
+                    message.success('抖音Cookie设置成功: ' + (data.data || data.message || '操作成功'));
+                  } else {
+                    message.error('抖音Cookie设置失败：' + (data.msg || data.message || '未知错误'));
+                  }
+                })
+                
+              // 同时仍然保留原来的调用方式作为备用
+              setDouyinCookie(values.douyinCookie)
+                .then(response => {
+                  console.log('抖音Cookie设置响应:', response);
+                  // 打印完整的响应对象以便调试
+                  console.log('响应完整内容:', JSON.stringify(response));
+                  
+                  // 检查响应中的code字段，同时兼容message和msg字段
+                  if (response?.data?.code === 0) {
+                    message.success('抖音Cookie设置成功: ' + (response?.data?.data || response?.data?.message || '操作成功'));
+                  } else {
+                    message.error('抖音Cookie设置失败：' + (response?.data?.msg || response?.data?.message || '未知错误'));
+                  }
+                })
+                .catch(error => {
+                  console.error('设置抖音Cookie失败:', error);
+                  // 确保错误提示显示
+                  message.error('设置抖音Cookie失败：' + (error.message || '未知错误'));
+                })
+                .finally(() => {
+                  // 去掉通用提示，只保留成功或失败的特定提示
+                  setLoading(false);
+                });
+            }}
+          >
+            <Divider orientation="left">抖音Cookie设置</Divider>
+            
+            <Form.Item
+              name="douyinCookie"
+              label="抖音Cookie"
+              rules={[{ required: true, message: '请输入抖音Cookie' }]}
+              extra="请输入有效的抖音Cookie，用于抖音数据获取"
+            >
+              <Input.TextArea 
+                placeholder="请输入抖音Cookie" 
+                rows={4} 
+                style={{ width: '100%' }}
+              />
+            </Form.Item>
+            
+            <Form.Item>
+              <Button type="primary" htmlType="submit" icon={<SaveOutlined />} loading={loading}>
+                保存设置
+              </Button>
+              <Button 
+                style={{ marginLeft: 8 }} 
+                icon={<ReloadOutlined />}
+                onClick={() => {
+                form.resetFields(['douyinCookie']);
+                message.info('表单已重置');
+              }}
               >
                 重置
               </Button>
