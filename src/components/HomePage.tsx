@@ -10,22 +10,27 @@ const HomePage: React.FC = () => {
   const [profileModalVisible, setProfileModalVisible] = useState(false);
   const [, setLoading] = useState(false);
 
+  // 导航到示例页面
   const handleExplore = () => {
     navigate('/example');
   };
 
+  // 导航到内容生成页面
   const handleContentGeneration = () => {
     navigate('/content');
   };
 
+  // 导航到标题生成页面
   const handleTitleGeneration = () => {
     navigate('/title');
   };
 
+  // 导航到脚本生成页面
   const handleScriptGeneration = () => {
     navigate('/script');
   };
 
+  // 导航到媒体档案生成页面
   const handleMediaProfileGeneration = async () => {
     setLoading(true);
     try {
@@ -48,6 +53,7 @@ const HomePage: React.FC = () => {
     }
   };
 
+  // 导航到内容选题生成页面
   const handleContentTopicGeneration = () => {
     navigate('/content-topic');
   };
@@ -61,6 +67,7 @@ const HomePage: React.FC = () => {
     navigate('/media-content');
   };
 
+  // 导航到自媒体简介生成页面
   const handleMediaIntroductionGeneration = () => {
     navigate('/media-introduction');
   };
@@ -167,6 +174,7 @@ const HomePage: React.FC = () => {
 
         {/* 功能卡片区域 */}
         <Row gutter={[24, 24]} justify="center">
+          {/* 内容生成卡片 */}
           <Col xs={24} sm={12} md={8} lg={6}>
             <Card
               hoverable
@@ -198,6 +206,7 @@ const HomePage: React.FC = () => {
             </Card>
           </Col>
 
+          {/* 爆款标题卡片 */}
           <Col xs={24} sm={12} md={8} lg={6}>
             <Card
               hoverable
@@ -229,6 +238,7 @@ const HomePage: React.FC = () => {
             </Card>
           </Col>
 
+          {/* 脚本生成卡片 */}
           <Col xs={24} sm={12} md={8} lg={6}>
             <Card
               hoverable
@@ -260,6 +270,7 @@ const HomePage: React.FC = () => {
             </Card>
           </Col>
 
+          {/* 选题生成卡片 */}
           <Col xs={24} sm={12} md={8} lg={6}>
             <Card
               hoverable
@@ -291,6 +302,7 @@ const HomePage: React.FC = () => {
             </Card>
           </Col>
           
+          {/* 自媒体文案卡片 */}
           <Col xs={24} sm={12} md={8} lg={6}>
             <Card
               hoverable
@@ -322,6 +334,7 @@ const HomePage: React.FC = () => {
             </Card>
           </Col>
           
+          {/* 自媒体简介卡片 */}
           <Col xs={24} sm={12} md={8} lg={6}>
             <Card
               hoverable
@@ -353,6 +366,7 @@ const HomePage: React.FC = () => {
             </Card>
           </Col>
 
+          {/* 探索更多卡片 */}
           <Col xs={24} sm={12} md={8} lg={6}>
             <Card
               hoverable

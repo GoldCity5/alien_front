@@ -30,3 +30,6 @@ next-env.d.ts
 /.next/
 /tsconfig.tsbuildinfo
 /logs
+
+#忽略参考页面的文件
+/reference/*

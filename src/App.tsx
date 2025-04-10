@@ -41,11 +41,19 @@ const AppHeader = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  /**
+   * 处理用户登出操作
+   * 清除本地存储中的token并导航到登录页面
+   */
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/login');
   };
 
+  /**
+   * 菜单项配置
+   * 定义导航菜单的各个选项
+   */
   const menuItems = [
     {
       key: '/',
