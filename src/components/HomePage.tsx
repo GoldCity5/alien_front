@@ -8,7 +8,7 @@ const { Title, Paragraph } = Typography;
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const [profileModalVisible, setProfileModalVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
 
   const handleExplore = () => {
     navigate('/example');
