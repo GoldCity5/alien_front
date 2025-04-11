@@ -6,10 +6,16 @@ import BasicInfoModal from './BasicInfoModal';
 import ExperienceInfoModal from './ExperienceInfoModal';
 import GoalsInfoModal from './GoalsInfoModal';
 import MediaPlanResult from './MediaPlanResult';
+import { useLocation } from 'react-router-dom';
 
 const { useState, useEffect } = React;
 
 const { Title } = Typography;
+
+// 辅助函数：解析URL查询参数
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 
 interface MediaProfile {
   id: string;
@@ -44,6 +50,12 @@ const MediaProfilePage: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editingProfile, setEditingProfile] = useState<MediaProfile | null>(null);
   const [profileDetailVisible, setProfileDetailVisible] = useState(false);
+  
+  // 获取URL查询参数
+  const query = useQuery();
+  const profileIdFromUrl = query.get('profileId');
+  const showPlan = query.get('showPlan') === 'true';
+  const autoSelect = query.get('autoSelect') === 'true';
 
   // 获取档案列表
   const fetchProfiles = async () => {
@@ -53,8 +65,16 @@ const MediaProfilePage: React.FC = () => {
       const profilesData = response.data.data || [];
       setProfiles(profilesData);
       
-      // 如果没有档案，自动打开新增档案弹窗
-      if (profilesData.length === 0) {
+      // 如果URL中有profileId，则自动选择该档案
+      if (profileIdFromUrl && autoSelect && profilesData.length > 0) {
+        // 查找匹配的档案
+        const targetProfile = profilesData.find((p: MediaProfile) => p.id === profileIdFromUrl);
+        if (targetProfile) {
+          // 获取详情并选中该档案
+          fetchProfileDetail(targetProfile.id);
+        }
+      } else if (profilesData.length === 0) {
+        // 如果没有档案，自动打开新增档案弹窗
         setBasicModalVisible(true);
       }
     } catch (error) {
@@ -71,6 +91,9 @@ const MediaProfilePage: React.FC = () => {
     try {
       const response = await getMediaProfileDetail(id);
       setSelectedProfile(response.data.data);
+      
+      // 移除自动显示详情弹窗的逻辑
+      // 只自动选择档案，不弹出详情
     } catch (error) {
       console.error('获取档案详情失败:', error);
       message.error('获取档案详情失败');
@@ -82,6 +105,16 @@ const MediaProfilePage: React.FC = () => {
   useEffect(() => {
     fetchProfiles();
   }, []);
+
+  // 监听URL参数变化，处理从卡片点击进入的情况
+  useEffect(() => {
+    if (profileIdFromUrl && autoSelect && profiles.length > 0) {
+      const targetProfile = profiles.find((p: MediaProfile) => p.id === profileIdFromUrl);
+      if (targetProfile) {
+        fetchProfileDetail(targetProfile.id);
+      }
+    }
+  }, [profileIdFromUrl, autoSelect, profiles]);
 
   // 创建新档案
   const handleCreateProfile = () => {

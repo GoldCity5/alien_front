@@ -21,10 +21,12 @@ import ContentManagement from './components/admin/ContentManagement';
 import SystemSettings from './components/admin/SystemSettings';
 import PromptManagement from './components/admin/PromptManagement';
 import PointsManagement from './components/admin/PointsManagement';
+import CreativeToolsPage from './components/CreativeToolsPage';
+import AnalyticsPage from './components/AnalyticsPage';
+import Sidebar from './components/Sidebar';
 import { getUserPointsInfo } from './services/pointsService';
 import './App.css';
 
-const { Header, Content, Footer } = Layout;
 const { Text, Link: AntLink } = Typography;
 
 // Header component with navigation
@@ -110,22 +112,24 @@ const AppHeader = () => {
   );
 
   return (
-    <Header className="navbar">
+    <Layout.Header className="navbar">
       <div className="navbar-container">
         {/* Logo和产品名称 */}
-        <div className="logo">
+        <div className="logo" style={{ float: 'left' }}>
           <div className="logo-circle">
             <img src="/logo.svg" alt="小巷创意" className="logo-image" />
           </div>
           {!isMobile && (
             <div className="logo-text">小巷创意</div>
           )}
-          
+          {!isMobile && (
+            <div className="sub-title">自媒体从来不是一件难事</div>
+          )}
         </div>
         
         {/* 用户信息区域 */}
         {localStorage.getItem('userToken') && (
-          <div className="user-info">
+          <div className="user-info" style={{ float: 'right' }}>
             {/* 积分显示 - 可点击 */}
             <div className="points" onClick={handlePointsClick}>
               积分: {userPoints}
@@ -157,7 +161,7 @@ const AppHeader = () => {
           </div>
         )}
       </div>
-    </Header>
+    </Layout.Header>
   );
 };
 
@@ -166,7 +170,7 @@ const AppFooter = () => {
   const currentYear = new Date().getFullYear();
   
   return (
-    <Footer className="app-footer">
+    <Layout.Footer className="app-footer">
       <div className="footer-content">
         <div className="footer-brand">
           <Text strong>小巷创意</Text> - <Text type="secondary">AI内容创作平台</Text>
@@ -185,7 +189,7 @@ const AppFooter = () => {
           <Text type="secondary">© {currentYear} 小巷创意. 保留所有权利.</Text>
         </div>
       </div>
-    </Footer>
+    </Layout.Footer>
   );
 };
 
@@ -245,110 +249,196 @@ const App = () => {
         <Route path="/" element={
           <Layout style={{ minHeight: '100vh' }}>
             <AppHeader />
-            <Content className="main-content-container">
-              <UserProtectedRoute>
-                <HomePage />
-              </UserProtectedRoute>
-            </Content>
+            <div className="page-container">
+              <Sidebar />
+              <div className="content-with-sidebar">
+                <Layout.Content className="main-content-container">
+                  <UserProtectedRoute>
+                    <HomePage />
+                  </UserProtectedRoute>
+                </Layout.Content>
+              </div>
+            </div>
             <AppFooter />
           </Layout>
         } />
         <Route path="/example" element={
           <Layout style={{ minHeight: '100vh' }}>
             <AppHeader />
-            <Content className="main-content-container">
-              <UserProtectedRoute>
-                <ExamplePage />
-              </UserProtectedRoute>
-            </Content>
+            <div className="page-container">
+              <Sidebar />
+              <div className="content-with-sidebar">
+                <Layout.Content className="main-content-container">
+                  <UserProtectedRoute>
+                    <ExamplePage />
+                  </UserProtectedRoute>
+                </Layout.Content>
+              </div>
+            </div>
             <AppFooter />
           </Layout>
         } />
         <Route path="/content" element={
           <Layout style={{ minHeight: '100vh' }}>
             <AppHeader />
-            <Content className="main-content-container">
-              <UserProtectedRoute>
-                <ContentGenerationPage />
-              </UserProtectedRoute>
-            </Content>
+            <div className="page-container">
+              <Sidebar />
+              <div className="content-with-sidebar">
+                <Layout.Content className="main-content-container">
+                  <UserProtectedRoute>
+                    <ContentGenerationPage />
+                  </UserProtectedRoute>
+                </Layout.Content>
+              </div>
+            </div>
             <AppFooter />
           </Layout>
         } />
         <Route path="/title" element={
           <Layout style={{ minHeight: '100vh' }}>
             <AppHeader />
-            <Content className="main-content-container">
-              <UserProtectedRoute>
-                <TitleGenerationPage />
-              </UserProtectedRoute>
-            </Content>
+            <div className="page-container">
+              <Sidebar />
+              <div className="content-with-sidebar">
+                <Layout.Content className="main-content-container">
+                  <UserProtectedRoute>
+                    <TitleGenerationPage />
+                  </UserProtectedRoute>
+                </Layout.Content>
+              </div>
+            </div>
             <AppFooter />
           </Layout>
         } />
         <Route path="/script" element={
           <Layout style={{ minHeight: '100vh' }}>
             <AppHeader />
-            <Content className="main-content-container">
-              <UserProtectedRoute>
-                <ScriptGenerationPage />
-              </UserProtectedRoute>
-            </Content>
+            <div className="page-container">
+              <Sidebar />
+              <div className="content-with-sidebar">
+                <Layout.Content className="main-content-container">
+                  <UserProtectedRoute>
+                    <ScriptGenerationPage />
+                  </UserProtectedRoute>
+                </Layout.Content>
+              </div>
+            </div>
             <AppFooter />
           </Layout>
         } />
         <Route path="/media-profile" element={
           <Layout style={{ minHeight: '100vh' }}>
             <AppHeader />
-            <Content className="main-content-container">
-              <UserProtectedRoute>
-                <MediaProfilePage />
-              </UserProtectedRoute>
-            </Content>
+            <div className="page-container">
+              <Sidebar />
+              <div className="content-with-sidebar">
+                <Layout.Content className="main-content-container">
+                  <UserProtectedRoute>
+                    <MediaProfilePage />
+                  </UserProtectedRoute>
+                </Layout.Content>
+              </div>
+            </div>
             <AppFooter />
           </Layout>
         } />
         <Route path="/content-topic" element={
           <Layout style={{ minHeight: '100vh' }}>
             <AppHeader />
-            <Content className="main-content-container">
-              <UserProtectedRoute>
-                <ContentTopicPage />
-              </UserProtectedRoute>
-            </Content>
+            <div className="page-container">
+              <Sidebar />
+              <div className="content-with-sidebar">
+                <Layout.Content className="main-content-container">
+                  <UserProtectedRoute>
+                    <ContentTopicPage />
+                  </UserProtectedRoute>
+                </Layout.Content>
+              </div>
+            </div>
             <AppFooter />
           </Layout>
         } />
         <Route path="/media-content" element={
           <Layout style={{ minHeight: '100vh' }}>
             <AppHeader />
-            <Content className="main-content-container">
-              <UserProtectedRoute>
-                <MediaContentPage />
-              </UserProtectedRoute>
-            </Content>
+            <div className="page-container">
+              <Sidebar />
+              <div className="content-with-sidebar">
+                <Layout.Content className="main-content-container">
+                  <UserProtectedRoute>
+                    <MediaContentPage />
+                  </UserProtectedRoute>
+                </Layout.Content>
+              </div>
+            </div>
             <AppFooter />
           </Layout>
         } />
         <Route path="/media-introduction" element={
           <Layout style={{ minHeight: '100vh' }}>
             <AppHeader />
-            <Content className="main-content-container">
-              <UserProtectedRoute>
-                <MediaIntroductionPage />
-              </UserProtectedRoute>
-            </Content>
+            <div className="page-container">
+              <Sidebar />
+              <div className="content-with-sidebar">
+                <Layout.Content className="main-content-container">
+                  <UserProtectedRoute>
+                    <MediaIntroductionPage />
+                  </UserProtectedRoute>
+                </Layout.Content>
+              </div>
+            </div>
             <AppFooter />
           </Layout>
         } />
         <Route path="/user-points" element={
           <Layout style={{ minHeight: '100vh' }}>
             <AppHeader />
-            <Content className="main-content-container">
-              <UserProtectedRoute>
-                <UserPointsPage />
-              </UserProtectedRoute>
-            </Content>
+            <div className="page-container">
+              <Sidebar />
+              <div className="content-with-sidebar">
+                <Layout.Content className="main-content-container">
+                  <UserProtectedRoute>
+                    <UserPointsPage />
+                  </UserProtectedRoute>
+                </Layout.Content>
+              </div>
+            </div>
+            <AppFooter />
+          </Layout>
+        } />
+        
+        {/* 对标分析页面 */}
+        <Route path="/analytics" element={
+          <Layout style={{ minHeight: '100vh' }}>
+            <AppHeader />
+            <div className="page-container">
+              <Sidebar />
+              <div className="content-with-sidebar">
+                <Layout.Content className="main-content-container">
+                  <UserProtectedRoute>
+                    <AnalyticsPage />
+                  </UserProtectedRoute>
+                </Layout.Content>
+              </div>
+            </div>
+            <AppFooter />
+          </Layout>
+        } />
+        
+        {/* 创作工具页面 */}
+        <Route path="/creative-tools" element={
+          <Layout style={{ minHeight: '100vh' }}>
+            <AppHeader />
+            <div className="page-container">
+              <Sidebar />
+              <div className="content-with-sidebar">
+                <Layout.Content className="main-content-container">
+                  <UserProtectedRoute>
+                    <CreativeToolsPage />
+                  </UserProtectedRoute>
+                </Layout.Content>
+              </div>
+            </div>
             <AppFooter />
           </Layout>
         } />

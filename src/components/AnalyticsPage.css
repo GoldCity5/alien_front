@@ -1,0 +1,220 @@
+/* 对标分析页面样式 */
+
+/* 页面容器 */
+.analytics-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+}
+
+/* 主内容区域样式 */
+.main-content {
+  flex: 1;
+  padding: 30px;
+  background-color: white;
+  border-radius: 20px;
+  margin: 0;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.06);
+  overflow: auto;
+}
+
+/* 内容区域包装器，限制最大宽度 */
+.content-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* 页面标题样式 */
+.page-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text-dark, #3a3a3a);
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #eee;
+}
+
+/* 分析卡片区域 */
+.analysis-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+/* 分析卡片基础样式 */
+.analysis-card {
+  background-color: white;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  height: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+.analysis-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* 分析卡片图标区域 */
+.analysis-icon {
+  width: 100%;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.analysis-icon span {
+  font-size: 60px;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s;
+}
+
+/* 分析卡片内容区域 */
+.analysis-content {
+  padding: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 分析卡片标题 */
+.analysis-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-align: center;
+  color: var(--text-dark, #3a3a3a);
+}
+
+/* 分析卡片描述 */
+.analysis-description {
+  font-size: 14px;
+  color: var(--text-medium, #666);
+  line-height: 1.6;
+  text-align: center;
+  flex-grow: 1;
+}
+
+/* 分析卡片颜色变体 - 账号分析(紫色) */
+.analysis-card.account .analysis-icon {
+  background-color: var(--light-purple, #f0ebf8);
+}
+
+.analysis-card.account .analysis-icon span {
+  color: var(--accent-purple, #7e57c2);
+}
+
+.analysis-card.account:hover .analysis-icon span {
+  color: white;
+}
+
+.analysis-card.account:hover .analysis-icon {
+  background: linear-gradient(135deg, #7e57c2, #5e35b1);
+}
+
+/* 分析卡片颜色变体 - 视频分析(蓝色) */
+.analysis-card.video .analysis-icon {
+  background-color: var(--light-blue, #e9f3fd);
+}
+
+.analysis-card.video .analysis-icon span {
+  color: var(--accent-blue, #42a5f5);
+}
+
+.analysis-card.video:hover .analysis-icon span {
+  color: white;
+}
+
+.analysis-card.video:hover .analysis-icon {
+  background: linear-gradient(135deg, #42a5f5, #1e88e5);
+}
+
+/* 分析卡片颜色变体 - 痛点分析(红色) */
+.analysis-card.pain .analysis-icon {
+  background-color: #ffebee;
+}
+
+.analysis-card.pain .analysis-icon span {
+  color: #f44336;
+}
+
+.analysis-card.pain:hover .analysis-icon span {
+  color: white;
+}
+
+.analysis-card.pain:hover .analysis-icon {
+  background: linear-gradient(135deg, #f44336, #d32f2f);
+}
+
+/* 分析卡片颜色变体 - 卖点分析(橙色) */
+.analysis-card.selling .analysis-icon {
+  background-color: var(--light-orange, #fff5e6);
+}
+
+.analysis-card.selling .analysis-icon span {
+  color: var(--accent-orange, #ff9800);
+}
+
+.analysis-card.selling:hover .analysis-icon span {
+  color: white;
+}
+
+.analysis-card.selling:hover .analysis-icon {
+  background: linear-gradient(135deg, #ff9800, #f57c00);
+}
+
+/* 响应式布局设计 */
+@media (max-width: 1200px) {
+  .main-content {
+    padding: 25px;
+  }
+}
+
+@media (max-width: 992px) {
+  .main-content {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .analysis-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .main-content {
+    padding: 20px 15px;
+    border-radius: 15px;
+  }
+}
+
+@media (max-width: 576px) {
+  .main-content {
+    padding: 15px 10px;
+  }
+  
+  .page-title {
+    font-size: 24px;
+  }
+  
+  .analysis-card {
+    height: auto;
+    min-height: 250px;
+  }
+  
+  .analysis-icon {
+    height: 120px;
+  }
+} 
