@@ -18,6 +18,18 @@ const SystemSettings: React.FC = () => {
     }, 1000);
   };
 
+  // 默认系统设置
+  const defaultSettings = {
+    siteName: '小巷创意',
+    siteDescription: 'AI内容创作平台',
+    logo: '/logo.svg',
+    recordNumber: 'ICP备XXXXXXXX号',
+    contactEmail: 'support@example.com',
+    enableRegistration: true,
+    maxLoginAttempts: 5,
+    sessionTimeout: 30,
+  };
+
   return (
     <Card title="系统设置">
       <Tabs defaultActiveKey="basic">
@@ -25,16 +37,7 @@ const SystemSettings: React.FC = () => {
           <Form
             form={form}
             layout="vertical"
-            initialValues={{
-              siteName: 'AI内容创作平台',
-              siteDescription: '智能内容生成解决方案',
-              logo: '/logo.png',
-              recordNumber: 'ICP备XXXXXXXX号',
-              contactEmail: 'support@example.com',
-              enableRegistration: true,
-              maxLoginAttempts: 5,
-              sessionTimeout: 30,
-            }}
+            initialValues={defaultSettings}
             onFinish={handleSave}
           >
             <Divider orientation="left">网站信息</Divider>

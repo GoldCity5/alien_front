@@ -115,14 +115,12 @@ const AppHeader = () => {
         {/* Logo和产品名称 */}
         <div className="logo">
           <div className="logo-circle">
-            AI
+            <img src="/logo.svg" alt="小巷创意" className="logo-image" />
           </div>
           {!isMobile && (
             <div className="logo-text">小巷创意</div>
           )}
-          {!isMobile && (
-            <div className="sub-title">AI内容创作平台</div>
-          )}
+          
         </div>
         
         {/* 用户信息区域 */}

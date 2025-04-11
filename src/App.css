@@ -257,22 +257,23 @@ h1, h2, h3, h4, h5 {
 
 /* Logo样式 */
 .navbar .logo {
-  margin-right: 15px !important;
+  margin-right: 20px !important;
   display: flex !important;
   align-items: center !important;
   height: auto !important;
   padding: 0 !important;
-  will-change: auto !important;
-  transition: none !important;
+  will-change: transform !important;
+  transition: transform 0.3s ease-in-out !important;
 }
 
 .navbar .logo:hover {
   filter: none !important;
+  transform: scale(1.02) !important;
 }
 
 .logo-circle {
-  width: 42px;
-  height: 42px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--primary-green), var(--deep-green));
   display: flex;
@@ -281,25 +282,67 @@ h1, h2, h3, h4, h5 {
   color: white;
   font-weight: bold;
   font-size: 18px;
-  margin-right: 12px;
-  box-shadow: 0 3px 8px rgba(102, 187, 106, 0.2);
+  margin-right: 14px;
+  box-shadow: 0 4px 12px rgba(102, 187, 106, 0.3);
   flex-shrink: 0;
+  overflow: hidden; /* 确保图片不会溢出圆形边界 */
+  position: relative;
+  transition: all 0.4s ease;
+}
+
+.logo-circle:hover {
+  box-shadow: 0 6px 16px rgba(102, 187, 106, 0.4);
+  transform: translateY(-2px);
+}
+
+.logo-circle:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%);
+  z-index: 1;
+  border-radius: 50%;
+}
+
+.logo-image {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  position: relative;
+  z-index: 2;
+  transition: transform 0.5s ease;
+}
+
+.logo-circle:hover .logo-image {
+  transform: scale(1.1) rotate(5deg);
 }
 
 .logo-text {
-  font-size: 36px;
+  font-size: 38px;
   color: var(--text-medium);
-  font-weight: 500;
-  margin-right: 12px;
+  font-weight: 600;
+  margin-right: 14px;
   line-height: 1;
+  background: linear-gradient(to right, var(--text-medium), var(--primary-green));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .sub-title {
-  font-size: 18px;
+  font-size: 19px;
   color: var(--text-medium);
   font-weight: 500;
-  opacity: 0.8;
+  opacity: 0.85;
   line-height: 1;
+  transition: opacity 0.3s ease;
+}
+
+.navbar .logo:hover .sub-title {
+  opacity: 1;
 }
 
 /* 用户信息区域样式 */
@@ -448,17 +491,22 @@ h1, h2, h3, h4, h5 {
   }
   
   .logo-circle {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     font-size: 16px;
   }
   
+  .logo-image {
+    width: 30px;
+    height: 30px;
+  }
+  
   .logo-text {
-    font-size: 24px;
+    font-size: 28px;
   }
   
   .sub-title {
-    font-size: 14px;
+    font-size: 15px;
   }
   
   .navbar .user-info .points {
@@ -484,8 +532,18 @@ h1, h2, h3, h4, h5 {
     min-height: calc(100vh - 62px - 69px) !important;
   }
   
+  .logo-circle {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .logo-image {
+    width: 26px;
+    height: 26px;
+  }
+  
   .logo-text {
-    font-size: 20px;
+    font-size: 22px;
   }
   
   .navbar .user-info .points {
@@ -561,63 +619,4 @@ h1, h2, h3, h4, h5 {
   padding: 0 !important;
   min-height: calc(100vh - 78px - 69px) !important;
   background-color: var(--bg-color) !important;
-}
-
-/* 响应式样式调整 */
-@media (max-width: 768px) {
-  .navbar.ant-layout-header {
-    padding: 15px 20px !important;
-    min-height: 70px !important;
-  }
-  
-  /* 更新内容区域高度计算 */
-  .main-content-container {
-    min-height: calc(100vh - 70px - 69px) !important;
-  }
-  
-  .logo-circle {
-    width: 36px;
-    height: 36px;
-    font-size: 16px;
-  }
-  
-  .logo-text {
-    font-size: 24px;
-  }
-  
-  .sub-title {
-    font-size: 14px;
-  }
-  
-  .navbar .user-info .points {
-    padding: 6px 12px !important;
-    font-size: 12px !important;
-    letter-spacing: 0.2px !important;
-  }
-  
-  .avatar {
-    width: 36px;
-    height: 36px;
-  }
-}
-
-@media (max-width: 480px) {
-  .navbar.ant-layout-header {
-    padding: 12px 15px !important;
-    min-height: 62px !important;
-  }
-  
-  /* 更新内容区域高度计算 */
-  .main-content-container {
-    min-height: calc(100vh - 62px - 69px) !important;
-  }
-  
-  .logo-text {
-    font-size: 20px;
-  }
-  
-  .navbar .user-info .points {
-    padding: 5px 10px !important;
-    margin-right: 10px !important;
-  }
 }
