@@ -1,5 +1,6 @@
 import React from 'react';
 import { message } from 'antd';
+import { useNavigate } from 'react-router-dom';
 import './AnalyticsPage.css';
 
 /**
@@ -7,10 +8,15 @@ import './AnalyticsPage.css';
  * 提供账号分析、视频分析、痛点分析和卖点分析等功能
  */
 const AnalyticsPage: React.FC = () => {
+  const navigate = useNavigate();
   
   // 处理分析卡片点击
   const handleCardClick = (title: string) => {
-    message.info(`${title}功能即将上线，敬请期待！`);
+    if (title === '账号分析') {
+      navigate('/douyin-analysis');
+    } else {
+      message.info(`${title}功能即将上线，敬请期待！`);
+    }
   };
 
   return (

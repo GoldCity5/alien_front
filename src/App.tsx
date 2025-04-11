@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Layout, Menu, Dropdown, Button, Avatar, Space, Typography } from 'antd';
 import { BrowserRouter as Router, Routes, Route, Navigate, Link, useLocation, useNavigate } from 'react-router-dom';
-import { UserOutlined, HomeOutlined, FileTextOutlined, FormOutlined, VideoCameraOutlined, LogoutOutlined, MenuOutlined, GithubOutlined, BulbOutlined, MobileOutlined, ProfileOutlined, WalletOutlined } from '@ant-design/icons';
+import { UserOutlined, HomeOutlined, FileTextOutlined, FormOutlined, VideoCameraOutlined, LogoutOutlined, MenuOutlined, GithubOutlined, BulbOutlined, MobileOutlined, ProfileOutlined, WalletOutlined, BarChartOutlined } from '@ant-design/icons';
 import ExamplePage from './components/ExamplePage';
 import HomePage from './components/HomePage';
 import LoginPage from './components/LoginPage';
@@ -13,6 +13,7 @@ import ContentTopicPage from './components/ContentTopicPage';
 import { MediaContentPage } from './components/mediaContent';
 import { MediaIntroductionPage } from './components/mediaIntroduction';
 import UserPointsPage from './components/points/UserPointsPage';
+import DouyinAnalysisPage from './components/douyin/DouyinAnalysisPage';
 import AdminLoginPage from './components/admin/AdminLoginPage';
 import AdminDashboard from './components/admin/AdminDashboard';
 import AdminProfile from './components/admin/AdminProfile';
@@ -80,6 +81,8 @@ const AppHeader = () => {
   const handlePointsClick = () => {
     navigate('/user-points');
   };
+
+  
 
   const userMenu = (
     <Menu>
@@ -435,6 +438,24 @@ const App = () => {
                 <Layout.Content className="main-content-container">
                   <UserProtectedRoute>
                     <CreativeToolsPage />
+                  </UserProtectedRoute>
+                </Layout.Content>
+              </div>
+            </div>
+            <AppFooter />
+          </Layout>
+        } />
+       
+        {/* 抖音分析页面 */}
+        <Route path="/douyin-analysis" element={
+          <Layout style={{ minHeight: '100vh' }}>
+            <AppHeader />
+            <div className="page-container">
+              <Sidebar />
+              <div className="content-with-sidebar">
+                <Layout.Content className="main-content-container">
+                  <UserProtectedRoute>
+                    <DouyinAnalysisPage />
                   </UserProtectedRoute>
                 </Layout.Content>
               </div>
