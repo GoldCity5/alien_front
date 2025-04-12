@@ -120,25 +120,25 @@ const HomePage: React.FC = () => {
     }
   };
 
-  // 导航到示例页面
-  const handleExplore = () => {
-    navigate('/example');
-  };
+  // // 导航到示例页面
+  // const handleExplore = () => {
+  //   navigate('/example');
+  // };
 
-  // 导航到内容生成页面
-  const handleContentGeneration = () => {
-    navigate('/content');
-  };
+  // // 导航到内容生成页面
+  // const handleContentGeneration = () => {
+  //   navigate('/content');
+  // };
 
-  // 导航到标题生成页面
-  const handleTitleGeneration = () => {
-    navigate('/title');
-  };
+  // // 导航到标题生成页面
+  // const handleTitleGeneration = () => {
+  //   navigate('/title');
+  // };
 
-  // 导航到脚本生成页面
-  const handleScriptGeneration = () => {
-    navigate('/script');
-  };
+  // // 导航到脚本生成页面
+  // const handleScriptGeneration = () => {
+  //   navigate('/script');
+  // };
 
   // 导航到媒体档案生成页面
   const handleMediaProfileGeneration = async () => {
@@ -248,12 +248,12 @@ const HomePage: React.FC = () => {
   };
 
   // 格式化粉丝数量
-  const formatFollowersCount = (count: number) => {
-    if (count >= 1000) {
-      return (count / 1000).toFixed(1) + 'k';
-    }
-    return count.toString();
-  };
+ //  const formatFollowersCount = (count: number) => {
+    // if (count >= 1000) {
+    //   return (count / 1000).toFixed(1) + 'k';
+    // }
+    // return count.toString();
+  // };
 
   // 格式化更新时间为年月日格式
   const formatUpdateTime = (updateTime: string) => {

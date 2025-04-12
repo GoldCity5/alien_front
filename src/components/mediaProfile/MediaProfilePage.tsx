@@ -21,6 +21,7 @@ interface MediaProfile {
   id: string;
   nickname: string;
   age: number;
+  gender: string;
   occupation: string;
   personalityTraits: string;
   educationBackground: string;
@@ -35,6 +36,8 @@ interface MediaProfile {
   accountPurpose?: string;
   shortTermGoals?: string;
   benchmarkAccounts?: string;
+  availableTime?: string; // 可以投入的时间
+  otherInfo?: string; // 其他补充信息
   mediaPlan?: string;
   createdAt: string;
 }
@@ -368,6 +371,7 @@ const MediaProfilePage: React.FC = () => {
               <Title level={4}>{selectedProfile.nickname}</Title>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
                 <Tag color="blue">{selectedProfile.age}岁</Tag>
+                {selectedProfile.gender && <Tag color="magenta">{selectedProfile.gender}</Tag>}
                 <Tag color="purple">{selectedProfile.occupation}</Tag>
                 {Array.isArray(selectedProfile.mediaPlat) 
                   ? selectedProfile.mediaPlat.map((plat: string) => (
@@ -429,6 +433,12 @@ const MediaProfilePage: React.FC = () => {
                   )}
                   {selectedProfile.benchmarkAccounts && (
                     <div style={{ marginTop: '8px' }}><strong>对标账号：</strong>{selectedProfile.benchmarkAccounts}</div>
+                  )}
+                  {selectedProfile.availableTime && (
+                    <div style={{ marginTop: '8px' }}><strong>可投入时间：</strong>{selectedProfile.availableTime}</div>
+                  )}
+                  {selectedProfile.otherInfo && (
+                    <div style={{ marginTop: '8px' }}><strong>其他补充：</strong>{selectedProfile.otherInfo}</div>
                   )}
                 </div>
               </div>

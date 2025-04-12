@@ -10,6 +10,7 @@ export const getMediaProfiles = () => {
 export const createMediaProfileBasic = (data: {
   nickname: string;
   age: number;
+  gender: string;
   occupation: string;
   personalityTraits: string;
   educationBackground: string;
@@ -22,6 +23,7 @@ export const createMediaProfileBasic = (data: {
 export const updateMediaProfileBasic = (id: string, data: {
   nickname: string;
   age: number;
+  gender: string;
   occupation: string;
   personalityTraits: string;
   educationBackground: string;
@@ -48,6 +50,8 @@ export const updateMediaProfileGoals = (id: string, data: {
   accountPurpose: string;
   shortTermGoals: string;
   benchmarkAccounts: string;
+  availableTime: string;
+  otherInfo?: string;
 }) => {
   return request.put(`/media-profiles/${id}/goals`, data);
 };
