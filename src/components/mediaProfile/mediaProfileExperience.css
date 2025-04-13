@@ -1,0 +1,301 @@
+/*个人经历弹窗的样式*/
+/* 1. 基础样式 */
+:root {
+  --primary-green: #66bb6a;    /* 主要绿色 */
+  --deep-green: #43a047;       /* 深绿色 */
+  --light-green: #f2f8f2;      /* 浅绿色背景 */
+  --bg-color: #f5f8fa;         /* 页面背景色 */
+  --text-dark: #333;           /* 深色文字 */
+  --text-medium: #666;         /* 中等深度文字 */
+  --text-light: #999;          /* 浅色文字 */
+}
+
+/* 2. 布局样式 - 模态框整体 */
+.experience-modal .ant-modal-content {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15), 0 0 0 1px rgba(102, 187, 106, 0.1);
+  border: 1px solid rgba(102, 187, 106, 0.1);
+  animation: modalFadeIn 0.3s ease;
+  padding: 0;
+}
+
+.experience-modal .ant-modal-header {
+  padding: 35px 38px 20px;
+  background: linear-gradient(135deg, rgba(102, 187, 106, 0.15), rgba(67, 160, 71, 0.05));
+  border-bottom: 1px solid rgba(102, 187, 106, 0.1);
+  position: relative;
+  margin-bottom: 0;
+}
+
+/* 标题背景装饰 */
+.experience-modal .ant-modal-header::before {
+  content: "";
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(102, 187, 106, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+  top: -180px;
+  left: -100px;
+  z-index: 0;
+  opacity: 0.7;
+  border-radius: 50%;
+}
+
+.experience-modal .ant-modal-title {
+  font-size: 26px;
+  font-weight: 700;
+  background: linear-gradient(45deg, var(--primary-green), var(--deep-green));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  position: relative;
+  display: inline-block;
+  z-index: 2;
+}
+
+/* 标题下划线装饰 */
+.experience-modal .ant-modal-title::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(to right, var(--primary-green), rgba(102, 187, 106, 0.1));
+  margin-top: 10px;
+  border-radius: 2px;
+}
+
+.experience-modal .ant-modal-body {
+  padding: 15px 38px 35px;
+  background-color: white;
+}
+
+.experience-modal .ant-modal-footer {
+  border-top: 1px solid rgba(102, 187, 106, 0.1);
+  padding: 15px 38px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+/* 3. 组件样式 - 表单元素 */
+.experience-modal .ant-form-item {
+  margin-bottom: 24px;
+}
+
+.experience-modal .ant-form-item-label > label {
+  font-weight: 600;
+  color: var(--text-dark);
+  font-size: 15px;
+  margin-bottom: 12px;
+  transition: all 0.2s;
+}
+
+/* 输入框和文本域样式 */
+.experience-modal .ant-input,
+.experience-modal .ant-input-textarea textarea {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 10px;
+  font-size: 15px;
+  transition: all 0.25s;
+  background-color: white;
+}
+
+/* 文本域样式 */
+.experience-modal .ant-input-textarea textarea {
+  min-height: 120px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+/* 输入框悬停和聚焦效果 */
+.experience-modal .ant-input:hover,
+.experience-modal .ant-input-textarea textarea:hover {
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 1px rgba(102, 187, 106, 0.1);
+}
+
+.experience-modal .ant-input:focus,
+.experience-modal .ant-input-textarea textarea:focus {
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 2px rgba(102, 187, 106, 0.2);
+  outline: none;
+  animation: glow 0.5s ease;
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 0 0 rgba(102, 187, 106, 0.4); }
+  70% { box-shadow: 0 0 0 5px rgba(102, 187, 106, 0); }
+  100% { box-shadow: 0 0 0 2px rgba(102, 187, 106, 0.2); }
+}
+
+/* 表单辅助文字样式 */
+.experience-modal .form-hint {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--text-medium);
+  line-height: 1.5;
+  padding-left: 2px;
+  opacity: 0.85;
+  transition: all 0.2s;
+}
+
+.experience-modal .form-group:focus-within .form-hint {
+  opacity: 1;
+  color: var(--deep-green);
+}
+
+/* 必填标记 */
+.experience-modal .ant-form-item-required::before {
+  color: #f5222d !important;
+}
+
+/* 表单分组样式 */
+.experience-modal .form-section {
+  margin-bottom: 30px;
+  padding: 28px 30px;
+  border-radius: 16px;
+  background-color: rgba(102, 187, 106, 0.03);
+  border: 1px solid rgba(102, 187, 106, 0.08);
+  transition: all 0.3s;
+}
+
+.experience-modal .form-section:hover {
+  background-color: rgba(102, 187, 106, 0.05);
+  box-shadow: 0 2px 12px rgba(102, 187, 106, 0.08);
+  transform: translateY(-2px);
+}
+
+.experience-modal .form-section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--deep-green);
+  margin-bottom: 25px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(102, 187, 106, 0.1);
+}
+
+/* 按钮样式 */
+.experience-modal .ant-btn {
+  height: auto;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.experience-modal .ant-btn-primary {
+  background: linear-gradient(135deg, var(--primary-green), var(--deep-green));
+  border-color: var(--deep-green);
+  box-shadow: 0 4px 10px rgba(102, 187, 106, 0.2);
+}
+
+.experience-modal .ant-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(102, 187, 106, 0.3);
+  border-color: var(--deep-green);
+}
+
+/* 输入框占位符样式 */
+.experience-modal .ant-input::placeholder,
+.experience-modal textarea::placeholder {
+  color: var(--text-light);
+  opacity: 0.7;
+  font-size: 14px;
+}
+
+/* 自定义滚动条 */
+.experience-modal .ant-modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.experience-modal .ant-modal-body::-webkit-scrollbar-track {
+  background: rgba(245, 248, 250, 0.6);
+  border-radius: 10px;
+}
+
+.experience-modal .ant-modal-body::-webkit-scrollbar-thumb {
+  background: rgba(102, 187, 106, 0.2);
+  border-radius: 10px;
+}
+
+.experience-modal .ant-modal-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(102, 187, 106, 0.4);
+}
+
+/* 副标题样式 */
+.experience-modal .modal-subtitle {
+  font-size: 16px;
+  color: var(--text-medium);
+  line-height: 1.6;
+  margin: 15px 0 25px;
+  position: relative;
+  padding: 10px 16px 10px 44px;
+  background: linear-gradient(90deg, rgba(102, 187, 106, 0.12), rgba(255, 255, 255, 0));
+  border-radius: 8px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+/* 副标题图标 */
+.experience-modal .modal-subtitle::before {
+  content: "💡";
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(102, 187, 106, 0.15);
+}
+
+/* 4. 响应式样式 */
+@media (max-width: 768px) {
+  .experience-modal .ant-modal-content {
+    border-radius: 16px;
+  }
+  
+  .experience-modal .ant-modal-header,
+  .experience-modal .ant-modal-body,
+  .experience-modal .ant-modal-footer {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+  
+  .experience-modal .form-section {
+    padding: 20px 18px;
+    margin-bottom: 25px;
+  }
+}
+
+@media (max-width: 480px) {
+  .experience-modal .ant-modal-header {
+    padding-top: 25px;
+  }
+  
+  .experience-modal .ant-modal-title {
+    font-size: 22px;
+  }
+  
+  .experience-modal .modal-subtitle {
+    padding-left: 15px;
+    font-size: 14px;
+  }
+  
+  .experience-modal .modal-subtitle::before {
+    display: none;
+  }
+  
+  .experience-modal .form-section-title {
+    font-size: 16px;
+  }
+} 

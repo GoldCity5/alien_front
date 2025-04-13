@@ -1,0 +1,598 @@
+/* 目标设置弹窗的样式 */
+/* 1. 基础样式 */
+:root {
+  --primary-green: #66bb6a;    /* 主要绿色 */
+  --deep-green: #43a047;       /* 深绿色 */
+  --light-green: #f2f8f2;      /* 浅绿色背景 */
+  --bg-color: #f5f8fa;         /* 页面背景色 */
+  --text-dark: #333;           /* 深色文字 */
+  --text-medium: #666;         /* 中等深度文字 */
+  --text-light: #999;          /* 浅色文字 */
+}
+
+/* 2. 布局样式 - 模态框整体 */
+.goals-modal .ant-modal-content {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15), 0 0 0 1px rgba(102, 187, 106, 0.1);
+  border: 1px solid rgba(102, 187, 106, 0.1);
+  padding: 0;
+  animation: modalFadeIn 0.3s ease;
+}
+
+.goals-modal .ant-modal-header {
+  padding: 35px 38px 20px;
+  background: linear-gradient(135deg, rgba(102, 187, 106, 0.15), rgba(67, 160, 71, 0.05));
+  border-bottom: 1px solid rgba(102, 187, 106, 0.1);
+  position: relative;
+  margin-bottom: 0;
+}
+
+/* 标题背景装饰 */
+.goals-modal .ant-modal-header::before {
+  content: "";
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(102, 187, 106, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+  top: -180px;
+  left: -100px;
+  z-index: 0;
+  opacity: 0.7;
+  border-radius: 50%;
+}
+
+.goals-modal .ant-modal-title {
+  font-size: 26px;
+  font-weight: 700;
+  background: linear-gradient(45deg, var(--primary-green), var(--deep-green));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  position: relative;
+  display: inline-block;
+  z-index: 2;
+}
+
+/* 标题下划线装饰 */
+.goals-modal .ant-modal-title::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(to right, var(--primary-green), rgba(102, 187, 106, 0.1));
+  margin-top: 10px;
+  border-radius: 2px;
+}
+
+/* 副标题样式 */
+.goals-modal .modal-subtitle {
+  font-size: 16px;
+  color: var(--text-medium);
+  line-height: 1.6;
+  margin: 15px 0 25px;
+  position: relative;
+  padding: 10px 16px 10px 44px;
+  background: linear-gradient(90deg, rgba(102, 187, 106, 0.12), rgba(255, 255, 255, 0));
+  border-radius: 8px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+/* 副标题图标 */
+.goals-modal .modal-subtitle::before {
+  content: "💡";
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(102, 187, 106, 0.15);
+}
+
+.goals-modal .ant-modal-body {
+  padding: 15px 38px 35px;
+  background-color: white;
+}
+
+.goals-modal .ant-modal-footer {
+  border-top: 1px solid rgba(102, 187, 106, 0.1);
+  padding: 15px 38px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+/* 进度指示器样式 */
+.goals-modal .progress-steps {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 40px 40px 40px;
+  position: relative;
+  max-width: 450px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.goals-modal .progress-steps::before {
+  content: "";
+  position: absolute;
+  top: 15px;
+  left: 16px;
+  right: 16px;
+  height: 2px;
+  background-color: #e0e0e0;
+  z-index: 1;
+}
+
+.goals-modal .progress-steps .step {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: white;
+  border: 2px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  color: #999;
+  margin: 0;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s;
+}
+
+.goals-modal .progress-steps .step.active {
+  color: white;
+  border-color: var(--primary-green);
+  background: linear-gradient(135deg, var(--primary-green), var(--deep-green));
+  box-shadow: 0 2px 8px rgba(102, 187, 106, 0.3);
+}
+
+.goals-modal .progress-steps .step.completed {
+  color: white;
+  border-color: var(--primary-green);
+  background-color: var(--primary-green);
+}
+
+.goals-modal .progress-steps .step-label {
+  position: absolute;
+  top: 38px;
+  width: 80px;
+  text-align: center;
+  font-size: 12px;
+  color: #999;
+  white-space: nowrap;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: all 0.3s;
+}
+
+.goals-modal .progress-steps .step.active .step-label,
+.goals-modal .progress-steps .step.completed .step-label {
+  color: var(--deep-green);
+  font-weight: 500;
+}
+
+/* 3. 组件样式 - 表单元素 */
+.goals-modal .ant-form-item {
+  margin-bottom: 24px;
+}
+
+.goals-modal .ant-form-item-label > label {
+  font-weight: 600;
+  color: var(--text-dark);
+  font-size: 15px;
+  margin-bottom: 12px;
+  transition: all 0.2s;
+}
+
+/* 输入框和文本域样式 */
+.goals-modal .ant-input,
+.goals-modal .ant-input-textarea textarea {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 10px;
+  font-size: 15px;
+  transition: all 0.25s;
+  background-color: white;
+}
+
+/* 文本域样式 */
+.goals-modal .ant-input-textarea textarea {
+  min-height: 120px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+/* 输入框悬停和聚焦效果 */
+.goals-modal .ant-input:hover,
+.goals-modal .ant-input-textarea textarea:hover {
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 1px rgba(102, 187, 106, 0.1);
+}
+
+.goals-modal .ant-input:focus,
+.goals-modal .ant-input-textarea textarea:focus {
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 2px rgba(102, 187, 106, 0.2);
+  outline: none;
+  animation: glow 0.5s ease;
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 0 0 rgba(102, 187, 106, 0.4); }
+  70% { box-shadow: 0 0 0 5px rgba(102, 187, 106, 0); }
+  100% { box-shadow: 0 0 0 2px rgba(102, 187, 106, 0.2); }
+}
+
+/* 模态框动画效果 */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Select下拉框样式 */
+.goals-modal .ant-select .ant-select-selector {
+  height: 50px !important;
+  padding: 0 18px !important;
+  display: flex !important;
+  align-items: center !important;
+  border: 1px solid rgba(0,0,0,0.1) !important;
+  border-radius: 10px !important;
+  background-color: #fff !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
+  transition: all 0.25s !important;
+}
+
+.goals-modal .ant-select:hover .ant-select-selector {
+  border-color: var(--primary-green) !important;
+  box-shadow: 0 0 0 1px rgba(102, 187, 106, 0.1) !important;
+}
+
+.goals-modal .ant-select-focused .ant-select-selector {
+  border-color: var(--primary-green) !important;
+  box-shadow: 0 0 0 2px rgba(102, 187, 106, 0.2) !important;
+  outline: none !important;
+}
+
+.goals-modal .ant-select-selection-placeholder {
+  color: rgba(0, 0, 0, 0.4) !important;
+  font-size: 14px !important;
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+}
+
+.goals-modal .ant-select-selection-item {
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+  font-size: 15px !important;
+  color: rgba(0, 0, 0, 0.85) !important;
+}
+
+/* 下拉菜单样式 */
+.ant-select-dropdown {
+  padding: 8px !important;
+  border-radius: 10px !important;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid rgba(102, 187, 106, 0.1) !important;
+  z-index: 1100 !important;
+}
+
+.ant-select-dropdown .ant-select-item-option {
+  padding: 10px 15px !important;
+  border-radius: 8px !important;
+  margin: 4px 0 !important;
+  transition: all 0.2s !important;
+  font-size: 15px !important;
+  line-height: 1.5 !important;
+}
+
+.ant-select-dropdown .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+  background-color: rgba(102, 187, 106, 0.1) !important;
+  color: var(--primary-green) !important;
+  font-weight: 500 !important;
+}
+
+.ant-select-dropdown .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
+  background-color: rgba(102, 187, 106, 0.05) !important;
+}
+
+/* Checkbox组样式 */
+.goals-modal .ant-checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 5px;
+}
+
+.goals-modal .ant-checkbox-wrapper {
+  margin-right: 0 !important;
+  margin-bottom: 10px !important;
+  padding: 8px 14px !important;
+  background-color: var(--light-green);
+  border-radius: 8px;
+  border: 1px solid rgba(102, 187, 106, 0.15);
+  transition: all 0.2s;
+}
+
+.goals-modal .ant-checkbox-wrapper:hover {
+  background-color: rgba(102, 187, 106, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(102, 187, 106, 0.1);
+}
+
+.goals-modal .ant-checkbox-inner {
+  border-color: rgba(0,0,0,0.2);
+  border-radius: 4px;
+  width: 16px;
+  height: 16px;
+}
+
+.goals-modal .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: var(--primary-green);
+  border-color: var(--primary-green);
+}
+
+/* 必填标记 */
+.goals-modal .ant-form-item-required::before {
+  color: #f5222d !important;
+}
+
+/* 表单分组样式 */
+.goals-modal .form-section {
+  margin-bottom: 30px;
+  position: relative;
+  padding: 28px 30px;
+  border-radius: 16px;
+  background-color: rgba(102, 187, 106, 0.03);
+  border: 1px solid rgba(102, 187, 106, 0.08);
+  transition: all 0.3s;
+}
+
+.goals-modal .form-section:hover {
+  background-color: rgba(102, 187, 106, 0.05);
+  box-shadow: 0 2px 12px rgba(102, 187, 106, 0.08);
+  transform: translateY(-2px);
+}
+
+.goals-modal .form-section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--deep-green);
+  margin-bottom: 25px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(102, 187, 106, 0.1);
+}
+
+/* 按钮样式 */
+.goals-modal .ant-btn {
+  height: auto;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.goals-modal .ant-btn-primary {
+  background: linear-gradient(135deg, var(--primary-green), var(--deep-green));
+  border-color: var(--deep-green);
+  box-shadow: 0 4px 10px rgba(102, 187, 106, 0.2);
+}
+
+.goals-modal .ant-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(102, 187, 106, 0.3);
+  border-color: var(--deep-green);
+}
+
+/* 占位符文本样式 */
+.goals-modal .ant-input::placeholder,
+.goals-modal .ant-input-textarea textarea::placeholder {
+  color: var(--text-light);
+  opacity: 0.7;
+  font-size: 14px;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .goals-modal .ant-modal-content {
+    border-radius: 16px;
+  }
+  
+  .goals-modal .ant-modal-header,
+  .goals-modal .ant-modal-body,
+  .goals-modal .ant-modal-footer {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+  
+  .goals-modal .form-section {
+    padding: 20px 18px;
+    margin-bottom: 25px;
+  }
+}
+
+@media (max-width: 480px) {
+  .goals-modal .ant-modal-header {
+    padding-top: 25px;
+  }
+  
+  .goals-modal .ant-modal-title {
+    font-size: 22px;
+  }
+  
+  .goals-modal .modal-subtitle {
+    padding-left: 15px;
+    font-size: 14px;
+  }
+  
+  .goals-modal .modal-subtitle::before {
+    display: none;
+  }
+  
+  .goals-modal .form-section-title {
+    font-size: 16px;
+  }
+}
+
+/* 自定义"做号的原因"的标签选择器样式 */
+.goals-modal .tag-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.goals-modal .tag-item {
+  padding: 12px 22px;
+  background-color: var(--light-green);
+  border-radius: 20px;
+  font-size: 15px;
+  color: var(--deep-green);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(102, 187, 106, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  position: relative;
+  overflow: hidden;
+  line-height: 1.4;
+}
+
+.goals-modal .tag-item:hover {
+  background-color: rgba(102, 187, 106, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(102, 187, 106, 0.2);
+}
+
+.goals-modal .tag-item.selected {
+  background: linear-gradient(135deg, var(--primary-green), var(--deep-green));
+  color: white;
+  border-color: var(--deep-green);
+  padding-left: 24px;
+  box-shadow: 0 2px 8px rgba(102, 187, 106, 0.3);
+}
+
+.goals-modal .tag-item.selected::before {
+  content: "✓";
+  font-size: 12px;
+  color: white;
+  position: absolute;
+  left: 10px;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(-5px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* 重写Checkbox组样式为标签样式 */
+.goals-modal .purpose-checkbox-group {
+  width: 100%;
+}
+
+.goals-modal .purpose-options-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 5px;
+}
+
+.goals-modal .purpose-option {
+  position: relative;
+  min-width: calc(33.33% - 15px);
+  margin-bottom: 5px;
+}
+
+.goals-modal .purpose-option .ant-checkbox-wrapper {
+  display: flex;
+  width: 100%;
+  padding: 12px 18px;
+  background-color: rgba(242, 248, 242, 0.8);
+  border-radius: 8px;
+  border: 1px solid rgba(102, 187, 106, 0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s ease;
+  margin: 0;
+  align-items: center;
+}
+
+.goals-modal .purpose-option .ant-checkbox-wrapper:hover {
+  background-color: rgba(102, 187, 106, 0.12);
+  transform: translateY(-3px);
+  box-shadow: 0 3px 8px rgba(102, 187, 106, 0.15);
+  border-color: rgba(102, 187, 106, 0.3);
+}
+
+.goals-modal .purpose-option .ant-checkbox-wrapper-checked {
+  background: linear-gradient(45deg, rgba(102, 187, 106, 0.15), rgba(67, 160, 71, 0.05));
+  border-color: var(--primary-green);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 10px rgba(102, 187, 106, 0.2);
+}
+
+.goals-modal .purpose-option .ant-checkbox {
+  top: 0;
+}
+
+.goals-modal .purpose-option .ant-checkbox-inner {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 2px solid rgba(102, 187, 106, 0.5);
+  transition: all 0.15s;
+}
+
+.goals-modal .purpose-option .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: var(--primary-green);
+  border-color: var(--primary-green);
+}
+
+.goals-modal .purpose-option .ant-checkbox-wrapper span:last-child {
+  flex: 1;
+  font-size: 15px;
+  padding-left: 10px;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .goals-modal .purpose-option {
+    min-width: calc(50% - 10px);
+  }
+}
+
+@media (max-width: 480px) {
+  .goals-modal .purpose-option {
+    min-width: 100%;
+  }
+  
+  .goals-modal .purpose-options-container {
+    gap: 10px;
+  }
+  
+  .goals-modal .purpose-option .ant-checkbox-wrapper {
+    padding: 10px 15px;
+  }
+} 

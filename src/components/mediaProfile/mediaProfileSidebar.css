@@ -1,0 +1,365 @@
+/* 策划方案生成页面侧边栏的样式 */
+.profile-sidebar {
+  width: 240px;
+  background-color: white;
+  height: calc(100vh - 64px);
+  padding: 25px 0;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.03);
+  position: sticky;
+  top: 64px;
+  flex-shrink: 0;
+  border-radius: 0;
+  margin-top: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.profile-nav-section {
+  padding: 0 20px 15px;
+  margin-bottom: 15px;
+}
+
+.sidebar-nav-section {
+  padding: 0 20px;
+  flex: 0 0 auto;
+  margin-bottom: 15px;
+}
+
+/* 头部样式 */
+.profile-sidebar .profile-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  padding: 20px 15px;
+  border-bottom: 1px solid rgba(102, 187, 106, 0.15);
+  position: relative;
+  background-color: #e8f5e9;
+  box-shadow: inset 0 0 15px rgba(102, 187, 106, 0.1);
+}
+
+/* 添加简洁的底部装饰 */
+.profile-sidebar .profile-header::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(to right, #66bb6a, #43a047);
+  border-radius: 3px;
+}
+
+.profile-sidebar .profile-info {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  text-align: center;
+}
+
+.profile-sidebar .profile-name {
+  font-size: 17px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 10px;
+  position: relative;
+  display: inline-block;
+}
+
+.profile-sidebar .profile-tag {
+  font-size: 13px;
+  color: #7f8c8d;
+  line-height: 1.4;
+}
+
+/* 删除多余的样式覆盖 */
+.profile-sidebar .profile-header::before,
+.profile-sidebar .profile-name::after {
+  display: none;
+}
+
+.sidebar-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, #f0f0f0, transparent);
+  margin: 5px 20px 20px;
+}
+
+.profile-nav-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  color: var(--text-medium);
+}
+
+.profile-nav-item:hover {
+  background-color: #f9f9f9;
+  color: var(--primary-green);
+  transform: translateX(5px);
+}
+
+.profile-nav-item.active {
+  background-color: var(--light-green);
+  color: var(--primary-green);
+  font-weight: 500;
+}
+
+.nav-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.profile-nav-item:hover .nav-icon {
+  background-color: #eef8ee;
+  transform: scale(1.05);
+}
+
+.profile-nav-item.active .nav-icon {
+  background-color: var(--primary-green);
+  color: white;
+}
+
+.nav-icon.special {
+  background: linear-gradient(45deg, var(--primary-green), var(--deep-green));
+  color: white;
+  box-shadow: 0 3px 8px rgba(102, 187, 106, 0.2);
+}
+
+.profile-nav-item:hover .nav-icon.special {
+  transform: scale(1.05) rotate(45deg);
+  box-shadow: 0 5px 12px rgba(102, 187, 106, 0.3);
+}
+
+.nav-text {
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.profile-nav-item.active .nav-text {
+  font-weight: 500;
+}
+
+/* 档案部分样式 */
+.archive-section {
+  background-color: transparent;
+  border-radius: 0;
+  padding: 0 15px 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+/* 档案标题样式 */
+.archive-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  padding-left: 5px;
+  border-bottom: 1px solid rgba(102, 187, 106, 0.15);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #2c3e50;
+  position: relative;
+}
+
+/* 档案标题装饰 */
+.archive-title::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 30px;
+  height: 3px;
+  background: linear-gradient(to right, #66bb6a, #43a047);
+  border-radius: 3px;
+}
+
+/* 加号图标样式 */
+.add-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--primary-green);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all 0.3s;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(102, 187, 106, 0.2);
+}
+
+/* 加号图标悬停效果 */
+.add-icon:hover {
+  transform: scale(1.1) rotate(90deg);
+  background-color: var(--deep-green);
+  box-shadow: 0 4px 10px rgba(102, 187, 106, 0.3);
+}
+
+/* 用户卡片容器 */
+.user-cards {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  max-height: calc(100vh - 200px);
+}
+
+/* 用户卡片样式 */
+.user-card {
+  background-color: #fafbfc;
+  border-radius: 10px;
+  padding: 12px;
+  transition: all 0.3s;
+  border-left: 3px solid var(--primary-green, #66bb6a);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 用户卡片悬停效果 */
+.user-card:hover {
+  background-color: #f2f8f2;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(102, 187, 106, 0.1);
+}
+
+/* 用户卡片选中状态 */
+.user-card.active {
+  background-color: #e8f5e9;
+  border-left: 3px solid #43a047;
+  box-shadow: 0 4px 12px rgba(102, 187, 106, 0.15);
+  transform: translateY(-2px);
+}
+
+/* 选中状态装饰 */
+.user-card.active::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 20px 20px 0;
+  border-color: transparent #43a047 transparent transparent;
+}
+
+/* 选中状态悬停效果 */
+.user-card.active:hover {
+  background-color: #e0f2e1;
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(102, 187, 106, 0.2);
+}
+
+/* 用户卡片选中状态下的文本颜色 */
+.user-card.active .user-name {
+  color: #2c3e50;
+  font-weight: 700;
+}
+
+.user-card.active .user-tag {
+  color: #2e7d32;
+}
+
+/* 用户卡片头部 */
+.user-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* 用户名称 */
+.user-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-dark);
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* 用户名称下划线装饰 */
+.user-name:after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 20px;
+  height: 2px;
+  background: linear-gradient(to right, var(--primary-green), var(--deep-green));
+  border-radius: 2px;
+}
+
+/* 用户标签 */
+.user-tag {
+  font-size: 12px;
+  color: var(--text-medium);
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* 空状态卡片 */
+.empty-card {
+  padding: 20px 0;
+  color: var(--text-light);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .profile-sidebar {
+    width: 70px;
+    padding: 20px 0;
+  }
+  
+  .profile-sidebar .profile-header {
+    justify-content: center;
+    padding: 0;
+  }
+  
+  .profile-sidebar .profile-info {
+    display: none;
+  }
+  
+  .profile-sidebar .profile-avatar {
+    margin-right: 0;
+  }
+  
+  .archive-title span {
+    display: none;
+  }
+  
+  .archive-title {
+    justify-content: center;
+    border-bottom: none;
+  }
+  
+  .user-cards {
+    display: none;
+  }
+} 

@@ -1,0 +1,915 @@
+/* 生成媒体计划结果的样式 */
+
+/* CSS变量定义 */
+:root {
+  --text-dark: #333333;
+  --deep-green: #43a047;
+}
+
+/* 1. 基础样式 */
+.media-plan-result {
+  width: 100%;
+}
+
+.plan-card {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08), 0 3px 6px rgba(0, 0, 0, 0.05);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.plan-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
+}
+
+/* 2. 卡片标题区域 */
+/* 卡片头部样式设置 */
+.plan-card .ant-card-head {
+  padding: 12px 20px 8px; /* 减少底部内边距 */
+  border-bottom: 1px solid #f0f0f0; /* 淡化边框颜色 */
+}
+
+/* 卡片头部标题样式 */
+.plan-card .ant-card-head-title {
+  padding: 8px 0 4px; /* 减少底部内边距 */
+}
+
+/* 计划卡片头部容器样式 */
+.plan-card-header {
+  display: flex; /* 使用弹性布局 */
+  justify-content: space-between; /* 子元素两端对齐 */
+  align-items: center; /* 子元素垂直居中对齐 */
+  width: 100%; /* 宽度占满父容器 */
+  padding: 0px 0 0px 0; /* 上右下左内边距设置 */
+  margin-top: 0px; /* 顶部外边距 */
+  position: relative;
+  overflow: hidden;
+}
+
+/* 计划标题区域样式 */
+.plan-title-section {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-left: 12px; /* 增加左侧内边距 */
+  /* 添加微妙的内阴影提升立体感 */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  margin-right: 20px; /* 增加右侧外边距，与操作按钮分开 */
+}
+
+/* 右侧装饰小球 */
+.plan-title-section::after {
+  display: none; /* 隐藏绿色悬浮小球 */
+}
+
+/* 计划标题文本样式 */
+.plan-title {
+  margin: 12px 0; /* 移除左侧外边距，由图标的margin控制间距 */
+  font-size: 24px; /* 恢复更大的字体尺寸 */
+  font-weight: 700; /* 加粗权重增加 */
+  background: linear-gradient(135deg, #1c7426, #43a047, #66bb6a);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0px 2px 3px rgba(0, 100, 0, 0.1); /* 增强文字阴影 */
+  animation: shine 5s ease-in-out infinite;
+  letter-spacing: 0.8px; /* 增加字间距 */
+  position: relative;
+  border-bottom: none; /* 移除底部边框，使用下方的下划线效果 */
+  padding-bottom: 4px;
+  font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.3; /* 调整行高 */
+  display: inline-block; /* 确保下划线效果正确显示 */
+}
+
+/* 计划标题下划线效果 */
+.plan-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px; /* 下划线宽度 */
+  height: 3px;
+  background: linear-gradient(90deg, #2E7D32, #4caf50, #81C784); /* 三色渐变 */
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(76, 175, 80, 0.2); /* 添加绿色阴影效果 */
+  transition: width 0.3s ease, background 0.3s ease; /* 添加过渡效果 */
+}
+
+/* 为标题设计更加精美的书本图标 - 更换为柔和的灰蓝色 */
+.plan-title-icon.book-icon {
+  position: relative; /* 相对定位 */
+  margin-right: 12px; /* 增加右侧外边距 */
+  width: 30px; /* 稍微减小尺寸 */
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  background: linear-gradient(140deg, #78909c, #90a4ae); /* 柔和的灰蓝色渐变 */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12),
+              inset 0 -1px 2px rgba(0, 0, 0, 0.08),
+              inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  animation: bookFloat 4s ease-in-out infinite; /* 减慢动画速度 */
+  transition: all 0.3s ease;
+  z-index: 3;
+  transform-style: preserve-3d;
+  transform: perspective(300px) rotateY(-8deg); /* 减小旋转角度 */
+  /* 添加书脊效果 */
+  border-left: 3px solid #546e7a; /* 更柔和的深灰蓝色书脊 */
+  opacity: 0.9; /* 降低不透明度 */
+}
+
+/* 书本内页效果 */
+.plan-title-icon.book-icon::before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  bottom: 3px;
+  left: 3px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 0 2px 2px 0;
+  z-index: -1;
+}
+
+/* 书本图标内部样式 */
+.book-icon-inner {
+  color: #546e7a; /* 和书脊同色 */
+  font-size: 18px; /* 稍微减小图标大小 */
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
+  transform: translateX(1px);
+  opacity: 0.85; /* 降低图标不透明度 */
+}
+
+/* 书本浮动动画调整 - 减小动画幅度 */
+@keyframes bookFloat {
+  0% {
+    transform: perspective(300px) rotateY(-8deg) scale(1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12),
+                inset 0 -1px 2px rgba(0, 0, 0, 0.08),
+                inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  }
+  50% {
+    transform: perspective(300px) rotateY(-10deg) scale(1.02); /* 减小缩放幅度 */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15),
+                inset 0 -1px 2px rgba(0, 0, 0, 0.08),
+                inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  }
+  100% {
+    transform: perspective(300px) rotateY(-8deg) scale(1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12),
+                inset 0 -1px 2px rgba(0, 0, 0, 0.08),
+                inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  }
+}
+
+/* 标题光泽效果动画 */
+@keyframes shine {
+  from {
+    background-position: 0% center;
+  }
+  to {
+    background-position: 100% center;
+  }
+}
+
+/* 叶片浮动动画 */
+@keyframes leafFloat {
+  0% {
+    transform: translateY(-40%) rotate(35deg);
+  }
+  50% {
+    transform: translateY(-50%) rotate(45deg);
+  }
+  100% {
+    transform: translateY(-40%) rotate(35deg);
+  }
+}
+
+.plan-title:hover::after {
+  width: 120px; /* 悬停时下划线变长 */
+  background: linear-gradient(90deg, #1c7426, #4caf50, #66bb6a); /* 悬停时变色 */
+}
+
+/* 保存指示器优化 */
+.saving-indicator {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  font-size: 14px;
+  color: #43a047;
+  background: rgba(67, 160, 71, 0.1);
+  border-radius: 12px;
+  animation: pulse 1.5s infinite;
+  box-shadow: 0 0 0 rgba(67, 160, 71, 0.4);
+  margin-left: 15px; /* 增加与标题的间距 */
+  font-weight: 500;
+  position: relative;
+  height: 26px;
+  vertical-align: middle; /* 确保垂直对齐 */
+}
+
+/* 为保存指示器添加动态点 */
+.saving-indicator::after {
+  content: '';
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  background-color: #43a047;
+  border-radius: 50%;
+  animation: savingDot 1s infinite;
+}
+
+/* 为保存指示器添加加载动画 */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(67, 160, 71, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(67, 160, 71, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(67, 160, 71, 0);
+  }
+}
+
+@keyframes savingDot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.plan-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.view-detail-btn {
+  color: var(--primary-green);
+  font-size: 14px;
+  padding: 4px 12px;
+  transition: all 0.3s;
+}
+
+.view-detail-btn:hover {
+  transform: translateY(-2px);
+  text-shadow: 0 2px 8px rgba(102, 187, 106, 0.2);
+}
+
+.generate-btn {
+  border-radius: 6px;
+  background: linear-gradient(45deg, var(--primary-green), var(--deep-green));
+  border: none;
+  transition: all 0.3s;
+  box-shadow: 0 3px 8px rgba(102, 187, 106, 0.2);
+}
+
+.generate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(102, 187, 106, 0.3);
+  background: linear-gradient(45deg, var(--deep-green), #2e7d32);
+}
+
+/* 3. 内容显示区域 - 减少上内边距 */
+.plan-content {
+  overflow: auto;
+  max-height: calc(100vh - 250px);
+  padding: 5px 25px 20px; /* 增加左右内边距和底部内边距 */
+}
+
+/* 4. Markdown样式优化 - 整体排版和美观度提升 */
+.markdown-content {
+  line-height: 1.8; /* 增加行高 */
+  font-size: 15px; /* 增加字体大小 */
+  color: #3a3a3a; /* 调整文字颜色 */
+  padding: 5px 15px 10px; /* 增加内部边距 */
+  letter-spacing: 0.4px; /* 增加字间距 */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+/* 段落样式优化 */
+.markdown-p {
+  text-align: left;
+  margin: 12px 0 18px; /* 增加段落上下外边距 */
+  line-height: 1.8; /* 增加行高 */
+  color: #3a3a3a;
+  max-width: 100%; /* 控制行宽 */
+}
+
+/* 标题样式优化 */
+.markdown-h1 {
+  text-align: left;
+  margin: 28px 0 20px; /* 增加标题上下外边距 */
+  font-size: 26px;
+  font-weight: 600;
+  color: #2c3e50;
+  border-bottom: 1px solid #eaecef;
+  padding-bottom: 12px;
+  position: relative;
+  letter-spacing: 0.5px;
+}
+
+.markdown-h1::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, #43a047, rgba(67, 160, 71, 0.3));
+  border-radius: 3px;
+}
+
+.markdown-h2 {
+  text-align: left;
+  margin: 24px 0 16px; /* 增加标题上下外边距 */
+  font-size: 22px;
+  font-weight: 600;
+  color: #2c3e50;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f0f0f0;
+  letter-spacing: 0.4px;
+}
+
+.markdown-h3 {
+  text-align: left;
+  margin: 20px 0 14px; /* 增加标题上下外边距 */
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c3e50;
+  position: relative;
+  padding-left: 12px;
+  letter-spacing: 0.3px;
+}
+
+.markdown-h3::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background-color: #43a047;
+  border-radius: 3px;
+  opacity: 0.6;
+}
+
+.markdown-h4 {
+  text-align: left;
+  margin: 14px 0 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* 列表样式优化 */
+.markdown-ul, .markdown-ol {
+  text-align: left;
+  padding-left: 28px; /* 增加列表左内边距 */
+  margin: 16px 0 20px; /* 增加列表上下外边距 */
+  color: #3a3a3a;
+}
+
+.markdown-ul li, .markdown-ol li {
+  margin-bottom: 10px; /* 增加列表项间距 */
+  line-height: 1.7;
+  padding-left: 4px; /* 增加列表项内容左内边距 */
+}
+
+/* 表格样式优化 */
+.markdown-table {
+  border-collapse: separate;
+  width: 100%;
+  margin: 20px 0 24px; /* 增加表格上下外边距 */
+  border-spacing: 0;
+  border-radius: 6px; /* 增加圆角 */
+  overflow: hidden;
+  box-shadow: 0 0 0 1px #eaeaea, 0 2px 4px rgba(0,0,0,0.04);
+}
+
+.markdown-thead {
+  background-color: #f8f9fa;
+}
+
+.markdown-th {
+  border: none;
+  border-bottom: 2px solid #e8e8e8;
+  padding: 14px 16px; /* 增加表头内边距 */
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  font-size: 15px;
+  background-color: #f5f7f9; /* 稍微深一点的背景色 */
+}
+
+.markdown-td {
+  border: none;
+  border-bottom: 1px solid #eaeaea;
+  padding: 14px 16px; /* 增加单元格内边距 */
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.6;
+}
+
+.markdown-table tr:last-child td {
+  border-bottom: none;
+}
+
+.markdown-table tr:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+/* 引用块样式优化 */
+blockquote {
+  border-left: 4px solid #43a047;
+  padding: 12px 20px; /* 增加引用块内边距 */
+  margin: 20px 0; /* 增加引用块上下外边距 */
+  background-color: rgba(67, 160, 71, 0.05);
+  border-radius: 0 6px 6px 0; /* 增加右侧圆角 */
+  color: #444;
+  font-style: italic;
+  line-height: 1.7;
+}
+
+blockquote p {
+  margin: 8px 0; /* 增加引用块内段落间距 */
+}
+
+/* 代码块样式 */
+pre {
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  padding: 16px;
+  margin: 16px 0;
+  overflow: auto;
+  border: 1px solid #eaeaea;
+}
+
+code {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  background-color: rgba(27, 31, 35, 0.05);
+  border-radius: 3px;
+  padding: 2px 4px;
+  font-size: 13px;
+  color: #24292e;
+}
+
+pre code {
+  background-color: transparent;
+  padding: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #24292e;
+  display: block;
+  overflow-x: auto;
+}
+
+/* 水平线样式 */
+hr {
+  height: 1px;
+  background-color: #eaeaea;
+  border: none;
+  margin: 20px 0;
+}
+
+/* 链接样式 */
+a {
+  color: #43a047;
+  text-decoration: none;
+  border-bottom: 1px dotted #43a047;
+  transition: all 0.2s ease;
+}
+
+a:hover {
+  color: #2e7d32;
+  border-bottom: 1px solid #2e7d32;
+}
+
+/* 图片样式 */
+img {
+  max-width: 100%;
+  border-radius: 4px;
+  margin: 10px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 确保第一个元素没有过大的顶部外边距 */
+.markdown-content > *:first-child {
+  margin-top: 12px;
+}
+
+/* 添加段落间的分隔效果 */
+.markdown-content > .markdown-h2 + .markdown-p,
+.markdown-content > .markdown-h3 + .markdown-p {
+  text-indent: 0; /* 取消首行缩进 */
+}
+
+/* 5. 加载状态样式 */
+.loading-container {
+  text-align: center;
+  padding: 30px 0 60px; /* 减少顶部内边距 */
+  margin: 10px 0 20px; /* 减少顶部外边距 */
+}
+
+.loading-text {
+  margin-top: 20px;
+  color: var(--text-medium);
+}
+
+.loading-more {
+  text-align: center;
+  padding: 15px;
+  margin-top: 10px;
+}
+
+.loading-more-text {
+  margin-left: 10px;
+  color: #1890ff;
+}
+
+/* 6. 空状态样式 */
+.empty-plan {
+  text-align: center;
+  padding: 30px 0 60px; /* 减少顶部内边距 */
+}
+
+/* 7. 自定义滚动条 */
+.plan-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.plan-content::-webkit-scrollbar-track {
+  background: rgba(245, 248, 250, 0.6);
+  border-radius: 10px;
+}
+
+.plan-content::-webkit-scrollbar-thumb {
+  background: #e6e6e6;
+  border-radius: 10px;
+}
+
+.plan-content::-webkit-scrollbar-thumb:hover {
+  background: #d1d1d1;
+}
+
+/* 8. 响应式样式 */
+@media (max-width: 768px) {
+  .plan-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .plan-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .markdown-content {
+    padding: 0 5px;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  
+  .markdown-p {
+    margin: 10px 0 16px;
+  }
+  
+  .markdown-h1 {
+    font-size: 22px;
+    margin: 24px 0 16px;
+  }
+  
+  .markdown-h2 {
+    font-size: 20px;
+    margin: 20px 0 14px;
+  }
+  
+  .markdown-h3 {
+    font-size: 18px;
+    margin: 18px 0 12px;
+  }
+}
+
+/* 脉冲发光动画 */
+@keyframes pulseGlow {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+}
+
+/* 新增：为整个标题区域添加白色微光效果 */
+.plan-card-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.2), 
+    transparent
+  );
+  transform: skewX(-25deg);
+  animation: headerGloss 8s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes headerGloss {
+  0% { left: -150%; }
+  30% { left: 150%; }
+  100% { left: 150%; }
+}
+
+/* 便利贴样式图标 - 添加这个作为备选 */
+.plan-title-icon.note-icon {
+  position: relative;
+  margin-right: 12px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  background: #fff697; /* 便利贴黄色 */
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15),
+              2px 2px 5px rgba(0, 0, 0, 0.06);
+  animation: noteFloat 3s ease-in-out infinite;
+  transition: all 0.3s ease;
+  z-index: 3;
+  transform: rotate(-3deg);
+  overflow: hidden;
+}
+
+/* 便利贴图标内部线条 */
+.plan-title-icon.note-icon::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(to bottom, transparent 8px, rgba(0, 0, 0, 0.05) 8px, rgba(0, 0, 0, 0.05) 9px, transparent 9px),
+    linear-gradient(to bottom, transparent 18px, rgba(0, 0, 0, 0.05) 18px, rgba(0, 0, 0, 0.05) 19px, transparent 19px);
+}
+
+/* 便利贴顶部绒带效果 */
+.plan-title-icon.note-icon::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: rgba(255, 131, 0, 0.6); /* 便利贴顶部橙色绒带 */
+  border-radius: 2px 2px 0 0;
+}
+
+/* 便利贴图标内部样式 */
+.note-icon-inner {
+  color: #d48806;
+  font-size: 18px;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
+  transform: rotate(3deg); /* 反向倾斜，使图标保持垂直 */
+}
+
+/* 便利贴浮动动画 */
+@keyframes noteFloat {
+  0% {
+    transform: rotate(-3deg) translateY(0);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15),
+                2px 2px 5px rgba(0, 0, 0, 0.06);
+  }
+  50% {
+    transform: rotate(-4deg) translateY(-2px);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2),
+                3px 3px 8px rgba(0, 0, 0, 0.08);
+  }
+  100% {
+    transform: rotate(-3deg) translateY(0);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15),
+                2px 2px 5px rgba(0, 0, 0, 0.06);
+  }
+}
+
+/* 私人定制版徽章样式 - 优化悬浮效果 */
+.custom-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 12px;
+  padding: 3px 10px;
+  height: 22px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #b8860b; /* 暗金色文字 */
+  background-color: rgba(218, 165, 32, 0.08); /* 浅金色背景 */
+  border: 1px solid rgba(184, 134, 11, 0.2); /* 金色边框 */
+  border-radius: 11px;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); /* 改用弹性曲线 */
+  vertical-align: middle;
+  letter-spacing: 0.3px;
+  animation: badgeFloat 4s ease-in-out infinite; /* 减慢动画速度 */
+  position: relative;
+  box-shadow: 0 2px 4px rgba(218, 165, 32, 0.1);
+  z-index: 4; /* 确保显示在最上层 */
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+/* 徽章闪光效果 */
+.custom-badge::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transform: skewX(-20deg);
+  animation: badgeShine 6s ease-in-out infinite;
+  z-index: 5;
+}
+
+/* 徽章闪光动画 */
+@keyframes badgeShine {
+  0%, 100% {
+    left: -75%;
+    opacity: 0;
+  }
+  10% {
+    left: -75%;
+    opacity: 0;
+  }
+  35% {
+    left: 125%;
+    opacity: 1;
+  }
+  60%, 100% {
+    left: 125%;
+    opacity: 0;
+  }
+}
+
+/* 优化徽章悬浮动画 */
+@keyframes badgeFloat {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    box-shadow: 0 2px 4px rgba(218, 165, 32, 0.1);
+  }
+  25% {
+    transform: translateY(-2px) rotate(0.5deg);
+  }
+  50% {
+    transform: translateY(-3px) rotate(0deg);
+    box-shadow: 0 4px 8px rgba(218, 165, 32, 0.15);
+  }
+  75% {
+    transform: translateY(-1px) rotate(-0.5deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+    box-shadow: 0 2px 4px rgba(218, 165, 32, 0.1);
+  }
+}
+
+.custom-badge:hover {
+  background-color: rgba(218, 165, 32, 0.15);
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 5px 12px rgba(218, 165, 32, 0.2),
+              0 0 15px rgba(218, 165, 32, 0.1);
+  color: #8B6914; /* 悬停时字体颜色深一点 */
+  border-color: rgba(184, 134, 11, 0.3);
+}
+
+/* 在小屏幕上调整徽章位置 */
+@media (max-width: 768px) {
+  .custom-badge {
+    margin-left: 6px;
+    font-size: 10px;
+    padding: 1px 6px;
+  }
+}
+
+/* 卡片内容区域样式调整 */
+.plan-card .ant-card-body {
+  padding-top: 0; /* 移除顶部内边距 */
+}
+
+/* 确保第一个标题没有顶部边距 */
+.markdown-content > .markdown-h1:first-child,
+.markdown-content > .markdown-h2:first-child,
+.markdown-content > .markdown-h3:first-child {
+  margin-top: 5px;
+}
+
+/* 按钮区域样式 */
+.plan-action-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px dashed #e8e8e8;
+}
+
+.copy-text-btn,
+.download-pdf-btn,
+.print-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  transition: all 0.3s;
+}
+
+.copy-text-btn {
+  background-color: #1890ff;
+}
+
+.download-pdf-btn {
+  background-color: #52c41a;
+}
+
+.print-btn {
+  background-color: #722ed1;
+}
+
+.copy-text-btn:hover,
+.copy-text-btn:focus {
+  background-color: #40a9ff;
+  box-shadow: 0 2px 6px rgba(24, 144, 255, 0.2);
+}
+
+.download-pdf-btn:hover,
+.download-pdf-btn:focus {
+  background-color: #73d13d;
+  box-shadow: 0 2px 6px rgba(82, 196, 26, 0.2);
+}
+
+.print-btn:hover,
+.print-btn:focus {
+  background-color: #9254de;
+  box-shadow: 0 2px 6px rgba(114, 46, 209, 0.2);
+}
+
+/* 在小屏幕上调整按钮组为垂直布局 */
+@media screen and (max-width: 576px) {
+  .plan-action-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .copy-text-btn,
+  .download-pdf-btn,
+  .print-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* 打印样式 */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  
+  .markdown-content, .markdown-content * {
+    visibility: visible;
+  }
+  
+  .markdown-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+  
+  .plan-action-buttons {
+    display: none;
+  }
+} 

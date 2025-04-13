@@ -1,16 +1,19 @@
 import * as React from 'react';
-import { Typography, Button, List, Card, Empty, Spin, message, Popconfirm, Modal, Tag } from 'antd';
-import { PlusOutlined, EditOutlined, DeleteOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { Typography, Button, List, Card, Empty, Spin, message, Popconfirm, Modal, Tag, Collapse } from 'antd';
+import { PlusOutlined, EditOutlined, DeleteOutlined, InfoCircleOutlined, UserOutlined, FileTextOutlined, AimOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import { getMediaProfiles, getMediaProfileDetail, deleteMediaProfile } from '../../services/mediaProfileService';
 import BasicInfoModal from './BasicInfoModal';
 import ExperienceInfoModal from './ExperienceInfoModal';
 import GoalsInfoModal from './GoalsInfoModal';
 import MediaPlanResult from './MediaPlanResult';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { profileEvents } from './MediaProfileSidebar'; // 导入自定义事件
+import './mediaProfileSidebar.css';
+import './mediaProfilePage.css';
 
 const { useState, useEffect } = React;
-
-const { Title } = Typography;
+const { Title, Text } = Typography;
+const { Panel } = Collapse;
 
 // 辅助函数：解析URL查询参数
 function useQuery() {
@@ -25,7 +28,7 @@ interface MediaProfile {
   occupation: string;
   personalityTraits: string;
   educationBackground: string;
-  mediaPlat: string;
+  mediaPlat: string | string[];
   careerExperience?: string;
   specialExperience?: string;
   uniqueExperience?: string;
@@ -52,7 +55,10 @@ const MediaProfilePage: React.FC = () => {
   const [currentProfileId, setCurrentProfileId] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editingProfile, setEditingProfile] = useState<MediaProfile | null>(null);
-  const [profileDetailVisible, setProfileDetailVisible] = useState(false);
+  // 控制折叠面板的展开状态
+  const [activeKeys, setActiveKeys] = useState<string[]>(['1']);
+  
+  const navigate = useNavigate();
   
   // 获取URL查询参数
   const query = useQuery();
@@ -95,6 +101,9 @@ const MediaProfilePage: React.FC = () => {
       const response = await getMediaProfileDetail(id);
       setSelectedProfile(response.data.data);
       
+      // 重置折叠面板状态，只展开基本信息
+      setActiveKeys(['1']);
+      
       // 移除自动显示详情弹窗的逻辑
       // 只自动选择档案，不弹出详情
     } catch (error) {
@@ -118,6 +127,23 @@ const MediaProfilePage: React.FC = () => {
       }
     }
   }, [profileIdFromUrl, autoSelect, profiles]);
+
+  // 监听创建档案事件
+  useEffect(() => {
+    const handleProfileCreate = () => {
+      setIsEditing(false);
+      setEditingProfile(null);
+      setBasicModalVisible(true);
+    };
+    
+    // 添加事件监听
+    profileEvents.onProfileCreate.addEventListener('profileCreate', handleProfileCreate);
+    
+    // 组件卸载时清除事件监听
+    return () => {
+      profileEvents.onProfileCreate.removeEventListener('profileCreate', handleProfileCreate);
+    };
+  }, []);
 
   // 创建新档案
   const handleCreateProfile = () => {
@@ -150,6 +176,9 @@ const MediaProfilePage: React.FC = () => {
       if (selectedProfile && selectedProfile.id === profileId) {
         setSelectedProfile(null);
       }
+      
+      // 触发档案删除事件，通知侧边栏更新
+      profileEvents.onProfileDeleted.dispatchEvent(new Event('profileDeleted'));
     } catch (error) {
       console.error('删除档案失败:', error);
       message.error('删除档案失败');
@@ -179,6 +208,9 @@ const MediaProfilePage: React.FC = () => {
       }
       setIsEditing(false);
       setEditingProfile(null);
+      
+      // 触发事件通知侧边栏更新
+      profileEvents.onProfileDeleted.dispatchEvent(new Event('profileDeleted'));
     }
   };
 
@@ -195,257 +227,363 @@ const MediaProfilePage: React.FC = () => {
     if (currentProfileId) {
       fetchProfileDetail(currentProfileId);
     }
+    
+    // 触发事件通知侧边栏更新
+    profileEvents.onProfileDeleted.dispatchEvent(new Event('profileDeleted'));
   };
 
-  // 查看档案详情
-  const handleViewProfileDetail = () => {
+  // 处理返回首页
+  const handleBackToHome = () => {
+    navigate('/');
+  };
+
+  // 处理生成选题
+  const handleGenerateTopic = () => {
+    // 如果有选中的档案，带上档案ID参数
     if (selectedProfile) {
-      setProfileDetailVisible(true);
+      navigate(`/content-topic?profileId=${selectedProfile.id}`);
+    } else {
+      // 没有选中档案，直接跳转
+      navigate('/content-topic');
     }
   };
 
-  // 关闭档案详情弹窗
-  const handleCloseProfileDetail = () => {
-    setProfileDetailVisible(false);
+  // 处理生成昵称简介
+  const handleGenerateIntroduction = () => {
+    // 如果有选中的档案，带上档案ID参数
+    if (selectedProfile) {
+      navigate(`/media-introduction?profileId=${selectedProfile.id}`);
+    } else {
+      // 没有选中档案，直接跳转
+      navigate('/media-introduction');
+    }
+  };
+
+  // 处理生成文案
+  const handleGenerateContent = () => {
+    // 如果有选中的档案，带上档案ID参数
+    if (selectedProfile) {
+      navigate(`/media-content?profileId=${selectedProfile.id}`);
+    } else {
+      // 没有选中档案，直接跳转
+      navigate('/media-content');
+    }
   };
 
   return (
-    <div style={{ 
-      padding: '20px', 
-      maxWidth: '1200px', 
-      margin: '0 auto',
-      minHeight: 'calc(100vh - 64px - 69px)'
-    }}>
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center',
-        marginBottom: '20px'
-      }}>
-        <Title level={2}>我的自媒体策划方案</Title>
-        <Button 
-          type="primary" 
-          icon={<PlusOutlined />} 
-          onClick={handleCreateProfile}
-        >
-          新增档案
-        </Button>
+    <div className="page-wrapper">
+      {/* 操作按钮组 */}
+      <div className="right-actions">
+        <button className="right-action-btn" type="button" onClick={handleGenerateTopic}>
+          <div className="icon-container">
+            <div className="icon-glow"></div>
+          </div>
+          <div className="btn-text">生成选题</div>
+        </button>
+        <button className="right-action-btn" type="button" onClick={handleGenerateIntroduction}>
+          <div className="icon-container">
+            <div className="icon-glow"></div>
+          </div>
+          <div className="btn-text">生成昵称简介</div>
+        </button>
+        <button className="right-action-btn" type="button" onClick={handleGenerateContent}>
+          <div className="icon-container">
+            <div className="icon-glow"></div>
+          </div>
+          <div className="btn-text">生成文案</div>
+        </button>
       </div>
-
-      <div style={{ display: 'flex', gap: '20px' }}>
-        {/* 左侧档案列表 */}
-        <div style={{ width: '250px', flexShrink: 0 }}>
-          <Card 
-            title="我的档案" 
-            style={{ marginBottom: '20px' }}
-            bodyStyle={{ padding: '10px', maxHeight: '600px', overflow: 'auto' }}
+      
+      {/* 返回按钮 - 移动位置使其不与操作按钮组冲突 */}
+      <button className="back-btn" type="button" onClick={handleBackToHome}>
+        <ArrowLeftOutlined className="back-btn-icon" />
+        返回
+      </button>
+      
+      <div className="media-profile-container">
+        <div className="profile-content-wrapper">
+          <div className="profile-header">
+            <Title level={2} className="profile-title">
+              我的自媒体策划方案
+            </Title>
+            {!selectedProfile ? (
+          <Button 
+            type="primary" 
+            icon={<PlusOutlined />} 
+            onClick={handleCreateProfile}
+                className="create-profile-btn"
           >
-            <Spin spinning={loading}>
-              {profiles.length > 0 ? (
-                <List
-                  dataSource={profiles}
-                  renderItem={(item) => (
-                    <List.Item 
-                      key={item.id}
-                      onClick={() => handleSelectProfile(item)}
-                      style={{ 
-                        cursor: 'pointer',
-                        padding: '10px',
-                        borderRadius: '4px',
-                        backgroundColor: selectedProfile?.id === item.id ? '#e6f7ff' : 'transparent'
-                      }}
-                    >
-                      <div style={{ flex: 1 }}>
-                        <div style={{ fontWeight: 'bold' }}>{item.nickname}</div>
-                        <div style={{ fontSize: '12px', color: '#888' }}>
-                          {item.occupation} · {new Date(item.createdAt).toLocaleDateString()}
-                        </div>
-                      </div>
-                      <div style={{ display: 'flex', gap: '8px' }}>
-                        <Button 
-                          type="text" 
-                          size="small" 
-                          icon={<InfoCircleOutlined />} 
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleSelectProfile(item);
-                            setProfileDetailVisible(true);
-                          }}
-                        />
-                        <Button 
-                          type="text" 
-                          size="small" 
-                          icon={<EditOutlined />} 
-                          onClick={(e) => handleEditProfile(item, e)}
-                        />
-                        <Popconfirm
-                          title="确定删除该档案吗？"
-                          description="删除后无法恢复，相关的策划方案也将一并删除。"
-                          onConfirm={(e) => handleDeleteProfile(item.id, e as React.MouseEvent)}
-                          okText="确定"
-                          cancelText="取消"
-                          placement="left"
-                        >
-                          <Button 
-                            type="text" 
-                            size="small" 
-                            danger 
-                            icon={<DeleteOutlined />} 
-                            onClick={(e) => e.stopPropagation()}
-                          />
-                        </Popconfirm>
-                      </div>
-                    </List.Item>
-                  )}
-                />
-              ) : (
-                <Empty description="暂无档案" />
-              )}
-            </Spin>
-          </Card>
-        </div>
-
-        {/* 中间策划方案内容 */}
-        <div style={{ flex: 1 }}>
-          {selectedProfile ? (
-            <MediaPlanResult profile={selectedProfile} onViewDetail={handleViewProfileDetail} />
-          ) : (
-            <Card>
-              <Empty 
-                description="请选择或创建一个档案" 
-                image={Empty.PRESENTED_IMAGE_SIMPLE}
-              />
-            </Card>
-          )}
-        </div>
-
-        {/* 右侧预留区域 */}
-        <div style={{ width: '200px', flexShrink: 0 }}>
-          {/* 预留区域，后续可添加功能按钮 */}
-        </div>
-      </div>
-
-      {/* 弹窗组件 */}
-      <BasicInfoModal 
-        visible={basicModalVisible}
-        onCancel={() => setBasicModalVisible(false)}
-        onSuccess={handleBasicInfoSuccess}
-        initialValues={isEditing ? editingProfile : undefined}
-        profileId={isEditing ? currentProfileId : undefined}
-        isEditing={isEditing}
-      />
-
-      {currentProfileId && (
-        <>
-          <ExperienceInfoModal 
-            visible={experienceModalVisible}
-            profileId={currentProfileId}
-            onCancel={() => setExperienceModalVisible(false)}
-            onSuccess={handleExperienceInfoSuccess}
-          />
-
-          <GoalsInfoModal 
-            visible={goalsModalVisible}
-            profileId={currentProfileId}
-            onCancel={() => setGoalsModalVisible(false)}
-            onSuccess={handleGoalsInfoSuccess}
-          />
-        </>
-      )}
-
-      {/* 档案详情弹窗 */}
-      {selectedProfile && (
-        <Modal
-          title="档案详情"
-          open={profileDetailVisible}
-          onCancel={handleCloseProfileDetail}
-          footer={[
-            <Button key="close" onClick={handleCloseProfileDetail}>
-              关闭
-            </Button>
-          ]}
-          width={700}
-        >
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <div>
-              <Title level={4}>{selectedProfile.nickname}</Title>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
-                <Tag color="blue">{selectedProfile.age}岁</Tag>
-                {selectedProfile.gender && <Tag color="magenta">{selectedProfile.gender}</Tag>}
-                <Tag color="purple">{selectedProfile.occupation}</Tag>
-                {Array.isArray(selectedProfile.mediaPlat) 
-                  ? selectedProfile.mediaPlat.map((plat: string) => (
-                      <Tag key={plat} color="green">{plat}</Tag>
-                    ))
-                  : typeof selectedProfile.mediaPlat === 'string' && selectedProfile.mediaPlat.split(',').map((plat: string) => (
-                      <Tag key={plat} color="green">{plat.trim()}</Tag>
-                    ))
-                }
-              </div>
-            </div>
-
-            <div>
-              <Title level={5}>基本信息</Title>
-              <div style={{ marginTop: '8px' }}>
-                <div><strong>性格特点：</strong>{selectedProfile.personalityTraits}</div>
-                <div style={{ marginTop: '8px' }}><strong>教育背景：</strong>{selectedProfile.educationBackground}</div>
-              </div>
-            </div>
-
-            {(selectedProfile.careerExperience || selectedProfile.specialExperience || selectedProfile.uniqueExperience) && (
-              <div>
-                <Title level={5}>经历信息</Title>
-                <div style={{ marginTop: '8px' }}>
-                  {selectedProfile.careerExperience && (
-                    <div><strong>职业经历：</strong>{selectedProfile.careerExperience}</div>
-                  )}
-                  {selectedProfile.specialExperience && (
-                    <div style={{ marginTop: '8px' }}><strong>特殊经历：</strong>{selectedProfile.specialExperience}</div>
-                  )}
-                  {selectedProfile.uniqueExperience && (
-                    <div style={{ marginTop: '8px' }}><strong>特别经历：</strong>{selectedProfile.uniqueExperience}</div>
-                  )}
-                  {selectedProfile.interests && (
-                    <div style={{ marginTop: '8px' }}><strong>兴趣爱好：</strong>{selectedProfile.interests}</div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {(selectedProfile.targetTrack || selectedProfile.targetAudience) && (
-              <div>
-                <Title level={5}>目标信息</Title>
-                <div style={{ marginTop: '8px' }}>
-                  {selectedProfile.targetTrack && (
-                    <div><strong>想做的赛道：</strong>{selectedProfile.targetTrack}</div>
-                  )}
-                  {selectedProfile.targetAudience && (
-                    <div style={{ marginTop: '8px' }}><strong>目标受众：</strong>{selectedProfile.targetAudience}</div>
-                  )}
-                  {selectedProfile.contentCreationAbility && (
-                    <div style={{ marginTop: '8px' }}><strong>内容创作能力：</strong>{selectedProfile.contentCreationAbility}</div>
-                  )}
-                  {selectedProfile.accountPurpose && (
-                    <div style={{ marginTop: '8px' }}><strong>做账号的原因：</strong>{selectedProfile.accountPurpose}</div>
-                  )}
-                  {selectedProfile.shortTermGoals && (
-                    <div style={{ marginTop: '8px' }}><strong>短期目标：</strong>{selectedProfile.shortTermGoals}</div>
-                  )}
-                  {selectedProfile.benchmarkAccounts && (
-                    <div style={{ marginTop: '8px' }}><strong>对标账号：</strong>{selectedProfile.benchmarkAccounts}</div>
-                  )}
-                  {selectedProfile.availableTime && (
-                    <div style={{ marginTop: '8px' }}><strong>可投入时间：</strong>{selectedProfile.availableTime}</div>
-                  )}
-                  {selectedProfile.otherInfo && (
-                    <div style={{ marginTop: '8px' }}><strong>其他补充：</strong>{selectedProfile.otherInfo}</div>
-                  )}
-                </div>
+            新增档案
+          </Button>
+            ) : (
+              <div className="profile-actions">
+                <Button 
+                  type="default" 
+                  icon={<EditOutlined />} 
+                  onClick={() => handleEditProfile(selectedProfile, {} as React.MouseEvent)}
+                  className="edit-profile-btn"
+                >
+                  编辑档案
+                </Button>
+                
+                <Button 
+                  type="primary" 
+                  icon={<PlusOutlined />} 
+                  onClick={handleCreateProfile}
+                  className="create-profile-btn-inline"
+                >
+                  新建档案
+                </Button>
+                
+                <Popconfirm
+                  title="确定要删除此档案吗？"
+                  description="删除后无法恢复，相关的策划方案也将一并删除。"
+                  onConfirm={(e) => handleDeleteProfile(selectedProfile.id, e as React.MouseEvent)}
+                  okText="确定"
+                  cancelText="取消"
+                  placement="left"
+                >
+                  <Button 
+                    danger 
+                    icon={<DeleteOutlined />} 
+                    className="delete-profile-btn"
+                  >
+                    删除档案
+                  </Button>
+                </Popconfirm>
               </div>
             )}
           </div>
-        </Modal>
-      )}
+
+          {selectedProfile ? (
+            <div className="two-column-layout">
+              {/* 左侧档案信息展示 */}
+              <div className="left-column">
+                <Card className="profile-info-card">
+                  <Collapse 
+                    activeKey={activeKeys}
+                    onChange={(keys) => setActiveKeys(keys as string[])}
+                    bordered={false}
+                    expandIconPosition="end"
+                    className="profile-collapse"
+                  >
+                    <Panel 
+                      header={
+                        <div className="panel-header">
+                          <UserOutlined className="panel-icon" />
+                          <span className="panel-title">基本信息</span>
+                        </div>
+                      } 
+                      key="1"
+                      className="profile-panel"
+                    >
+                      <div className="info-grid">
+                        {/* 第一行：昵称 */}
+                        {selectedProfile.nickname && (
+                          <div className="info-item highlight full-width">
+                            <Text type="secondary" className="info-label">昵称</Text>
+                            <Text strong className="info-value">{selectedProfile.nickname}</Text>
+                          </div>
+                        )}
+                        
+                        {/* 第二行：职业和平台 */}
+                        <div className="info-row">
+                          {selectedProfile.occupation && (
+                            <div className="info-item highlight">
+                              <Text type="secondary" className="info-label">职业</Text>
+                              <Text strong className="info-value">{selectedProfile.occupation}</Text>
+                            </div>
+                          )}
+                          {selectedProfile.mediaPlat && (
+                            <div className="info-item highlight">
+                              <Text type="secondary" className="info-label">平台</Text>
+                              <Text strong className="info-value">{selectedProfile.mediaPlat}</Text>
+                            </div>
+                          )}
+            </div>
+
+                        {/* 第三行：年龄和性别 */}
+                        <div className="info-row">
+                          {selectedProfile.age > 0 && (
+                            <div className="info-item">
+                              <Text type="secondary" className="info-label">年龄</Text>
+                              <Text strong className="info-value">{selectedProfile.age}岁</Text>
+                            </div>
+                          )}
+                          {selectedProfile.gender && (
+                            <div className="info-item">
+                              <Text type="secondary" className="info-label">性别</Text>
+                              <Text strong className="info-value">{selectedProfile.gender}</Text>
+                            </div>
+              )}
+            </div>
+
+                        {/* 其他信息 */}
+                        {selectedProfile.personalityTraits && (
+                          <div className="info-item full-width">
+                            <Text type="secondary" className="info-label">性格特点</Text>
+                            <Text strong className="info-value">{selectedProfile.personalityTraits}</Text>
+                          </div>
+                        )}
+                        {selectedProfile.educationBackground && (
+                          <div className="info-item full-width">
+                            <Text type="secondary" className="info-label">教育背景</Text>
+                            <Text strong className="info-value">{selectedProfile.educationBackground}</Text>
+                          </div>
+                        )}
+                      </div>
+                    </Panel>
+
+                    <Panel 
+                      header={
+                        <div className="panel-header">
+                          <FileTextOutlined className="panel-icon" />
+                          <span className="panel-title">经历信息</span>
+                        </div>
+                      } 
+                      key="2"
+                      className="profile-panel"
+                    >
+                      <div className="info-grid">
+                        {selectedProfile.careerExperience && (
+                          <div className="info-item full-width">
+                            <Text type="secondary" className="info-label">工作经历</Text>
+                            <Text strong className="info-value">{selectedProfile.careerExperience}</Text>
+                          </div>
+                        )}
+                        {selectedProfile.specialExperience && (
+                          <div className="info-item full-width">
+                            <Text type="secondary" className="info-label">特殊经历</Text>
+                            <Text strong className="info-value">{selectedProfile.specialExperience}</Text>
+                          </div>
+                        )}
+                        {selectedProfile.uniqueExperience && (
+                          <div className="info-item full-width">
+                            <Text type="secondary" className="info-label">独特经历</Text>
+                            <Text strong className="info-value">{selectedProfile.uniqueExperience}</Text>
+                          </div>
+                        )}
+                        {selectedProfile.interests && (
+                          <div className="info-item full-width">
+                            <Text type="secondary" className="info-label">兴趣爱好</Text>
+                            <Text strong className="info-value">{selectedProfile.interests}</Text>
+                          </div>
+                        )}
+                      </div>
+                    </Panel>
+
+                    <Panel 
+                      header={
+                        <div className="panel-header">
+                          <AimOutlined className="panel-icon" />
+                          <span className="panel-title">目标信息</span>
+                        </div>
+                      } 
+                      key="3"
+                      className="profile-panel"
+                    >
+                      <div className="info-grid">
+                        {selectedProfile.targetTrack && (
+                          <div className="info-item full-width">
+                            <Text type="secondary" className="info-label">定位方向</Text>
+                            <Text strong className="info-value">{selectedProfile.targetTrack}</Text>
+                          </div>
+                        )}
+                        {selectedProfile.targetAudience && (
+                          <div className="info-item full-width">
+                            <Text type="secondary" className="info-label">目标受众</Text>
+                            <Text strong className="info-value">{selectedProfile.targetAudience}</Text>
+                          </div>
+                        )}
+                        {selectedProfile.contentCreationAbility && (
+                          <div className="info-item full-width">
+                            <Text type="secondary" className="info-label">内容创作能力</Text>
+                            <Text strong className="info-value">{selectedProfile.contentCreationAbility}</Text>
+                          </div>
+                        )}
+                        {selectedProfile.accountPurpose && (
+                          <div className="info-item full-width">
+                            <Text type="secondary" className="info-label">账号目的</Text>
+                            <Text strong className="info-value">{selectedProfile.accountPurpose}</Text>
+                          </div>
+                        )}
+                        {selectedProfile.shortTermGoals && (
+                          <div className="info-item full-width">
+                            <Text type="secondary" className="info-label">短期目标</Text>
+                            <Text strong className="info-value">{selectedProfile.shortTermGoals}</Text>
+                          </div>
+                        )}
+                        {selectedProfile.benchmarkAccounts && (
+                          <div className="info-item full-width">
+                            <Text type="secondary" className="info-label">参考账号</Text>
+                            <Text strong className="info-value">{selectedProfile.benchmarkAccounts}</Text>
+                          </div>
+                        )}
+                        {selectedProfile.availableTime && (
+                          <div className="info-item full-width">
+                            <Text type="secondary" className="info-label">可投入时间</Text>
+                            <Text strong className="info-value">{selectedProfile.availableTime}</Text>
+                          </div>
+                        )}
+                        {selectedProfile.otherInfo && (
+                          <div className="info-item full-width">
+                            <Text type="secondary" className="info-label">其他信息</Text>
+                            <Text strong className="info-value">{selectedProfile.otherInfo}</Text>
+                          </div>
+                        )}
+                      </div>
+                    </Panel>
+                  </Collapse>
+                </Card>
+              </div>
+
+              {/* 右侧策划方案展示 */}
+              <div className="right-column">
+                <div className="plan-content-wrapper">
+                  <MediaPlanResult profile={selectedProfile} />
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="no-profile-selected">
+              <Empty 
+                description={
+                  <span>
+                    {profiles.length > 0 ? 
+                      '请从左侧选择一个档案，或创建新档案' : 
+                      '暂无档案，请点击上方"新增档案"按钮创建'
+                    }
+                  </span>
+                }
+                image={Empty.PRESENTED_IMAGE_DEFAULT}
+              />
+          </div>
+          )}
+        </div>
+
+        {/* 以下是原有的modal组件，保持不变 */}
+        <BasicInfoModal 
+          visible={basicModalVisible}
+          onCancel={() => setBasicModalVisible(false)}
+          onSuccess={handleBasicInfoSuccess}
+          initialValues={isEditing ? editingProfile : undefined}
+          isEditing={isEditing}
+        />
+
+            <ExperienceInfoModal 
+              visible={experienceModalVisible}
+              onCancel={() => setExperienceModalVisible(false)}
+              onSuccess={handleExperienceInfoSuccess}
+          profileId={currentProfileId || ''}
+            />
+
+            <GoalsInfoModal 
+              visible={goalsModalVisible}
+              onCancel={() => setGoalsModalVisible(false)}
+              onSuccess={handleGoalsInfoSuccess}
+          profileId={currentProfileId || ''}
+        />
+      </div>
     </div>
   );
 };

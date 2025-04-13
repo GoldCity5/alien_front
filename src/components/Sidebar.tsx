@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { HomeOutlined, BarChartOutlined, ToolOutlined } from '@ant-design/icons';
 
 interface SidebarProps {
   // 可以添加任何需要的props
@@ -45,21 +46,21 @@ const Sidebar: React.FC<SidebarProps> = () => {
         className={`sidebar-item ${currentPath === '/' ? 'active' : ''}`} 
         onClick={handleHome}
       >
-        <i>🏠</i>
+        <HomeOutlined className="sidebar-icon" />
         <span>首页</span>
       </div>
       <div 
         className={`sidebar-item ${currentPath === '/analytics' ? 'active' : ''}`} 
         onClick={handleAnalysis}
       >
-        <i>📊</i>
+        <BarChartOutlined className="sidebar-icon" />
         <span>对标分析</span>
       </div>
       <div 
         className={`sidebar-item ${currentPath === '/creative-tools' ? 'active' : ''}`} 
         onClick={handleCreationTools}
       >
-        <i>🔧</i>
+        <ToolOutlined className="sidebar-icon" />
         <span>创作工具</span>
       </div>
     </div>

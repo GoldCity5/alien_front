@@ -9,6 +9,7 @@ import ContentGenerationPage from './components/ContentGenerationPage';
 import TitleGenerationPage from './components/TitleGenerationPage';
 import ScriptGenerationPage from './components/ScriptGenerationPage';
 import MediaProfilePage from './components/mediaProfile/MediaProfilePage';
+import MediaProfileSidebar from './components/mediaProfile/MediaProfileSidebar';
 import ContentTopicPage from './components/ContentTopicPage';
 import { MediaContentPage } from './components/mediaContent';
 import { MediaIntroductionPage } from './components/mediaIntroduction';
@@ -333,7 +334,7 @@ const App = () => {
           <Layout style={{ minHeight: '100vh' }}>
             <AppHeader />
             <div className="page-container">
-              <Sidebar />
+              <MediaProfileSidebar />
               <div className="content-with-sidebar">
                 <Layout.Content className="main-content-container">
                   <UserProtectedRoute>

@@ -782,9 +782,17 @@ a:hover {
 }
 
 /* 侧边栏图标样式 */
-.sidebar-item i {
-  margin-right: 12px;
+.sidebar-icon {
   font-size: 18px;
+  margin-right: 15px;
+}
+
+.sidebar-item:hover .sidebar-icon {
+  color: var(--primary-green);
+}
+
+.sidebar-item.active .sidebar-icon {
+  color: white;
 }
 
 /* 加号图标样式 */

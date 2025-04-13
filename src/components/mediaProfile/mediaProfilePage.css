@@ -1,0 +1,708 @@
+/*方案生成主页面样式*/
+/* 页面包装容器 */
+/* 页面整体包装容器，占据整个视口高度 */
+.page-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* 1. 基础样式 */
+/* 媒体档案主容器，设置内边距和最大宽度，确保内容居中显示 */
+.media-profile-container {
+  padding: 20px;
+  max-width: 1700px;
+  margin-left: 50px;
+  margin-right: auto;
+  /* 计算最小高度，减去头部和底部的高度 */
+  min-height: calc(100vh - 64px - 69px);
+  position: relative;
+}
+
+/* 档案内容包装器，设置背景色、圆角和阴影效果 */
+.profile-content-wrapper {
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  /* 设置不对称内边距，右侧留出更多空间 */
+  padding: 30px 80px 30px 40px;
+}
+
+/* 2. 页面标题区域 */
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.profile-title {
+  font-size: 28px !important;
+  font-weight: 600 !important;
+  margin-bottom: 0 !important;
+  position: relative;
+  display: inline-block;
+}
+
+.profile-title::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to right, var(--primary-green), var(--deep-green));
+  border-radius: 3px;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.create-profile-btn {
+  background: linear-gradient(45deg, var(--primary-green), var(--deep-green));
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(102, 187, 106, 0.3);
+  transition: all 0.3s;
+}
+
+.create-profile-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(102, 187, 106, 0.4);
+  background: linear-gradient(45deg, var(--deep-green), #2e7d32);
+}
+
+.create-profile-btn-inline {
+  background-color: #1890ff;
+  border-color: #1890ff;
+}
+
+.create-profile-btn-inline:hover, 
+.create-profile-btn-inline:focus {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
+}
+
+.edit-profile-btn, .delete-profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.edit-profile-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.delete-profile-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(255,77,79,0.2);
+}
+
+/* 3. 双栏布局 */
+.two-column-layout {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.left-column {
+  width: 30%;
+  flex-shrink: 0;
+}
+
+.right-column {
+  width: 70%;
+  flex-shrink: 0;
+}
+
+/* 4. 档案信息展示 */
+.profile-info-card {
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08), 0 3px 6px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  border: none;
+  background-color: #fff;
+  transition: all 0.3s ease;
+}
+
+.profile-info-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
+}
+
+.profile-info-card > .ant-card-body {
+  padding: 0;
+}
+
+.profile-collapse {
+  background-color: transparent;
+  border: none;
+  padding: 10px;
+}
+
+.profile-collapse .ant-collapse-item {
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 4px;
+  transition: all 0.2s ease;
+}
+
+.profile-collapse .ant-collapse-item:last-child {
+  border-bottom: none;
+}
+
+.profile-collapse .ant-collapse-header {
+  padding: 12px 0 !important;
+  transition: all 0.2s ease;
+}
+
+.profile-collapse .ant-collapse-header:hover {
+  color: var(--primary-green);
+}
+
+.profile-collapse .ant-collapse-content-box {
+  padding: 15px 5px !important;
+  background-color: rgba(250, 250, 250, 0.4);
+  border-radius: 8px;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-icon {
+  font-size: 16px;
+  color: #666;
+}
+
+.panel-title {
+  font-size: 15px;
+  font-weight: normal;
+  color: #333;
+}
+
+/* 重设信息展示布局 */
+.info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0;
+}
+
+/* 行布局 */
+.info-row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.info-row .info-item {
+  flex: 1;
+  min-width: 0;
+}
+
+/* 信息项基础样式 */
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 15px;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+}
+
+.info-item.full-width {
+  width: 100%;
+}
+
+/* 重点信息项样式 */
+.info-item.highlight {
+  border-left: 3px solid var(--primary-green);
+  background-color: #f8f8f8;
+  padding-left: 16px;
+}
+
+.info-item.highlight .info-label {
+  color: var(--primary-green);
+  font-weight: 500;
+}
+
+.info-item.highlight .info-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* 全宽高亮显示 */
+.info-item.highlight.full-width {
+  margin-bottom: 5px;
+  background-color: #f8f8f8;
+  border-left: 3px solid var(--primary-green);
+}
+
+.info-item.highlight.full-width .info-value {
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+/* 添加信息为空的面板样式 */
+.empty-panel-content {
+  padding: 20px;
+  text-align: center;
+  color: #bfbfbf;
+  font-style: italic;
+}
+
+/* 折叠面板展开动画 */
+.ant-collapse-content {
+  transition: all 0.2s ease-in-out !important;
+}
+
+/* Panel hover effects */
+.profile-panel:hover {
+  background-color: transparent;
+}
+
+/* 5. 策划方案展示区域 */
+.plan-content-wrapper {
+  min-height: 600px;
+  width: 100%;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08), 0 3px 6px rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+  background-color: #fff;
+  transition: all 0.3s ease;
+  margin-right: 10px;
+}
+
+.plan-content-wrapper:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
+}
+
+/* 6. 无选中档案状态 */
+.no-profile-selected {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+/* 7. 响应式样式 */
+@media (max-width: 992px) {
+  .two-column-layout {
+    flex-direction: column;
+  }
+  
+  .left-column {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .right-column {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .media-profile-container {
+    padding: 15px;
+  }
+  
+  .profile-content-wrapper {
+    padding: 20px;
+  }
+  
+  .profile-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .profile-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+  
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .info-item, .info-item.full-width {
+    grid-column: 1;
+  }
+  
+  .info-row {
+    flex-direction: column;
+  }
+  
+  .info-row .info-item {
+    width: 100%;
+  }
+}
+
+/* 文本样式 */
+.info-label {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 0;
+}
+
+.info-value {
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  color: #333;
+}
+
+/* 8. 操作按钮组样式 */
+.action-buttons-group {
+  position: absolute;
+  top: 20px;
+  right: 50px;
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.action-btn {
+  height: 32px;
+  padding: 0 15px;
+  font-size: 14px;
+  background-color: white;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  color: rgba(0, 0, 0, 0.65);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+}
+
+.action-btn:hover,
+.action-btn:focus {
+  color: #43a047;
+  border-color: #43a047;
+  background-color: white;
+}
+
+.action-btn:active {
+  color: #2e7d32;
+  border-color: #2e7d32;
+}
+
+/* 每个按钮的特殊样式 */
+.action-btn-topics {
+  color: #43a047;
+  border-color: #43a047;
+}
+
+.action-btn-nickname {
+  color: #1890ff;
+  border-color: #1890ff;
+}
+
+.action-btn-nickname:hover,
+.action-btn-nickname:focus {
+  color: #1890ff;
+  border-color: #1890ff;
+  background-color: white;
+}
+
+.action-btn-nickname:active {
+  color: #096dd9;
+  border-color: #096dd9;
+}
+
+.action-btn-content {
+  color: #722ed1;
+  border-color: #722ed1;
+}
+
+.action-btn-content:hover,
+.action-btn-content:focus {
+  color: #722ed1;
+  border-color: #722ed1;
+  background-color: white;
+}
+
+.action-btn-content:active {
+  color: #531dab;
+  border-color: #531dab;
+}
+
+/* 返回按钮样式 */
+.back-btn {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  padding: 0 16px;
+  height: 32px;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.65);
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+  z-index: 10;
+}
+
+.back-btn-icon {
+  font-size: 14px;
+  transition: transform 0.3s;
+}
+
+.back-btn:hover {
+  color: #43a047;
+  border-color: #43a047;
+}
+
+.back-btn:hover .back-btn-icon {
+  transform: translateX(-3px);
+}
+
+.back-btn:active {
+  color: #2e7d32;
+  border-color: #2e7d32;
+}
+
+/* 8. 操作按钮组样式 - 特色创意设计 */
+/* 右侧按钮样式 - 特色创意设计（增强版） */
+.right-actions {
+  position: absolute;
+  right: 280px;
+  top: 90px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  z-index: 100;
+}
+
+.right-action-btn {
+  width: 175px;
+  padding: 0;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  background: transparent;
+  box-shadow: none;
+  position: relative;
+  overflow: visible;
+  text-align: center;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 按钮图标容器 */
+.right-action-btn .icon-container {
+  width: 68px;
+  height: 68px;
+  margin: 0 auto 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 22px;
+  font-size: 28px;
+  position: relative;
+  z-index: 2;
+  transform: rotate(-10deg);
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* 按钮文字 */
+.right-action-btn .btn-text {
+  font-size: 15px;
+  font-weight: 600;
+  background: transparent;
+  padding: 10px 15px;
+  border-radius: 12px;
+  color: var(--text-dark, #333);
+  transition: all 0.4s;
+  position: relative;
+  margin-top: 6px;
+}
+
+/* 按钮文字下划线效果 */
+.right-action-btn .btn-text::after {
+  content: "";
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: currentColor;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform: translateX(-50%);
+  opacity: 0;
+}
+
+/* 装饰圆点 */
+.right-action-btn .icon-container::before {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  top: 12px;
+  right: 12px;
+  z-index: 3;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+  transition: all 0.3s;
+}
+
+/* 按钮图标 */
+.right-action-btn .icon-container::after {
+  position: relative;
+  z-index: 2;
+  font-size: 26px;
+  transition: all 0.3s;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+/* 悬停效果 */
+.right-action-btn:hover {
+  transform: translateX(-8px);
+}
+
+.right-action-btn:hover .icon-container {
+  transform: rotate(0deg) translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.right-action-btn:hover .icon-container::after {
+  transform: scale(1.1);
+}
+
+.right-action-btn:hover .icon-container::before {
+  transform: scale(1.3);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+}
+
+.right-action-btn:hover .btn-text {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  transform: translateY(2px);
+}
+
+.right-action-btn:hover .btn-text::after {
+  width: 70%;
+  opacity: 1;
+}
+
+/* 光效特效 */
+.right-action-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 70%);
+  opacity: 0;
+  z-index: 1;
+  transition: opacity 0.5s;
+  border-radius: 20px;
+  pointer-events: none;
+}
+
+.right-action-btn:hover::before {
+  opacity: 1;
+}
+
+/* 发光效果 */
+.right-action-btn .icon-glow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border-radius: inherit;
+  background: inherit;
+  filter: blur(15px);
+  opacity: 0;
+  z-index: 0;
+  transition: all 0.5s;
+  transform: scale(0.8);
+}
+
+.right-action-btn:hover .icon-container .icon-glow {
+  opacity: 0.6;
+  transform: scale(1.1);
+}
+
+/* 第一个按钮 - 生成选题 */
+.right-action-btn:nth-child(1) .icon-container {
+  background: linear-gradient(135deg, #ff6b6b, #ff8c60);
+}
+.right-action-btn:nth-child(1) .icon-container::after {
+  content: "✏️";
+}
+.right-action-btn:nth-child(1) .btn-text::after {
+  background: #ff6b6b;
+}
+.right-action-btn:nth-child(1):hover .btn-text {
+  color: #ff6b6b;
+}
+
+/* 第二个按钮 - 生成昵称简介 */
+.right-action-btn:nth-child(2) .icon-container {
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+}
+.right-action-btn:nth-child(2) .icon-container::after {
+  content: "👤";
+}
+.right-action-btn:nth-child(2) .btn-text::after {
+  background: #4facfe;
+}
+.right-action-btn:nth-child(2):hover .btn-text {
+  color: #4facfe;
+}
+
+/* 第三个按钮 - 生成文案 */
+.right-action-btn:nth-child(3) .icon-container {
+  background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+}
+.right-action-btn:nth-child(3) .icon-container::after {
+  content: "📝";
+}
+.right-action-btn:nth-child(3) .btn-text::after {
+  background: #a18cd1;
+}
+.right-action-btn:nth-child(3):hover .btn-text {
+  color: #a18cd1;
+}
+
+/* 按钮激活效果 */
+.right-action-btn:active {
+  transform: translateX(-2px);
+}
+
+.right-action-btn:active .icon-container {
+  transform: scale(0.92);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* 移除不再需要的旧式按钮样式 */
+.action-buttons-group {
+  display: none;
+}
+
+/* 返回按钮样式 */ 
