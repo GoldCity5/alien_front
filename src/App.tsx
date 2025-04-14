@@ -119,7 +119,7 @@ const AppHeader = () => {
     <Layout.Header className="navbar">
       <div className="navbar-container">
         {/* Logo和产品名称 */}
-        <div className="logo" style={{ float: 'left' }}>
+        <div className="logo" style={{ float: 'left', cursor: 'pointer' }} onClick={() => navigate('/')}>
           <div className="logo-circle">
             <img src="/logo.svg" alt="小巷创意" className="logo-image" />
           </div>

@@ -441,43 +441,35 @@
 
 /* 返回按钮样式 */
 .back-btn {
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  padding: 0 16px;
-  height: 32px;
-  background: #fff;
-  border: 1px solid #d9d9d9;
-  border-radius: 2px;
+  position: fixed;
+  top: 100px;
+  right: 80px;
+  width: 100px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  background: linear-gradient(45deg, #f8f8f8, #ffffff);
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.05);
   font-size: 14px;
-  color: rgba(0, 0, 0, 0.65);
+  color: #666666;
   cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+  transition: all 0.3s ease;
   z-index: 10;
-}
-
-.back-btn-icon {
-  font-size: 14px;
-  transition: transform 0.3s;
+  border: none;
 }
 
 .back-btn:hover {
-  color: #43a047;
-  border-color: #43a047;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  color: #66bb6a;
 }
 
-.back-btn:hover .back-btn-icon {
-  transform: translateX(-3px);
-}
-
-.back-btn:active {
-  color: #2e7d32;
-  border-color: #2e7d32;
+.back-btn::before {
+  content: '←';
+  margin-right: 6px;
+  font-size: 16px;
 }
 
 /* 8. 操作按钮组样式 - 特色创意设计 */
@@ -703,6 +695,4 @@
 /* 移除不再需要的旧式按钮样式 */
 .action-buttons-group {
   display: none;
-}
-
-/* 返回按钮样式 */ 
+} 

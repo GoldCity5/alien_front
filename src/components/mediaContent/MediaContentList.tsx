@@ -9,13 +9,16 @@ import {
   Modal, 
   Card, 
   message,
-  Empty
+  Empty,
+  List,
+  Spin
 } from 'antd';
 import { 
   EyeOutlined, 
   CopyOutlined,
   ClockCircleOutlined,
-  TagOutlined
+  TagOutlined,
+  DeleteOutlined
 } from '@ant-design/icons';
 import { getMediaContentList, MediaContentDTO } from '../../services/mediaContentService';
 import ReactMarkdown from 'react-markdown';
@@ -58,7 +61,11 @@ const MediaContentList: React.FC = () => {
     try {
       setLoading(true);
       const data = await getMediaContentList();
-      setContentList(data);
+      // 按创建时间倒序排列，最新的排在最前面
+      const sortedData = [...data].sort((a, b) => 
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+      setContentList(sortedData);
     } catch (error) {
       console.error('获取内容列表失败:', error);
       message.error('获取内容列表失败，请稍后重试');
@@ -200,32 +207,79 @@ const MediaContentList: React.FC = () => {
         bordered={false}
         style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.05)', borderRadius: '8px' }}
       >
-        {contentList.length > 0 ? (
-          <Table 
-            columns={columns} 
-            dataSource={contentList.map(item => ({ ...item, key: item.id }))} 
-            loading={loading}
-            pagination={{ 
-              pageSize: 10,
-              showSizeChanger: true,
-              showTotal: (total) => `共 ${total} 条记录`
-            }}
-            rowKey="id"
-            expandable={{
-              expandedRowRender: (record) => (
-                <div style={{ padding: '0 20px' }}>
-                  <Paragraph ellipsis={{ rows: 3, expandable: true, symbol: '展开' }}>
-                    {record.content}
-                  </Paragraph>
-                </div>
-              ),
-            }}
-          />
-        ) : (
+        {loading ? (
+          <div className="loading-container">
+            <Spin size="large" />
+            <p className="loading-message">加载中...</p>
+          </div>
+        ) : contentList.length === 0 ? (
           <Empty 
-            description="暂无内容记录" 
+            description="暂无文案记录" 
             image={Empty.PRESENTED_IMAGE_SIMPLE}
             style={{ margin: '40px 0' }}
+          />
+        ) : (
+          <List
+            grid={{ 
+              gutter: 16, 
+              xs: 1, 
+              sm: 1, 
+              md: 2, 
+              lg: 2, 
+              xl: 3, 
+              xxl: 3 
+            }}
+            dataSource={contentList}
+            renderItem={item => (
+              <List.Item>
+                <Card
+                  hoverable
+                  className="content-card"
+                  actions={[
+                    <Tooltip title="查看详情">
+                      <Button 
+                        type="text" 
+                        icon={<EyeOutlined />} 
+                        onClick={() => handleViewContent(item)}
+                      />
+                    </Tooltip>,
+                    <Tooltip title="复制内容">
+                      <Button 
+                        type="text" 
+                        icon={<CopyOutlined />} 
+                        onClick={() => handleCopyContent(item.content)}
+                      />
+                    </Tooltip>,
+                    <Tooltip title="删除">
+                      <Button 
+                        type="text" 
+                        danger 
+                        icon={<DeleteOutlined />} 
+                        onClick={() => {/* handleDeleteContent(item.id) */}}
+                      />
+                    </Tooltip>
+                  ]}
+                >
+                  <div style={{ marginBottom: '12px' }}>
+                    <Tag color={platformColorMap[item.platform] || 'default'}>
+                      {item.platform}
+                    </Tag>
+                    <Tag color={styleColorMap[item.contentStyle] || 'default'}>
+                      {item.contentStyle}
+                    </Tag>
+                    <Text type="secondary" style={{ fontSize: '12px', marginLeft: '8px' }}>
+                      {dayjs(item.createdAt).format('YYYY-MM-DD HH:mm')}
+                    </Text>
+                  </div>
+                  <Paragraph 
+                    ellipsis={{ rows: 3 }} 
+                    style={{ marginBottom: '8px', fontSize: '14px' }}
+                  >
+                    {item.contentTopic}
+                  </Paragraph>
+                </Card>
+              </List.Item>
+            )}
           />
         )}
       </Card>

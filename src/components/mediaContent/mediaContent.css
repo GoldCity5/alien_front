@@ -1,0 +1,821 @@
+/* 1. 基础样式 */
+:root {
+  --primary-green: #66bb6a;
+  --deep-green: #43a047;
+  --light-green: #e8f5e9;
+  --text-dark: #333333;
+  --text-medium: #666666;
+  --text-light: #999999;
+  --border-radius-sm: 8px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 20px;
+  --shadow-small: 0 3px 8px rgba(0,0,0,0.05);
+  --shadow-medium: 0 5px 15px rgba(0,0,0,0.08);
+  --shadow-large: 0 10px 25px rgba(0,0,0,0.1);
+  --gradient-primary: linear-gradient(to right, #66bb6a, #4caf50, #8bc34a);
+  --gradient-card: linear-gradient(135deg, #ffffff, #f8fbff);
+  --transition-normal: all 0.3s ease;
+}
+
+.media-content-container {
+  background-color: #f8f9fc;
+  background-image: linear-gradient(135deg, #f0f4ff 0%, #f5f8fa 50%, #eef8ff 100%);
+  position: relative;
+  overflow-x: hidden;
+  min-height: calc(100vh - 64px - 69px);
+  padding: 0;
+}
+
+/* 装饰性背景元素 */
+.media-content-container::before {
+  content: '';
+  position: fixed;
+  top: -10%;
+  right: -10%;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(144, 238, 144, 0.08) 0%, rgba(102, 187, 106, 0.05) 50%, transparent 70%);
+  z-index: -1;
+}
+
+.media-content-container::after {
+  content: '';
+  position: fixed;
+  bottom: -5%;
+  left: -5%;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(173, 216, 230, 0.08) 0%, rgba(135, 206, 235, 0.05) 50%, transparent 70%);
+  z-index: -1;
+}
+
+/* 添加更多装饰元素 */
+.decorative-circle1 {
+  position: fixed;
+  top: 30%;
+  right: 5%;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(102, 187, 106, 0.05) 0%, rgba(76, 175, 80, 0.03) 50%, transparent 70%);
+  z-index: -1;
+}
+
+.decorative-circle2 {
+  position: fixed;
+  bottom: 20%;
+  left: 8%;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139, 195, 74, 0.05) 0%, rgba(102, 187, 106, 0.03) 50%, transparent 70%);
+  z-index: -1;
+}
+
+/* 增加点状装饰 */
+.decorative-dots1 {
+  position: fixed;
+  top: 15%;
+  left: 10%;
+  width: 180px;
+  height: 180px;
+  background-image: radial-gradient(circle, var(--primary-green) 1px, transparent 1px);
+  background-size: 18px 18px;
+  opacity: 0.05;
+  z-index: -1;
+}
+
+.decorative-dots2 {
+  position: fixed;
+  bottom: 15%;
+  right: 10%;
+  width: 140px;
+  height: 140px;
+  background-image: radial-gradient(circle, var(--deep-green) 1px, transparent 1px);
+  background-size: 12px 12px;
+  opacity: 0.05;
+  z-index: -1;
+}
+
+/* 波浪装饰 */
+.decorative-wave {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, transparent, rgba(102, 187, 106, 0.1), transparent);
+  opacity: 0.5;
+  z-index: -1;
+}
+
+.decorative-wave::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, rgba(102, 187, 106, 0.05), transparent, rgba(102, 187, 106, 0.05));
+  animation: waveAnimation 8s infinite linear;
+}
+
+@keyframes waveAnimation {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* 添加悬浮按钮 */
+.floating-action-btn {
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: var(--shadow-medium);
+  cursor: pointer;
+  transition: var(--transition-normal);
+  z-index: 100;
+}
+
+.floating-action-btn:hover {
+  transform: translateY(-5px) rotate(45deg);
+  box-shadow: 0 8px 25px rgba(102, 187, 106, 0.4);
+}
+
+/* 返回按钮 */
+.back-btn {
+  position: fixed;
+  top: 100px;
+  right: 80px;
+  width: 100px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(45deg, #f8f8f8, #ffffff);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-small);
+  font-size: 14px;
+  color: var(--text-medium);
+  cursor: pointer;
+  transition: var(--transition-normal);
+  z-index: 10;
+}
+
+.back-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-medium);
+  color: var(--primary-green);
+}
+
+.back-btn::before {
+  content: '←';
+  margin-right: 6px;
+  font-size: 16px;
+}
+
+/* 页面操作按钮布局 */
+.page-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 15px 2.5% 0;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 95%;
+}
+
+/* 2. 布局样式 */
+.content-tabs {
+  max-width: 1400px;
+  margin: 20px auto 40px;
+  width: 95%;
+  background: #fff;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-large);
+  overflow: hidden;
+  padding: 25px;
+}
+
+.page-header {
+  padding: 0 20px 10px;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  margin-bottom: 25px;
+}
+
+/* 布局优化 - 使用更好的响应式设计 */
+.content-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  max-width: 1400px;
+  margin: 20px auto 40px;
+  gap: 30px;
+  position: relative;
+  width: 95%;
+}
+
+/* 列布局优化 */
+.input-section, .result-section {
+  background: var(--gradient-card);
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
+  box-shadow: var(--shadow-large);
+  border-radius: var(--border-radius-lg);
+  padding: 35px;
+  border: 1px solid rgba(255,255,255,0.8);
+  transition: var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+  height: fit-content;
+}
+
+.input-section {
+  width: 36%;
+  min-width: 320px;
+}
+
+.result-section {
+  width: 64%;
+  min-width: 450px;
+}
+
+.input-section::before, .result-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: var(--gradient-primary);
+  opacity: 0.8;
+}
+
+.input-section::after, .result-section::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    rgba(255,255,255,0) 0%, 
+    rgba(255,255,255,0.1) 50%, 
+    rgba(255,255,255,0) 100%);
+  transform: skewX(-15deg);
+  transition: all 0.8s;
+  z-index: 1;
+}
+
+.input-section:hover::after, .result-section:hover::after {
+  left: 100%;
+}
+
+/* 3. 标题样式 */
+.page-title {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 16px;
+  position: relative;
+  display: inline-block;
+  background: linear-gradient(45deg, #2E7D32, var(--primary-green));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.page-title::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: var(--gradient-primary);
+  margin-top: 8px;
+  border-radius: 3px;
+}
+
+.page-description {
+  font-size: 16px;
+  color: var(--text-medium);
+  margin-bottom: 10px;
+  line-height: 1.6;
+  max-width: 800px;
+}
+
+/* 区块标题样式 */
+.section-header {
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--deep-green);
+  margin-bottom: 12px;
+  position: relative;
+  display: inline-block;
+}
+
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, rgba(102, 187, 106, 0.3), rgba(102, 187, 106, 0.1), transparent);
+  position: relative;
+}
+
+.section-divider::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 40px;
+  height: 3px;
+  background: var(--gradient-primary);
+  border-radius: 3px;
+}
+
+/* 4. 选项卡样式 */
+.content-tabs .ant-tabs-nav::before {
+  border-bottom: none;
+}
+
+.content-tabs .ant-tabs-tab {
+  background: linear-gradient(135deg, #f8f9fa, #f0f2f5);
+  border-radius: 8px 8px 0 0;
+  margin-right: 6px;
+  padding: 10px 20px;
+  transition: var(--transition-normal);
+  border: 1px solid #eaeaea;
+  border-bottom: none;
+}
+
+.content-tabs .ant-tabs-tab:hover {
+  background: linear-gradient(135deg, #ffffff, #f5f7fa);
+}
+
+.content-tabs .ant-tabs-tab-active {
+  background: linear-gradient(135deg, #ffffff, #f8fdff) !important;
+  border-top: 2px solid var(--primary-green);
+  transform: translateY(-3px);
+}
+
+.content-tabs .ant-tabs-content {
+  background: transparent;
+  border-radius: 0;
+  padding: 20px 0;
+  box-shadow: none;
+}
+
+/* 5. 表单样式 */
+/* 表单输入样式 */
+.ant-form-item-label > label {
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.form-input, .form-select, .form-number-input {
+  width: 100%;
+  padding: 15px 18px;
+  border: 1px solid #e4e9f0;
+  border-radius: var(--border-radius-md);
+  font-size: 14px;
+  color: var(--text-dark);
+  transition: var(--transition-normal);
+  background: linear-gradient(to bottom, #f9fafc, #f5f7fb);
+  box-shadow: var(--shadow-small);
+  box-sizing: border-box;
+}
+
+.form-input:focus, .form-select:focus, .form-number-input:focus,
+.ant-input:focus, .ant-select-selector:focus, .ant-input-number:focus {
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.15);
+  outline: none;
+  background: linear-gradient(to bottom, #ffffff, #f9fafc);
+}
+
+.ant-select-selector {
+  height: auto !important;
+  padding: 0 !important;
+}
+
+.form-section .ant-select-selector, 
+.input-section .ant-select-selector {
+  padding: 6px 10px !important;
+  min-height: 50px;
+}
+
+.form-section .ant-form-item-explain-error,
+.input-section .ant-form-item-explain-error {
+  margin-top: 5px;
+  font-size: 12px;
+}
+
+/* 6. 生成按钮样式 */
+.submit-btn {
+  margin-top: 35px;
+  background: var(--gradient-primary);
+  background-size: 200% auto;
+  border: none;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  padding: 16px;
+  border-radius: var(--border-radius-md);
+  font-size: 16px;
+  cursor: pointer;
+  transition: var(--transition-normal);
+  text-align: center;
+  box-shadow: var(--shadow-medium);
+  animation: gradientMove 3s infinite alternate;
+  height: auto !important;
+}
+
+.submit-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: 0.5s;
+  z-index: -1;
+}
+
+.submit-btn:hover::before {
+  left: 100%;
+}
+
+.submit-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-large);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-small);
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+/* 7. 结果区域样式 */
+.result-container {
+  min-height: 350px;
+  position: relative;
+  border-radius: var(--border-radius-md);
+  background: #f9f9f9;
+  padding: 20px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+  transition: var(--transition-normal);
+  overflow: auto;
+}
+
+.result-content {
+  padding: 5px;
+}
+
+.result-container:hover {
+  box-shadow: inset 0 1px 5px rgba(0,0,0,0.09);
+}
+
+.result-placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: 350px;
+  color: var(--text-light);
+}
+
+.result-placeholder-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.7;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: 350px;
+}
+
+.loading-message {
+  margin-top: 16px;
+  color: #1890ff;
+}
+
+/* 8. 列表样式优化 */
+.content-list .ant-card {
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-medium);
+  transition: var(--transition-normal);
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.8);
+  background: var(--gradient-card);
+  position: relative;
+}
+
+.content-list .ant-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: var(--gradient-primary);
+  opacity: 0.8;
+}
+
+.content-list .ant-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    rgba(255,255,255,0) 0%, 
+    rgba(255,255,255,0.1) 50%, 
+    rgba(255,255,255,0) 100%);
+  transform: skewX(-15deg);
+  transition: all 0.8s;
+  z-index: 1;
+}
+
+.content-list .ant-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-large);
+}
+
+.content-list .ant-card:hover::after {
+  left: 100%;
+}
+
+.content-list .ant-list-item {
+  transition: var(--transition-normal);
+}
+
+.content-list .ant-card-meta {
+  padding: 18px 20px 10px;
+}
+
+.content-list .ant-card-meta-title {
+  font-weight: 600;
+  color: var(--text-dark);
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.content-list .ant-card-meta-description {
+  color: var(--text-medium);
+  line-height: 1.5;
+}
+
+.content-list .ant-card-actions {
+  background: linear-gradient(to bottom, #f9fafc, #f5f7fb);
+  border-top: 1px solid rgba(0,0,0,0.05);
+  padding: 8px 0;
+}
+
+.content-list .ant-card-actions > li {
+  margin: 6px 0;
+}
+
+.content-list .ant-card-actions > li:not(:last-child) {
+  border-right: 1px solid rgba(0,0,0,0.05);
+}
+
+.content-list .ant-card-actions .anticon {
+  color: var(--primary-green);
+  transition: var(--transition-normal);
+}
+
+.content-list .ant-card-actions .anticon:hover {
+  transform: scale(1.2);
+}
+
+.content-list .ant-list-item-meta-title {
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+.content-list .ant-list-item-meta-description {
+  color: var(--text-medium);
+}
+
+/* 9. 标签样式 */
+.content-list .ant-tag {
+  border-radius: var(--border-radius-sm);
+  padding: 2px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-right: 8px;
+  box-shadow: var(--shadow-small);
+}
+
+/* 底部导航模块样式 */
+.bottom-modules {
+  max-width: 1400px;
+  width: 95%;
+  margin: 20px auto 40px;
+  padding: 0;
+}
+
+.modules-title {
+  font-size: 22px;
+  color: var(--text-dark);
+  margin-bottom: 20px;
+  position: relative;
+  display: inline-block;
+  font-weight: 600;
+}
+
+.modules-title::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: var(--gradient-primary);
+  margin-top: 6px;
+  border-radius: 3px;
+}
+
+.modules-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  margin-top: 15px;
+}
+
+.module-card {
+  background: var(--gradient-card);
+  border-radius: var(--border-radius-lg);
+  padding: 30px 25px;
+  box-shadow: var(--shadow-medium);
+  transition: var(--transition-normal);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.8);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.module-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: var(--gradient-primary);
+  opacity: 0.8;
+}
+
+.module-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    rgba(255,255,255,0) 0%, 
+    rgba(255,255,255,0.1) 50%, 
+    rgba(255,255,255,0) 100%);
+  transform: skewX(-15deg);
+  transition: all 0.8s;
+  z-index: 1;
+}
+
+.module-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-large);
+}
+
+.module-card:hover::after {
+  left: 100%;
+}
+
+.module-icon {
+  font-size: 36px;
+  margin-bottom: 15px;
+}
+
+.module-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+}
+
+.module-desc {
+  font-size: 14px;
+  color: var(--text-medium);
+  line-height: 1.5;
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+  .content-container {
+    flex-direction: column;
+  }
+  
+  .input-section, .result-section {
+    width: 100%;
+    min-width: auto;
+  }
+  
+  .input-section {
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .content-tabs {
+    padding: 15px;
+    width: 90%;
+  }
+  
+  .content-container {
+    padding: 10px;
+    width: 90%;
+  }
+  
+  .page-header {
+    padding: 0 10px 10px;
+  }
+  
+  .page-title {
+    font-size: 24px;
+  }
+  
+  .page-description {
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  
+  .input-section, .result-section {
+    padding: 20px;
+  }
+  
+  .submit-btn {
+    padding: 12px 16px;
+    font-size: 15px;
+  }
+  
+  .form-input, .form-select, .form-number-input {
+    padding: 12px 15px;
+  }
+  
+  .back-btn {
+    top: 75px;
+    right: 20px;
+  }
+  
+  .floating-action-btn {
+    right: 20px;
+    bottom: 20px;
+    width: 50px;
+    height: 50px;
+  }
+  
+  .modules-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .module-card {
+    padding: 20px;
+  }
+  
+  .bottom-modules {
+    width: 90%;
+  }
+} 

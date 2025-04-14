@@ -146,6 +146,17 @@ a:hover {
   background-color: var(--bg-color, #f5f8fa) !important;
 }
 
+/* 全宽度内容区域 - 不显示侧边栏时使用 */
+.full-width-content {
+  flex: 1 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  min-height: calc(100vh - 64px - 69px) !important;
+  overflow-y: auto !important;
+  background-color: var(--bg-color, #f5f8fa) !important;
+  width: 100% !important;
+}
+
 /* 导航栏 */
 .navbar.ant-layout-header {
   background: white !important;
@@ -171,6 +182,8 @@ a:hover {
   display: inline-flex;
   align-items: center;
   margin-left: -50px;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .navbar .logo:hover {

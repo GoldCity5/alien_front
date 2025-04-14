@@ -27,6 +27,27 @@ const GoalsInfoModal: React.FC<GoalsInfoModalProps> = ({
       form.resetFields();
       setSelectedTags([]);
       
+      // 重置滚动位置和聚焦
+      setTimeout(() => {
+        // 重置表单区域滚动位置
+        const modalBody = document.querySelector('.goals-modal .ant-modal-body');
+        if (modalBody) {
+          modalBody.scrollTop = 0;
+        }
+        
+        // 重置modal整体滚动位置
+        const modalWrap = document.querySelector('.goals-modal .ant-modal-wrap');
+        if (modalWrap) {
+          modalWrap.scrollTop = 0;
+        }
+        
+        // 聚焦第一个输入框/选择框
+        const firstSelect = document.querySelector('.goals-modal .ant-select');
+        if (firstSelect) {
+          (firstSelect as HTMLElement).click();
+        }
+      }, 100);
+      
       // 如果有数据从后端返回，可以在这里处理
       // 示例代码，实际使用时可能需要从外部获取数据
       // 如果有初始值，可以在这里处理accountPurpose字符串转数组
@@ -122,6 +143,7 @@ const GoalsInfoModal: React.FC<GoalsInfoModalProps> = ({
       maskClosable={false}
       width={600}
       className="goals-modal"
+      style={{ top: 20 }}
     >
       <div className="modal-subtitle">
         最后一步啦，展示你的专属自媒体策划方案马上就到啦！

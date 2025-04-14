@@ -1,13 +1,10 @@
 // 自媒体内容文案生成页面
 import React, { useState } from 'react';
 import { 
-  Layout, 
-  Typography, 
   Form, 
   Input, 
   Button, 
   Select, 
-  Card, 
   Spin, 
   InputNumber, 
   Row, 
@@ -19,9 +16,9 @@ import { generateMediaContentWithSSE } from '../../services/mediaContentService'
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import MediaContentList from './MediaContentList';
+import { useNavigate } from 'react-router-dom';
+import './mediaContent.css'; // 引入CSS文件
 
-const { Title, Paragraph } = Typography;
-const { Content } = Layout;
 const { TextArea } = Input;
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -96,130 +93,118 @@ const ContentGenerationForm: React.FC = () => {
   };
 
   return (
-    <Row gutter={24}>
+    <div className="content-container">
       {/* 左侧输入区域 */}
-      <Col xs={24} md={12}>
-        <Card 
-          title="输入参数" 
-          bordered={false} 
-          style={{ 
-            height: '100%', 
-            boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
-            borderRadius: '8px'
+      <div className="input-section">
+        <div className="section-header">
+          <h3 className="section-title">输入参数</h3>
+          <div className="section-divider"></div>
+        </div>
+        
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={handleGenerate}
+          initialValues={{
+            platform: '抖音',
+            contentStyle: '情感共鸣型',
+            duration: 60
           }}
         >
-          <Form
-            form={form}
-            layout="vertical"
-            onFinish={handleGenerate}
-            initialValues={{
-              platform: '抖音',
-              contentStyle: '情感共鸣型',
-              duration: 60
-            }}
+          <Form.Item
+            name="platform"
+            label="发布平台"
+            rules={[{ required: true, message: '请选择发布平台' }]}
           >
-            <Form.Item
-              name="platform"
-              label="发布平台"
-              rules={[{ required: true, message: '请选择发布平台' }]}
-            >
-              <Select placeholder="请选择发布平台">
-                {PLATFORM_OPTIONS.map(platform => (
-                  <Option key={platform} value={platform}>{platform}</Option>
-                ))}
-              </Select>
-            </Form.Item>
+            <Select placeholder="请选择发布平台" className="form-select">
+              {PLATFORM_OPTIONS.map(platform => (
+                <Option key={platform} value={platform}>{platform}</Option>
+              ))}
+            </Select>
+          </Form.Item>
 
-            <Form.Item
-              name="contentTopic"
-              label="内容主题"
-              rules={[{ required: true, message: '请输入内容主题' }]}
-            >
-              <TextArea 
-                placeholder="例如：徒步旅行川西，经过巍峨雪山群，秘境海子等美丽风景，一路上受伤、生病等等困难都克服了...加入细节描述，文案不仅更真实，还会会更有感染力哦。" 
-                autoSize={{ minRows: 4, maxRows: 8 }}
-              />
-            </Form.Item>
+          <Form.Item
+            name="contentTopic"
+            label="内容主题"
+            rules={[{ required: true, message: '请输入内容主题' }]}
+          >
+            <TextArea 
+              placeholder="例如：徒步旅行川西，经过巍峨雪山群，秘境海子等美丽风景，一路上受伤、生病等等困难都克服了...加入细节描述，文案不仅更真实，还会会更有感染力哦。" 
+              autoSize={{ minRows: 4, maxRows: 8 }}
+              className="form-input"
+            />
+          </Form.Item>
 
-            <Form.Item
-              name="keywords"
-              label="关键词"
-              rules={[{ required: true, message: '请输入关键词' }]}
-            >
-              <TextArea 
-                placeholder="例如：挑战、希望、成长（主题为徒步旅行川西）" 
-                autoSize={{ minRows: 2, maxRows: 4 }}
-              />
-            </Form.Item>
+          <Form.Item
+            name="keywords"
+            label="关键词"
+            rules={[{ required: true, message: '请输入关键词' }]}
+          >
+            <TextArea 
+              placeholder="例如：挑战、希望、成长（主题为徒步旅行川西）" 
+              autoSize={{ minRows: 2, maxRows: 4 }}
+              className="form-input"
+            />
+          </Form.Item>
 
-            <Form.Item
-              name="contentStyle"
-              label="文案风格"
-              rules={[{ required: true, message: '请选择文案风格' }]}
-            >
-              <Select placeholder="请选择文案风格">
-                {CONTENT_STYLE_OPTIONS.map(style => (
-                  <Option key={style} value={style}>{style}</Option>
-                ))}
-              </Select>
-            </Form.Item>
+          <Form.Item
+            name="contentStyle"
+            label="文案风格"
+            rules={[{ required: true, message: '请选择文案风格' }]}
+          >
+            <Select placeholder="请选择文案风格" className="form-select">
+              {CONTENT_STYLE_OPTIONS.map(style => (
+                <Option key={style} value={style}>{style}</Option>
+              ))}
+            </Select>
+          </Form.Item>
 
-            <Form.Item
-              name="duration"
-              label="文案口播时长（秒）"
-              rules={[{ required: true, message: '请输入文案口播时长' }]}
-              extra="时长约60秒对应200-300字"
-            >
-              <InputNumber 
-                min={15} 
-                max={300} 
-                style={{ width: '100%' }} 
-                placeholder="如60秒（200-300字）"
-              />
-            </Form.Item>
+          <Form.Item
+            name="duration"
+            label="文案口播时长（秒）"
+            rules={[{ required: true, message: '请输入文案口播时长' }]}
+            extra="时长约60秒对应200-300字"
+          >
+            <InputNumber 
+              min={15} 
+              max={300} 
+              style={{ width: '100%' }} 
+              placeholder="如60秒（200-300字）"
+              className="form-number-input"
+            />
+          </Form.Item>
 
-            <Form.Item>
-              <Button 
-                type="primary" 
-                htmlType="submit" 
-                loading={loading}
-                disabled={generating}
-                block
-                size="large"
-                style={{ marginTop: '16px' }}
-              >
-                生成文案
-              </Button>
-            </Form.Item>
-          </Form>
-        </Card>
-      </Col>
+          <Form.Item>
+            <Button 
+              type="primary" 
+              htmlType="submit" 
+              loading={loading}
+              disabled={generating}
+              block
+              size="large"
+              className="submit-btn"
+            >
+              生成文案
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
 
       {/* 右侧输出区域 */}
-      <Col xs={24} md={12}>
-        <Card 
-          title="生成结果" 
-          bordered={false} 
-          style={{ 
-            height: '100%', 
-            boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
-            borderRadius: '8px'
-          }}
-        >
-          {loading && !generatedContent ? (
-            <div style={{ textAlign: 'center', padding: '80px 0' }}>
-              <Spin size="large" />
-              <Paragraph style={{ marginTop: '16px' }}>
-                正在生成文案，请稍候...
-              </Paragraph>
-            </div>
-          ) : generatedContent ? (
-            <div style={{ 
-              padding: '16px', 
-              background: '#f9f9f9', 
-              borderRadius: '8px',
-              minHeight: '400px'
-            }}>
+      <div className="result-section">
+        <div className="section-header">
+          <h3 className="section-title">生成结果</h3>
+          <div className="section-divider"></div>
+        </div>
+        
+        {loading && !generatedContent ? (
+          <div className="loading-container">
+            <Spin size="large" />
+            <p className="loading-message">正在生成文案，请稍候...</p>
+          </div>
+        ) : generatedContent ? (
+          <div className="result-container">
+            <div className="result-content">
               <ReactMarkdown 
                 remarkPlugins={[remarkGfm]}
                 components={{
@@ -269,40 +254,86 @@ const ContentGenerationForm: React.FC = () => {
                 </div>
               )}
             </div>
-          ) : (
-            <div style={{ 
-              textAlign: 'center', 
-              padding: '80px 0',
-              color: '#999'
-            }}>
-              <div style={{ fontSize: '64px', marginBottom: '16px' }}>📝</div>
-              <Paragraph>
-                填写左侧表单并点击"生成文案"按钮，查看生成结果
-              </Paragraph>
-            </div>
-          )}
-        </Card>
-      </Col>
-    </Row>
+          </div>
+        ) : (
+          <div className="result-placeholder">
+            <div className="result-placeholder-icon">📝</div>
+            <p>填写左侧表单并点击"生成文案"按钮，查看生成结果</p>
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 
 const MediaContentPage: React.FC = () => {
+  const navigate = useNavigate();
+  
   return (
-    <Layout style={{ minHeight: '100vh', background: '#f5f7fa' }}>
-      <Content style={{ padding: '24px', maxWidth: '1400px', margin: '0 auto' }}>
-        <Title level={2} style={{ textAlign: 'center', marginBottom: '24px' }}>自媒体内容文案生成</Title>
-        
-        <Tabs defaultActiveKey="generate" type="card" size="large">
-          <TabPane tab="生成文案" key="generate">
-            <ContentGenerationForm />
-          </TabPane>
-          <TabPane tab="我的文案" key="list">
+    <div className="media-content-container">
+      {/* 添加装饰性元素 */}
+      <div className="decorative-circle1"></div>
+      <div className="decorative-circle2"></div>
+      <div className="decorative-dots1"></div>
+      <div className="decorative-dots2"></div>
+      <div className="decorative-wave"></div>
+      
+      {/* 添加悬浮按钮 */}
+      <div className="floating-action-btn">+</div>
+      
+      {/* 返回按钮 */}
+      <div className="back-btn" onClick={() => navigate('/')}>
+        <span>返回</span>
+      </div>
+      
+      <div className="page-actions">
+        {/* 这里可以添加页面级别的操作按钮 */}
+      </div>
+      
+      <Tabs defaultActiveKey="generate" type="card" className="content-tabs">
+        <TabPane tab="生成文案" key="generate">
+          <div className="page-header">
+            <h2 className="page-title">自媒体内容文案生成</h2>
+          </div>
+          <ContentGenerationForm />
+        </TabPane>
+        <TabPane tab="我的文案" key="list">
+          <div className="page-header">
+            <h2 className="page-title">我的文案列表</h2>
+            <p className="page-description">
+              查看和管理您已生成的所有文案内容。
+            </p>
+          </div>
+          <div className="content-list">
             <MediaContentList />
-          </TabPane>
-        </Tabs>
-      </Content>
-    </Layout>
+          </div>
+        </TabPane>
+      </Tabs>
+      
+      {/* 添加底部模块导航区域 */}
+      <div className="bottom-modules">
+        <h3 className="modules-title">更多创作工具</h3>
+        <div className="modules-container">
+          <div className="module-card" onClick={() => navigate('/content-topic')}>
+            <div className="module-icon">🔍</div>
+            <div className="module-title">去生成内容选题</div>
+            <div className="module-desc">找到最适合你的创作方向和热门话题</div>
+          </div>
+          
+          <div className="module-card" onClick={() => navigate('/media-introduction')}>
+            <div className="module-icon">📱</div>
+            <div className="module-title">去生成自媒体简介</div>
+            <div className="module-desc">快速生成吸引人的账号简介，提升关注度</div>
+          </div>
+          
+          <div className="module-card" onClick={() => navigate('/media-profile')}>
+            <div className="module-icon">📊</div>
+            <div className="module-title">去生成专属策划方案</div>
+            <div className="module-desc">量身定制自媒体成长路径，助你快速起号</div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -21,6 +21,7 @@ import {
 import { getMediaIntroductionList, MediaIntroductionDTO } from '../../services/mediaIntroductionService';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import './mediaIntroduction.css';
 
 const { Text, Paragraph } = Typography;
 
@@ -47,7 +48,11 @@ const MediaIntroductionList: React.FC = () => {
     try {
       const data = await getMediaIntroductionList();
       console.log('获取到自媒体简介列表数据:', data);
-      setIntroductions(data);
+      // 按创建时间倒序排列，最新的排在最前面
+      const sortedData = [...data].sort((a, b) => 
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+      setIntroductions(sortedData);
     } catch (error) {
       console.error('获取简介列表失败:', error);
       message.error('获取简介列表失败，请稍后重试');
@@ -106,16 +111,22 @@ const MediaIntroductionList: React.FC = () => {
     return text.substring(0, maxLength) + '...';
   };
 
+  // 添加装饰性元素
+  const decorativeElements = (
+    <>
+      <div className="decorative-circle1"></div>
+      <div className="decorative-circle2"></div>
+    </>
+  );
+
   return (
     <div>
+      {decorativeElements}
+      
       {loading ? (
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center', 
-          height: '300px' 
-        }}>
+        <div className="loading-container">
           <Spin size="large" />
+          <p className="loading-message">加载中...</p>
         </div>
       ) : introductions.length === 0 ? (
         <Empty 
@@ -139,11 +150,7 @@ const MediaIntroductionList: React.FC = () => {
             <List.Item>
               <Card
                 hoverable
-                style={{ 
-                  marginBottom: '16px',
-                  borderRadius: '8px',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.06)'
-                }}
+                className="introduction-card"
                 actions={[
                   <Tooltip title="查看详情">
                     <Button 
@@ -178,14 +185,10 @@ const MediaIntroductionList: React.FC = () => {
                   </Text>
                 </div>
                 <Paragraph 
-                  ellipsis={{ rows: 2 }} 
+                  ellipsis={{ rows: 3 }} 
                   style={{ marginBottom: '8px', fontSize: '14px' }}
                 >
-                  <Text strong>账号描述：</Text>
-                  {truncateText(item.accountDescription, 50)}
-                </Paragraph>
-                <Paragraph ellipsis={{ rows: 3 }}>
-                  {truncateText(item.content, 100)}
+                  {truncateText(item.accountDescription, 120)}
                 </Paragraph>
               </Card>
             </List.Item>
@@ -216,11 +219,13 @@ const MediaIntroductionList: React.FC = () => {
             type="primary" 
             icon={copied ? <CheckCircleOutlined /> : <CopyOutlined />}
             onClick={() => currentIntroduction && handleCopyIntroduction(currentIntroduction)}
+            className={copied ? "copied-btn" : ""}
           >
             {copied ? '已复制' : '复制内容'}
           </Button>
         ]}
         width={700}
+        className="introduction-detail-modal"
       >
         {currentIntroduction && (
           <div>
@@ -233,14 +238,7 @@ const MediaIntroductionList: React.FC = () => {
             
             <div>
               <Text strong>生成的简介：</Text>
-              <div style={{ 
-                marginTop: '8px', 
-                background: '#f9f9f9', 
-                padding: '16px', 
-                borderRadius: '4px',
-                maxHeight: '400px',
-                overflow: 'auto'
-              }}>
+              <div className="result-container">
                 <ReactMarkdown 
                   remarkPlugins={[remarkGfm]}
                   components={{

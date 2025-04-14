@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Form, Input, Button, message } from 'antd';
 import { updateMediaProfileExperience } from '../../services/mediaProfileService';
 import './mediaProfileExperience.css'; // 引入样式文件
@@ -18,6 +18,32 @@ const ExperienceInfoModal: React.FC<ExperienceInfoModalProps> = ({
 }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+
+  // 添加滚动重置逻辑
+  useEffect(() => {
+    if (visible) {
+      // 延迟执行以确保DOM已更新
+      setTimeout(() => {
+        // 重置表单区域滚动位置
+        const modalBody = document.querySelector('.experience-modal .ant-modal-body');
+        if (modalBody) {
+          modalBody.scrollTop = 0;
+        }
+        
+        // 重置modal整体滚动位置
+        const modalWrap = document.querySelector('.experience-modal .ant-modal-wrap');
+        if (modalWrap) {
+          modalWrap.scrollTop = 0;
+        }
+        
+        // 聚焦第一个输入框
+        const firstInput = document.querySelector('.experience-modal .ant-form-item:first-child textarea');
+        if (firstInput) {
+          (firstInput as HTMLTextAreaElement).focus();
+        }
+      }, 100);
+    }
+  }, [visible]);
 
   const handleSubmit = async () => {
     try {
@@ -60,6 +86,7 @@ const ExperienceInfoModal: React.FC<ExperienceInfoModalProps> = ({
       maskClosable={false}
       width={600}
       className="experience-modal"
+      style={{ top: 20 }}
     >
       <div className="modal-subtitle">
         把你独特而精彩的故事告诉小巷，让小巷成为最懂你的人

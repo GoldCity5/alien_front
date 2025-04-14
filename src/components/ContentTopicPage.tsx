@@ -1,13 +1,16 @@
 // 自媒体内容选题生成页面
 import React, { useState, useEffect } from 'react';
-import { Card, Form, Input, Button, Select, Spin, message, Typography, Row, Col, Table, Tag, Space, Modal } from 'antd';
+import { Form, Input, Button, Select, Spin, message, Row, Col, Table, Tag, Space, Modal, Tabs, Card, Tooltip, Empty } from 'antd';
 import { generateContentTopicWithSSE, getContentTopicList, ContentTopicDTO } from '../services/contentTopicService';
 import ReactMarkdown from 'react-markdown';
-import { PlusOutlined, HistoryOutlined } from '@ant-design/icons';
+import remarkGfm from 'remark-gfm';
+import { PlusOutlined, HistoryOutlined, EyeOutlined, LoadingOutlined, FileSearchOutlined } from '@ant-design/icons';
+import { useNavigate, useLocation } from 'react-router-dom';
+import './contentTopic.css';
 
 const { TextArea } = Input;
 const { Option } = Select;
-const { Title, Paragraph } = Typography;
+const { TabPane } = Tabs;
 
 interface FormValues {
   contentDirection: string;
@@ -24,14 +27,18 @@ const ContentTopicPage: React.FC = () => {
   const [loadingList, setLoadingList] = useState(false);
   const [selectedTopic, setSelectedTopic] = useState<ContentTopicDTO | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const [activeTab, setActiveTab] = useState<'create' | 'history'>('create');
+  const navigate = useNavigate();
 
   // 获取内容选题列表
   const fetchContentTopics = async () => {
     try {
       setLoadingList(true);
       const data = await getContentTopicList();
-      setContentTopics(data);
+      // 按创建时间倒序排列，最新的排在最前面
+      const sortedData = [...data].sort((a, b) => 
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+      setContentTopics(sortedData);
     } catch (error) {
       message.error('获取内容选题列表失败');
     } finally {
@@ -150,156 +157,152 @@ const ContentTopicPage: React.FC = () => {
       ),
     },
   ];
-
-  return (
-    <div style={{ 
-      padding: '20px', 
-      maxWidth: '1200px', 
-      margin: '0 auto',
-      minHeight: 'calc(100vh - 64px - 69px)'
-    }}>
-      <Title level={2}>自媒体内容选题</Title>
-      
-      <div style={{ marginBottom: '20px' }}>
-        <Space>
-          <Button 
-            type={activeTab === 'create' ? 'primary' : 'default'} 
-            icon={<PlusOutlined />}
-            onClick={() => setActiveTab('create')}
+  
+  // 表单生成组件
+  const TopicGenerationForm = () => (
+    <div className="content-container">
+      {/* 左侧输入区域 */}
+      <div className="input-section">
+        <div className="section-header">
+          <h3 className="section-title">输入信息</h3>
+          <div className="section-divider"></div>
+        </div>
+        
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={handleGenerateTopic}
+          initialValues={{ platform: 'douyin' }}
+        >
+          <Form.Item
+            name="contentDirection"
+            label="您想做的内容方向"
+            rules={[{ required: true, message: '请输入您想做的内容方向' }]}
           >
-            创建新选题
-          </Button>
-          <Button 
-            type={activeTab === 'history' ? 'primary' : 'default'} 
-            icon={<HistoryOutlined />}
-            onClick={() => {
-              setActiveTab('history');
-              fetchContentTopics(); // 切换到历史选项卡时重新获取数据
-            }}
+            <TextArea 
+              placeholder="例如：去全国各地旅行，分享一路所见所闻/用最简单的食材，教大家做美味的食物...写的越详细越好哦。" 
+              autoSize={{ minRows: 4, maxRows: 8 }}
+              className="form-input"
+            />
+          </Form.Item>
+          
+          <Form.Item
+            name="targetAudience"
+            label="您最想吸引的人群（目标受众）"
+            rules={[{ required: true, message: '请输入您的目标受众' }]}
           >
-            历史选题
-          </Button>
-        </Space>
+            <TextArea 
+              placeholder="例如：喜欢旅游的人、想旅游却没有时间的人" 
+              autoSize={{ minRows: 2, maxRows: 4 }}
+              className="form-input"
+            />
+          </Form.Item>
+          
+          <Form.Item
+            name="platform"
+            label="平台选择"
+            rules={[{ required: true, message: '请选择平台' }]}
+          >
+            <Select placeholder="请选择平台" className="form-select">
+              <Option value="douyin">抖音</Option>
+              <Option value="kuaishou">快手</Option>
+              <Option value="xiaohongshu">小红书</Option>
+              <Option value="bilibili">B站</Option>
+            </Select>
+          </Form.Item>
+          
+          <Form.Item>
+            <Button 
+              type="primary" 
+              htmlType="submit" 
+              loading={loading}
+              disabled={generating}
+              block
+              className="submit-btn"
+            >
+              生成内容选题建议
+            </Button>
+          </Form.Item>
+        </Form>
       </div>
       
-      {activeTab === 'create' ? (
-        <Row gutter={24}>
-          {/* 左侧输入区域 */}
-          <Col xs={24} md={10}>
-            <Card title="输入信息" style={{ marginBottom: '20px' }}>
-              <Form
-                form={form}
-                layout="vertical"
-                onFinish={handleGenerateTopic}
-                initialValues={{ platform: 'douyin' }}
-              >
-                <Form.Item
-                  name="contentDirection"
-                  label="您想做的内容方向"
-                  rules={[{ required: true, message: '请输入您想做的内容方向' }]}
-                >
-                  <TextArea 
-                    placeholder="例如：去全国各地旅行，分享一路所见所闻/用最简单的食材，教大家做美味的食物...写的越详细越好哦。" 
-                    autoSize={{ minRows: 4, maxRows: 8 }}
-                  />
-                </Form.Item>
-                
-                <Form.Item
-                  name="targetAudience"
-                  label="您最想吸引的人群（目标受众）"
-                  rules={[{ required: true, message: '请输入您的目标受众' }]}
-                >
-                  <TextArea 
-                    placeholder="例如：喜欢旅游的人、想旅游却没有时间的人" 
-                    autoSize={{ minRows: 2, maxRows: 4 }}
-                  />
-                </Form.Item>
-                
-                <Form.Item
-                  name="platform"
-                  label="平台选择"
-                  rules={[{ required: true, message: '请选择平台' }]}
-                >
-                  <Select placeholder="请选择平台">
-                    <Option value="douyin">抖音</Option>
-                    <Option value="kuaishou">快手</Option>
-                    <Option value="xiaohongshu">小红书</Option>
-                    <Option value="bilibili">B站</Option>
-                  </Select>
-                </Form.Item>
-                
-                <Form.Item>
-                  <Button 
-                    type="primary" 
-                    htmlType="submit" 
-                    loading={loading}
-                    disabled={generating}
-                    block
-                  >
-                    生成内容选题建议
-                  </Button>
-                </Form.Item>
-              </Form>
-            </Card>
-          </Col>
-          
-          {/* 右侧输出区域 */}
-          <Col xs={24} md={14}>
-            <Card 
-              title="内容选题建议" 
-              style={{ minHeight: '500px' }}
-            >
-              {loading ? (
-                <div style={{ textAlign: 'center', padding: '20px 0' }}>
-                  <Spin tip="正在为您生成内容选题建议..." />
-                  <Paragraph style={{ marginTop: '20px' }}>
-                    请耐心等待，我们正在为您精心打造...
-                  </Paragraph>
-                  {topicContent && (
-                    <div 
-                      style={{ 
-                        padding: '10px',
-                        lineHeight: '1.6',
-                        fontSize: '14px',
-                        textAlign: 'left',
-                        marginTop: '20px',
-                        border: '1px solid #f0f0f0',
-                        borderRadius: '4px',
-                        background: '#fafafa'
-                      }}
-                    >
-                      <ReactMarkdown>{topicContent}</ReactMarkdown>
-                    </div>
-                  )}
+      {/* 右侧输出区域 */}
+      <div className="result-section">
+        <div className="section-header">
+          <h3 className="section-title">内容选题建议</h3>
+          <div className="section-divider"></div>
+        </div>
+        
+        {loading ? (
+          <div className="loading-container">
+            <Spin size="large" />
+            <p className="loading-message">正在为您生成内容选题建议，请耐心等待...</p>
+            {topicContent && (
+              <div className="result-container">
+                <div className="result-content">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{topicContent}</ReactMarkdown>
                 </div>
-              ) : topicContent ? (
-                <div 
-                  style={{ 
-                    padding: '10px',
-                    lineHeight: '1.6',
-                    fontSize: '14px'
-                  }}
-                >
-                  <ReactMarkdown>{topicContent}</ReactMarkdown>
-                </div>
-              ) : (
-                <div style={{ textAlign: 'center', padding: '100px 0', color: '#999' }}>
-                  <p>填写左侧表单并点击"生成内容选题建议"按钮，获取专业的内容选题建议</p>
-                </div>
-              )}
-            </Card>
-          </Col>
-        </Row>
-      ) : (
-        <Card title="历史内容选题" style={{ marginBottom: '20px' }}>
-          <Table 
-            columns={columns} 
-            dataSource={contentTopics.map(item => ({ ...item, key: item.id }))} 
-            loading={loadingList}
-            pagination={{ pageSize: 10 }}
-          />
-        </Card>
-      )}
+              </div>
+            )}
+          </div>
+        ) : topicContent ? (
+          <div className="result-container">
+            <div className="result-content">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>{topicContent}</ReactMarkdown>
+            </div>
+          </div>
+        ) : (
+          <div className="result-placeholder">
+            <div className="result-placeholder-icon">🔍</div>
+            <p>填写左侧表单并点击"生成内容选题建议"按钮，获取专业的内容选题建议</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="topic-container">
+      {/* 添加装饰性元素 */}
+      <div className="decorative-circle1"></div>
+      <div className="decorative-circle2"></div>
+      <div className="decorative-dots1"></div>
+      <div className="decorative-dots2"></div>
+      <div className="decorative-wave"></div>
+      
+      {/* 添加悬浮按钮 */}
+      <div className="floating-action-btn">+</div>
+      
+      {/* 返回按钮 */}
+      <div className="back-btn" onClick={() => navigate('/')}>
+        <span>返回</span>
+      </div>
+      
+      <div className="page-actions">
+        {/* 这里可以添加页面级别的操作按钮 */}
+      </div>
+      
+      <Tabs defaultActiveKey="create" type="card" className="topic-tabs">
+        <TabPane tab="创建新选题" key="create">
+          <div className="page-header">
+            <h2 className="page-title">自媒体内容选题生成</h2>
+          </div>
+          <TopicGenerationForm />
+        </TabPane>
+        <TabPane tab="历史选题" key="history">
+          <div className="page-header">
+            <h2 className="page-title">历史内容选题</h2>
+          </div>
+          <div className="topic-list">
+            <Table 
+              columns={columns} 
+              dataSource={contentTopics.map(item => ({ ...item, key: item.id }))} 
+              loading={loadingList}
+              pagination={{ pageSize: 10 }}
+            />
+          </div>
+        </TabPane>
+      </Tabs>
       
       {/* 内容选题详情弹窗 */}
       <Modal
@@ -312,6 +315,7 @@ const ContentTopicPage: React.FC = () => {
           </Button>
         ]}
         width={800}
+        className="topic-detail-modal"
       >
         {selectedTopic && (
           <div>
@@ -326,18 +330,42 @@ const ContentTopicPage: React.FC = () => {
               </p>
               <p><strong>创建时间：</strong> {new Date(selectedTopic.createdAt).toLocaleString('zh-CN')}</p>
             </div>
-            <Card title="内容选题建议" style={{ maxHeight: '500px', overflow: 'auto' }}>
+            <div className="topic-detail-card">
               {selectedTopic.content ? (
-                <ReactMarkdown>{selectedTopic.content}</ReactMarkdown>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{selectedTopic.content}</ReactMarkdown>
               ) : (
                 <div style={{ textAlign: 'center', padding: '20px', color: '#999' }}>
                   <p>暂无内容</p>
                 </div>
               )}
-            </Card>
+            </div>
           </div>
         )}
       </Modal>
+      
+      {/* 添加底部模块导航区域 */}
+      <div className="bottom-modules">
+        <h3 className="modules-title">更多创作工具</h3>
+        <div className="modules-container">
+          <div className="module-card" onClick={() => navigate('/media-introduction')}>
+            <div className="module-icon">📱</div>
+            <div className="module-title">去生成自媒体简介</div>
+            <div className="module-desc">快速生成吸引人的账号简介，提升关注度</div>
+          </div>
+          
+          <div className="module-card" onClick={() => navigate('/media-content')}>
+            <div className="module-icon">📝</div>
+            <div className="module-title">去生成自媒体文案</div>
+            <div className="module-desc">一键生成高质量文案，提高内容传播力</div>
+          </div>
+          
+          <div className="module-card" onClick={() => navigate('/media-profile')}>
+            <div className="module-icon">📊</div>
+            <div className="module-title">去生成专属策划方案</div>
+            <div className="module-desc">量身定制自媒体成长路径，助你快速起号</div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

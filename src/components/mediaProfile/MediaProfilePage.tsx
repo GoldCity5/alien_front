@@ -84,8 +84,8 @@ const MediaProfilePage: React.FC = () => {
           // 获取详情并选中该档案
           fetchProfileDetail(targetProfile.id);
         }
-      } else if (profilesData.length === 0 || openBasicInfo) {
-        // 如果没有档案或URL参数要求打开基本信息弹窗，自动打开新增档案弹窗
+      } else if ((profilesData.length === 0 || openBasicInfo) && !goalsModalVisible) {
+        // 只有在没有档案或URL参数要求打开基本信息弹窗，且不是从目标信息弹窗关闭过来时，才自动打开新增档案弹窗
         setBasicModalVisible(true);
       }
     } catch (error) {
@@ -225,6 +225,12 @@ const MediaProfilePage: React.FC = () => {
   // 目标信息提交成功
   const handleGoalsInfoSuccess = () => {
     setGoalsModalVisible(false);
+    
+    // 创建新的URL，移除openBasicInfo参数
+    const url = new URL(window.location.href);
+    url.searchParams.delete('openBasicInfo');
+    window.history.replaceState({}, '', url.toString());
+    
     fetchProfiles();
     if (currentProfileId) {
       fetchProfileDetail(currentProfileId);
@@ -297,10 +303,9 @@ const MediaProfilePage: React.FC = () => {
       </div>
       
       {/* 返回按钮 - 移动位置使其不与操作按钮组冲突 */}
-      <button className="back-btn" type="button" onClick={handleBackToHome}>
-        <ArrowLeftOutlined className="back-btn-icon" />
-        返回
-      </button>
+      <div className="back-btn" onClick={handleBackToHome}>
+        <span>返回</span>
+      </div>
       
       <div className="media-profile-container">
         <div className="profile-content-wrapper">
