@@ -921,4 +921,248 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* 弹窗相关样式 */
+.profileModal :global(.ant-modal-content) {
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 25px 70px rgba(0,0,0,0.12), 0 10px 30px rgba(102, 187, 106, 0.08);
+  border: none;
+}
+
+.profileModal :global(.ant-modal-header) {
+  background: white;
+  border-bottom: none;
+  padding: 0;
+  margin: 0;
+}
+
+.profileModal :global(.ant-modal-body) {
+  padding: 0;
+}
+
+.modalTitle {
+  display: flex;
+  align-items: center;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-dark);
+  position: relative;
+  padding: 30px 40px 20px;
+  background: linear-gradient(to right, rgba(255,255,255,0.8), rgba(255,255,255,0.8)), 
+              linear-gradient(135deg, rgba(102, 187, 106, 0.15), rgba(67, 160, 71, 0.05));
+  border-bottom: 1px solid rgba(102, 187, 106, 0.1);
+}
+
+.modalTitle::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, var(--primary-green), var(--deep-green));
+}
+
+.modalTitle::after {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: -1px;
+  left: 40px;
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(to right, var(--primary-green), rgba(102, 187, 106, 0.2));
+  border-radius: 2px;
+}
+
+.modalTitle span {
+  margin-right: 15px;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, rgba(102, 187, 106, 0.13), rgba(67, 160, 71, 0.05));
+  border-radius: 50%;
+  box-shadow: 0 10px 25px rgba(102, 187, 106, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.modalContent {
+  padding: 40px 40px 45px;
+  position: relative;
+  text-align: center;
+}
+
+/* 装饰元素 */
+.modalContent::before {
+  content: "";
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(102, 187, 106, 0.07) 0%, rgba(255, 255, 255, 0) 70%);
+  top: -80px;
+  right: -80px;
+  z-index: 0;
+}
+
+.modalContent::after {
+  content: "";
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(102, 187, 106, 0.05) 0%, rgba(255, 255, 255, 0) 70%);
+  bottom: -60px;
+  left: -60px;
+  z-index: 0;
+}
+
+.modalContent p {
+  font-size: 18px;
+  color: var(--text-medium);
+  margin-bottom: 30px;
+  line-height: 1.7;
+  text-align: center;
+  padding: 15px;
+  background-color: rgba(102, 187, 106, 0.03);
+  border-radius: 16px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.03);
+  position: relative;
+  z-index: 2;
+}
+
+.modalButtons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.modalButtonPrimary {
+  background: linear-gradient(135deg, var(--primary-green), var(--deep-green));
+  border: none;
+  border-radius: 50px;
+  color: white;
+  font-weight: 600;
+  height: 48px;
+  min-width: 180px;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 25px rgba(102, 187, 106, 0.25), 0 2px 5px rgba(0,0,0,0.1);
+  position: relative;
+  overflow: hidden;
+  font-size: 16px;
+}
+
+.modalButtonPrimary::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
+  transform: translateX(-100%);
+  animation: buttonShine 3s infinite;
+}
+
+@keyframes buttonShine {
+  0% { transform: translateX(-100%); }
+  20% { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
+
+.modalButtonPrimary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(102, 187, 106, 0.3), 0 3px 8px rgba(0,0,0,0.15);
+}
+
+.modalButtonSecondary {
+  background: white;
+  border: 1px solid rgba(102, 187, 106, 0.3);
+  border-radius: 50px;
+  color: var(--deep-green);
+  font-weight: 600;
+  height: 48px;
+  min-width: 180px;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  font-size: 16px;
+}
+
+.modalButtonSecondary:hover {
+  background: rgba(102, 187, 106, 0.05);
+  border-color: var(--primary-green);
+  color: var(--deep-green);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+/* 装饰方块元素 */
+.modalButtons::before {
+  content: "";
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(102, 187, 106, 0.1);
+  border-radius: 12px;
+  transform: rotate(25deg);
+  top: -60px;
+  right: 70px;
+  z-index: -1;
+}
+
+.modalButtons::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: rgba(102, 187, 106, 0.07);
+  border-radius: 6px;
+  transform: rotate(25deg);
+  bottom: -40px;
+  right: 60px;
+  z-index: -1;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .modalTitle {
+    font-size: 22px;
+    padding: 25px 25px 15px;
+  }
+  
+  .modalTitle span {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    margin-right: 10px;
+  }
+  
+  .modalContent {
+    padding: 30px 25px 35px;
+  }
+  
+  .modalContent p {
+    font-size: 16px;
+    padding: 12px;
+  }
+  
+  .modalButtons {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .modalButtonPrimary,
+  .modalButtonSecondary {
+    width: 100%;
+    min-width: auto;
+    font-size: 15px;
+  }
 } 

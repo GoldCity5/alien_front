@@ -26,6 +26,8 @@ const HomePage: React.FC = () => {
   const [profilesLoading, setProfilesLoading] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState<PlazaProfile | null>(null);
   const [profileDetailVisible, setProfileDetailVisible] = useState(false);
+  const [hasProfiles, setHasProfiles] = useState(false);
+  const [shouldShowBasicModal, setShouldShowBasicModal] = useState(false);
 
   // 响应式布局调整
   useEffect(() => {
@@ -147,17 +149,15 @@ const HomePage: React.FC = () => {
       const response = await getMediaProfiles();
       const profilesData = response.data.data || [];
       
-      if (profilesData.length === 0) {
-        // 没有档案，显示提示弹窗
-        setProfileModalVisible(true);
-      } else {
-        // 有档案，直接跳转到策划方案页面
-        navigate('/media-profile');
-      }
+      // 设置是否有档案的状态
+      setHasProfiles(profilesData.length > 0);
+      // 显示提示弹窗
+      setProfileModalVisible(true);
     } catch (error) {
       console.error('获取档案列表失败:', error);
-      // 出错时也跳转到档案页面，让用户在那里处理
-      navigate('/media-profile');
+      // 出错时假设没有档案
+      setHasProfiles(false);
+      setProfileModalVisible(true);
     } finally {
       setLoading(false);
     }
@@ -194,9 +194,22 @@ const HomePage: React.FC = () => {
     navigate(`/media-profile?profileId=${planId}&showPlan=true&autoSelect=true`);
   };
 
-  const handleCreateProfile = () => {
+  // 处理创建新档案按钮点击 - 设置跳转时需要弹出基本信息输入框
+  const handleCreateNewProfile = () => {
     setProfileModalVisible(false);
-    navigate('/media-profile');
+    navigate('/media-profile?openBasicInfo=true');
+  };
+
+  // 处理查看已有档案按钮点击 - 修改为显示第一个方案
+  const handleViewExistingProfiles = () => {
+    setProfileModalVisible(false);
+    // 如果有档案，跳转时自动选择第一个档案并显示其方案
+    if (userProfiles.length > 0) {
+      navigate(`/media-profile?profileId=${userProfiles[0].id}&showPlan=true&autoSelect=true`);
+    } else {
+      // 如果没有档案，则正常跳转
+      navigate('/media-profile');
+    }
   };
 
   // 功能按钮hover处理函数
@@ -456,30 +469,64 @@ const HomePage: React.FC = () => {
                   gap: isMobile ? '8px' : '10px',
                   flexGrow: '1'
                 }}>
-                  <div className="profile-button" style={{
-                    padding: isMobile ? '12px' : '14px 15px',
-                    background: 'linear-gradient(135deg, #f4f7f4, #f0f5f0)',
-                    color: '#43a047',
-                    borderRadius: isMobile ? '6px' : '8px',
-                    transition: 'all 0.3s',
-                    fontWeight: '500',
-                    textAlign: 'center',
-                    border: '1px solid rgba(102, 187, 106, 0.15)',
-                    fontSize: isMobile ? '14px' : 'inherit'
-                  }}>
+                  <div 
+                    className="profile-button" 
+                    style={{
+                      padding: isMobile ? '12px' : '14px 15px',
+                      background: 'linear-gradient(135deg, #f4f7f4, #f0f5f0)',
+                      color: '#43a047',
+                      borderRadius: isMobile ? '6px' : '8px',
+                      transition: 'all 0.3s',
+                      fontWeight: '500',
+                      textAlign: 'center',
+                      border: '1px solid rgba(102, 187, 106, 0.15)',
+                      fontSize: isMobile ? '14px' : 'inherit',
+                      cursor: 'pointer'
+                    }}
+                    onClick={handleCreateNewProfile}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-3px)';
+                      e.currentTarget.style.boxShadow = '0 6px 15px rgba(102, 187, 106, 0.15)';
+                      e.currentTarget.style.color = 'var(--deep-green)';
+                      e.currentTarget.style.background = 'linear-gradient(135deg, #f0f8f0, #e8f4e8)';
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.boxShadow = 'none';
+                      e.currentTarget.style.color = '#43a047';
+                      e.currentTarget.style.background = 'linear-gradient(135deg, #f4f7f4, #f0f5f0)';
+                    }}
+                  >
                     添加个人档案
                   </div>
-                  <div className="profile-button" style={{
-                    padding: isMobile ? '12px' : '14px 15px',
-                    background: 'linear-gradient(135deg, #f4f7f4, #f0f5f0)',
-                    color: '#43a047',
-                    borderRadius: isMobile ? '6px' : '8px',
-                    transition: 'all 0.3s',
-                    fontWeight: '500',
-                    textAlign: 'center',
-                    border: '1px solid rgba(102, 187, 106, 0.15)',
-                    fontSize: isMobile ? '14px' : 'inherit'
-                  }}>
+                  <div 
+                    className="profile-button" 
+                    style={{
+                      padding: isMobile ? '12px' : '14px 15px',
+                      background: 'linear-gradient(135deg, #f4f7f4, #f0f5f0)',
+                      color: '#43a047',
+                      borderRadius: isMobile ? '6px' : '8px',
+                      transition: 'all 0.3s',
+                      fontWeight: '500',
+                      textAlign: 'center',
+                      border: '1px solid rgba(102, 187, 106, 0.15)',
+                      fontSize: isMobile ? '14px' : 'inherit',
+                      cursor: 'pointer'
+                    }}
+                    onClick={handleViewExistingProfiles}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-3px)';
+                      e.currentTarget.style.boxShadow = '0 6px 15px rgba(102, 187, 106, 0.15)';
+                      e.currentTarget.style.color = 'var(--deep-green)';
+                      e.currentTarget.style.background = 'linear-gradient(135deg, #f0f8f0, #e8f4e8)';
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.boxShadow = 'none';
+                      e.currentTarget.style.color = '#43a047';
+                      e.currentTarget.style.background = 'linear-gradient(135deg, #f4f7f4, #f0f5f0)';
+                    }}
+                  >
                     我的个人档案
                   </div>
                 </div>
@@ -551,18 +598,58 @@ const HomePage: React.FC = () => {
         </div>
       </div>
 
-      {/* 没有档案时的提示弹窗 */}
+      {/* 提示弹窗 - 样式优化并根据是否有档案显示不同内容 */}
       <Modal
-        title="提示"
+        title={
+          <div className={styles.modalTitle}>
+            <span role="img" aria-label="notification">📋</span> 
+            {hasProfiles ? "您已有专属自媒体方案" : "创建专属自媒体方案"}
+          </div>
+        }
         open={profileModalVisible}
         onCancel={() => setProfileModalVisible(false)}
-        footer={[
-          <Button key="submit" type="primary" onClick={handleCreateProfile}>
-            写档案
-          </Button>
-        ]}
+        footer={null}
+        className={styles.profileModal}
       >
-        <p>去填写您的个人档案，让"天天"为您生成专属自媒体策划方案</p>
+        <div className={styles.modalContent}>
+          {hasProfiles ? (
+            <>
+              <p>您已经创建过<span style={{ color: 'var(--primary-green)', fontWeight: 600 }}>专属自媒体策划方案</span>，是否需要创建全新的自媒体人设？</p>
+              <div className={styles.modalButtons}>
+                <Button 
+                  key="view" 
+                  onClick={handleViewExistingProfiles}
+                  className={styles.modalButtonSecondary}
+                >
+                  查看专属方案
+                </Button>
+                <Button 
+                  key="create" 
+                  type="primary" 
+                  onClick={handleCreateNewProfile}
+                  className={styles.modalButtonPrimary}
+                >
+                  创建新档案
+                </Button>
+              </div>
+            </>
+          ) : (
+            <>
+              <p>去填写您的个人档案，让<span style={{ color: 'var(--primary-green)', fontWeight: 600 }}>"小巷"</span>为您生成</p>
+              <p><span style={{ color: 'var(--primary-green)', fontWeight: 600 }}>专属自媒体策划方案</span></p>
+              <div className={styles.modalButtons}>
+                <Button 
+                  key="submit" 
+                  type="primary" 
+                  onClick={handleCreateNewProfile}
+                  className={styles.modalButtonPrimary}
+                >
+                  开始填写
+                </Button>
+              </div>
+            </>
+          )}
+        </div>
       </Modal>
 
       {/* 策划方案详情弹窗 */}

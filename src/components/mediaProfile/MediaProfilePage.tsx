@@ -65,6 +65,8 @@ const MediaProfilePage: React.FC = () => {
   const profileIdFromUrl = query.get('profileId');
   const showPlan = query.get('showPlan') === 'true';
   const autoSelect = query.get('autoSelect') === 'true';
+  // 检查是否需要自动打开基本信息弹窗
+  const openBasicInfo = query.get('openBasicInfo') === 'true';
 
   // 获取档案列表
   const fetchProfiles = async () => {
@@ -82,8 +84,8 @@ const MediaProfilePage: React.FC = () => {
           // 获取详情并选中该档案
           fetchProfileDetail(targetProfile.id);
         }
-      } else if (profilesData.length === 0) {
-        // 如果没有档案，自动打开新增档案弹窗
+      } else if (profilesData.length === 0 || openBasicInfo) {
+        // 如果没有档案或URL参数要求打开基本信息弹窗，自动打开新增档案弹窗
         setBasicModalVisible(true);
       }
     } catch (error) {
