@@ -6,9 +6,7 @@ import {
   Button, 
   Select, 
   Spin, 
-  InputNumber, 
-  Row, 
-  Col, 
+  InputNumber,
   message,
   Tabs
 } from 'antd';
