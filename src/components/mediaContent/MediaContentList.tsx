@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Table, 
-  Typography, 
+  Typography,
   Tag, 
-  Space, 
-  Button, 
+  Button,
   Tooltip, 
   Modal, 
   Card, 
@@ -113,88 +111,6 @@ const MediaContentList: React.FC = () => {
   };
 
   // 表格列定义
-  const columns = [
-    {
-      title: '平台',
-      dataIndex: 'platform',
-      key: 'platform',
-      width: 100,
-      render: (platform: string) => (
-        <Tag color={platformColorMap[platform] || 'default'}>
-          {platform}
-        </Tag>
-      ),
-    },
-    {
-      title: '内容主题',
-      dataIndex: 'contentTopic',
-      key: 'contentTopic',
-      ellipsis: true,
-      render: (text: string) => (
-        <Tooltip title={text}>
-          <span>{text}</span>
-        </Tooltip>
-      ),
-    },
-    {
-      title: '关键词',
-      dataIndex: 'keywords',
-      key: 'keywords',
-      width: 200,
-      render: renderKeywords,
-    },
-    {
-      title: '风格',
-      dataIndex: 'contentStyle',
-      key: 'contentStyle',
-      width: 120,
-      render: (style: string) => (
-        <Tag color={styleColorMap[style] || 'default'}>
-          {style}
-        </Tag>
-      ),
-    },
-    {
-      title: '时长',
-      dataIndex: 'duration',
-      key: 'duration',
-      width: 80,
-      render: (duration: number) => (
-        <Tag icon={<ClockCircleOutlined />} color="default">
-          {duration}秒
-        </Tag>
-      ),
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'createdAt',
-      key: 'createdAt',
-      width: 170,
-      render: (date: string) => dayjs(date).format('YYYY-MM-DD HH:mm'),
-    },
-    {
-      title: '操作',
-      key: 'action',
-      width: 120,
-      render: (_: any, record: MediaContentDTO) => (
-        <Space size="middle">
-          <Button 
-            type="text" 
-            icon={<EyeOutlined />} 
-            onClick={() => handleViewContent(record)}
-            title="查看"
-          />
-          <Button 
-            type="text" 
-            icon={<CopyOutlined />} 
-            onClick={() => handleCopyContent(record.content)}
-            title="复制"
-          />
-        </Space>
-      ),
-    },
-  ];
-
   return (
     <div style={{ padding: '24px' }}>
       <Card

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {Typography, Card, Row, Col, Modal, Button, Empty, Spin} from 'antd';
+import {Typography, Modal, Button, Spin} from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { getMediaProfiles } from '../services/mediaProfileService';
 import styles from './HomePage.module.css';
@@ -19,7 +19,7 @@ interface MediaProfile {
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const [profileModalVisible, setProfileModalVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [isTablet, setIsTablet] = useState(window.innerWidth <= 992 && window.innerWidth > 768);
   const [userProfiles, setUserProfiles] = useState<MediaProfile[]>([]);
@@ -27,9 +27,7 @@ const HomePage: React.FC = () => {
   const [selectedProfile, setSelectedProfile] = useState<PlazaProfile | null>(null);
   const [profileDetailVisible, setProfileDetailVisible] = useState(false);
   const [hasProfiles, setHasProfiles] = useState(false);
-  const [shouldShowBasicModal, setShouldShowBasicModal] = useState(false);
-
-  // 响应式布局调整
+// 响应式布局调整
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -289,11 +287,7 @@ const HomePage: React.FC = () => {
   };
 
   // 手动刷新用户档案数据
-  const refreshUserProfiles = () => {
-    fetchUserProfiles();
-  };
-
-  // 处理点击策划广场卡片
+// 处理点击策划广场卡片
   const handlePlazaCardClick = (profile: PlazaProfile) => {
     setSelectedProfile(profile);
     setProfileDetailVisible(true);

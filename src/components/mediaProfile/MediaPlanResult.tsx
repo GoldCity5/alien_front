@@ -3,7 +3,7 @@ import { Card, Button, Spin, message, Typography, Empty } from 'antd';
 import { generateMediaPlanWithSSE, saveMediaPlan } from '../../services/mediaProfileService';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { BookOutlined, FilePdfOutlined, CopyOutlined, DownloadOutlined } from '@ant-design/icons';
+import { BookOutlined, CopyOutlined, DownloadOutlined } from '@ant-design/icons';
 import './mediaPlanResult.css';
 // 导入PDF生成库
 import jsPDF from 'jspdf';
@@ -42,7 +42,7 @@ const MediaPlanResult: React.FC<MediaPlanResultProps> = ({ profile }) => {
   const [planContent, setPlanContent] = useState<string>('');
   const [generating, setGenerating] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [copying, setCopying] = useState(false);
+  const [copying] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
   // 初始化时，如果档案已有策划方案，则直接显示
@@ -276,7 +276,7 @@ const MediaPlanResult: React.FC<MediaPlanResultProps> = ({ profile }) => {
         height: container.offsetHeight,
         windowWidth: container.scrollWidth + 100,
         windowHeight: container.scrollHeight + 100,
-        onclone: (clonedDoc, clonedElement) => {
+        onclone: (_clonedDoc, clonedElement) => {
           // 确保克隆的元素可见且尺寸正确
           clonedElement.style.position = 'absolute';
           clonedElement.style.top = '0';

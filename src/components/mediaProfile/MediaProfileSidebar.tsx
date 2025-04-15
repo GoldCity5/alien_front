@@ -1,9 +1,9 @@
 /* 策划方案生成页面侧边栏组件 */
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { UserOutlined, PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import { getMediaProfiles } from '../../services/mediaProfileService';
-import { Spin, Empty, Result } from 'antd';
+import { Spin, Empty } from 'antd';
 import './mediaProfileSidebar.css';
 
 interface MediaProfile {

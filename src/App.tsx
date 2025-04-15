@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Layout, Menu, Dropdown, Button, Avatar, Space, Typography } from 'antd';
-import { BrowserRouter as Router, Routes, Route, Navigate, Link, useLocation, useNavigate } from 'react-router-dom';
-import { UserOutlined, HomeOutlined, FileTextOutlined, FormOutlined, VideoCameraOutlined, LogoutOutlined, MenuOutlined, GithubOutlined, BulbOutlined, MobileOutlined, ProfileOutlined, WalletOutlined, BarChartOutlined } from '@ant-design/icons';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { UserOutlined, LogoutOutlined, MenuOutlined, GithubOutlined, WalletOutlined } from '@ant-design/icons';
 import ExamplePage from './components/ExamplePage';
 import HomePage from './components/HomePage';
 import LoginPage from './components/LoginPage';
@@ -33,7 +33,7 @@ const { Text, Link: AntLink } = Typography;
 
 // Header component with navigation
 const AppHeader = () => {
-  const location = useLocation();
+  useLocation();
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [userPoints, setUserPoints] = useState<number>(0);

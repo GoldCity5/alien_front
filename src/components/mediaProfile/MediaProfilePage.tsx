@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Typography, Button, List, Card, Empty, Spin, message, Popconfirm, Modal, Tag, Collapse } from 'antd';
-import { PlusOutlined, EditOutlined, DeleteOutlined, InfoCircleOutlined, UserOutlined, FileTextOutlined, AimOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { Typography, Button, Card, Empty, message, Popconfirm, Collapse } from 'antd';
+import { PlusOutlined, EditOutlined, DeleteOutlined, UserOutlined, FileTextOutlined, AimOutlined } from '@ant-design/icons';
 import { getMediaProfiles, getMediaProfileDetail, deleteMediaProfile } from '../../services/mediaProfileService';
 import BasicInfoModal from './BasicInfoModal';
 import ExperienceInfoModal from './ExperienceInfoModal';
@@ -48,7 +48,7 @@ interface MediaProfile {
 const MediaProfilePage: React.FC = () => {
   const [profiles, setProfiles] = useState<MediaProfile[]>([]);
   const [selectedProfile, setSelectedProfile] = useState<MediaProfile | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
   const [basicModalVisible, setBasicModalVisible] = useState(false);
   const [experienceModalVisible, setExperienceModalVisible] = useState(false);
   const [goalsModalVisible, setGoalsModalVisible] = useState(false);
@@ -63,7 +63,6 @@ const MediaProfilePage: React.FC = () => {
   // 获取URL查询参数
   const query = useQuery();
   const profileIdFromUrl = query.get('profileId');
-  const showPlan = query.get('showPlan') === 'true';
   const autoSelect = query.get('autoSelect') === 'true';
   // 检查是否需要自动打开基本信息弹窗
   const openBasicInfo = query.get('openBasicInfo') === 'true';
@@ -189,10 +188,6 @@ const MediaProfilePage: React.FC = () => {
     }
   };
 
-  // 选择档案
-  const handleSelectProfile = (profile: MediaProfile) => {
-    fetchProfileDetail(profile.id);
-  };
 
   // 基本信息提交成功
   const handleBasicInfoSuccess = (profileId: string) => {

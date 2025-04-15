@@ -1,11 +1,10 @@
 // 自媒体内容选题生成页面
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Select, Spin, message, Row, Col, Table, Tag, Space, Modal, Tabs, Card, Tooltip, Empty } from 'antd';
+import { Form, Input, Button, Select, Spin, message, Table, Tag, Space, Modal, Tabs } from 'antd';
 import { generateContentTopicWithSSE, getContentTopicList, ContentTopicDTO } from '../services/contentTopicService';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { PlusOutlined, HistoryOutlined, EyeOutlined, LoadingOutlined, FileSearchOutlined } from '@ant-design/icons';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './contentTopic.css';
 
 const { TextArea } = Input;
