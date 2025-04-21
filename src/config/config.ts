@@ -36,7 +36,8 @@ const config: EnvConfig = {
         cdnBaseUrl: 'https://front-static-test-1309544882.cos.ap-shanghai.myqcloud.com/profiles%2Fprofiles%2F'
     },
     production: {
-        apiBaseUrl: 'https://www.freealley.com/api', // 这里替换为实际的生产环境API地址
+        // apiBaseUrl: 'https://www.freealley.com/api', // 这里替换为实际的生产环境API地址
+        apiBaseUrl: 'http://14.103.160.4:8080/api',
         cdnBaseUrl: 'https://front-static-test-1309544882.cos.ap-shanghai.myqcloud.com/profiles%2Fprofiles%2F'
     }
 };
