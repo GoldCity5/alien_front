@@ -1,27 +1,37 @@
-// 导入图片
-import baomaPic from '../assets/images/profiles/宝妈林霞.png';
-import waimaiPic from '../assets/images/profiles/外卖员小李.png';
-import teacherPic from '../assets/images/profiles/小学老师钰钰.png';
-import studentPic from '../assets/images/profiles/大学生小崔.png';
-import decoratorPic from '../assets/images/profiles/装修工人张师傅.png';
-import fruitPic from '../assets/images/profiles/水果店老板华哥.png';
-import coachPic from '../assets/images/profiles/健身教练小陈.png';
-import coffeePic from '../assets/images/profiles/咖啡师小美.png';
-import illustratorPic from '../assets/images/profiles/插画师若若.png';
-import itPic from '../assets/images/profiles/IT工程师老王.png';
-import housekeeperPic from '../assets/images/profiles/家政阿姨张姐.png';
-import bakerPic from '../assets/images/profiles/烘焙师小林.png';
-import farmerPic from '../assets/images/profiles/农民伯伯老赵.png';
-import doctorPic from '../assets/images/profiles/医生王医生.png';
-import electricianPic from '../assets/images/profiles/电工师傅老李.png';
-import accountantPic from '../assets/images/profiles/会计师小周.png';
-import kindergartenTeacherPic from '../assets/images/profiles/幼儿园老师小丽.png';
-import hairdresserPic from '../assets/images/profiles/美发师小赵.png';
-import taxiDriverPic from '../assets/images/profiles/出租车司机老马.png';
-import chefPic from '../assets/images/profiles/主厨老刘.png';
-import floristPic from '../assets/images/profiles/花艺师小慧.png';
-import photographerPic from '../assets/images/profiles/摄影师大鹏.png';
-import shopOwnerPic from '../assets/images/profiles/网店店主小张.png';
+// 导入配置
+import { currentConfig } from '../config/config';
+
+// 图片路径工具函数
+const getProfileImageUrl = (imageName: string): string => {
+  return `${currentConfig.cdnBaseUrl}${imageName}`;
+};
+
+// 图片名称常量
+const IMAGE_NAMES = {
+  baomaPic: '宝妈林霞.png',
+  waimaiPic: '外卖员小李.png',
+  teacherPic: '小学老师钰钰.png',
+  studentPic: '大学生小崔.png',
+  decoratorPic: '装修工人张师傅.png',
+  fruitPic: '水果店老板华哥.png',
+  coachPic: '健身教练小陈.png',
+  coffeePic: '咖啡师小美.png',
+  illustratorPic: '插画师若若.png',
+  itPic: 'IT工程师老王.png',
+  housekeeperPic: '家政阿姨张姐.png',
+  bakerPic: '烘焙师小林.png',
+  farmerPic: '农民伯伯老赵.png',
+  doctorPic: '医生王医生.png',
+  electricianPic: '电工师傅老李.png',
+  accountantPic: '会计师小周.png',
+  kindergartenTeacherPic: '幼儿园老师小丽.png',
+  hairdresserPic: '美发师小赵.png',
+  taxiDriverPic: '出租车司机老马.png',
+  chefPic: '主厨老刘.png',
+  floristPic: '花艺师小慧.png',
+  photographerPic: '摄影师大鹏.png',
+  shopOwnerPic: '网店店主小张.png'
+};
 
 // 策划广场数据接口
 export interface PlazaProfile {
@@ -40,7 +50,7 @@ export const plazaProfiles: PlazaProfile[] = [
   {
     id: '1',
     name: '宝妈林霞',
-    image: baomaPic,
+    image: getProfileImageUrl(IMAGE_NAMES.baomaPic),
     description: '85后宝妈，热爱分享育儿经验和家庭生活',
     position: '生活记录博主 / 育儿达人',
     contentDirection: [
@@ -65,7 +75,7 @@ export const plazaProfiles: PlazaProfile[] = [
   {
     id: '2',
     name: '外卖员小李',
-    image: waimaiPic,
+    image: getProfileImageUrl(IMAGE_NAMES.waimaiPic),
     description: '95后外卖小哥，大学毕业后选择送外卖，记录城市中的温暖故事和真实生活',
     position: '城市观察者 / 生活记录博主 / 外卖行业内容创作者',
     contentDirection: [
@@ -91,7 +101,7 @@ export const plazaProfiles: PlazaProfile[] = [
   {
     id: '3',
     name: '小学老师钰钰',
-    image: teacherPic,
+    image: getProfileImageUrl(IMAGE_NAMES.teacherPic),
     description: '90后小学语文老师，热爱教育事业，擅长创新教学方法',
     position: '教育工作者 / 语文教学达人',
     contentDirection: [
@@ -116,7 +126,7 @@ export const plazaProfiles: PlazaProfile[] = [
   {
     id: '4',
     name: '大学生小崔',
-    image: studentPic,
+    image: getProfileImageUrl(IMAGE_NAMES.studentPic),
     description: '在校大学生，热爱记录校园生活，分享学习经验',
     position: '校园生活博主 / 学习经验分享者',
     contentDirection: [
@@ -141,7 +151,7 @@ export const plazaProfiles: PlazaProfile[] = [
   {
     id: '5',
     name: '装修工人张师傅',
-    image: decoratorPic,
+    image: getProfileImageUrl(IMAGE_NAMES.decoratorPic),
     description: '从业15年的装修师傅，专注分享装修技巧和经验',
     position: '装修达人 / 家居顾问',
     contentDirection: [
@@ -166,7 +176,7 @@ export const plazaProfiles: PlazaProfile[] = [
   {
     id: '6',
     name: '水果店老板华哥',
-    image: fruitPic,
+    image: getProfileImageUrl(IMAGE_NAMES.fruitPic),
     description: '经营水果店多年，了解各类水果特性和挑选技巧',
     position: '水果达人 / 生鲜经营专家',
     contentDirection: [
@@ -191,7 +201,7 @@ export const plazaProfiles: PlazaProfile[] = [
   {
     id: '7',
     name: '健身教练小陈',
-    image: coachPic,
+    image: getProfileImageUrl(IMAGE_NAMES.coachPic),
     description: '专业健身教练，擅长制定个性化训练计划',
     position: '健身达人 / 运动指导专家',
     contentDirection: [
@@ -216,7 +226,7 @@ export const plazaProfiles: PlazaProfile[] = [
   {
     id: '8',
     name: '咖啡师小美',
-    image: coffeePic,
+    image: getProfileImageUrl(IMAGE_NAMES.coffeePic),
     description: '专业咖啡师，热爱分享咖啡知识和冲泡技巧',
     position: '咖啡达人 / 饮品制作专家',
     contentDirection: [
@@ -241,7 +251,7 @@ export const plazaProfiles: PlazaProfile[] = [
   {
     id: '9',
     name: '插画师若若',
-    image: illustratorPic,
+    image: getProfileImageUrl(IMAGE_NAMES.illustratorPic),
     description: '自由插画师，专注原创插画创作',
     position: '插画创作者 / 艺术工作者',
     contentDirection: [
@@ -266,7 +276,7 @@ export const plazaProfiles: PlazaProfile[] = [
   {
     id: '10',
     name: 'IT工程师老王',
-    image: itPic,
+    image: getProfileImageUrl(IMAGE_NAMES.itPic),
     description: '资深IT工程师，专注技术分享和经验交流',
     position: '技术专家 / 编程教育者',
     contentDirection: [
@@ -291,7 +301,7 @@ export const plazaProfiles: PlazaProfile[] = [
   {
     id: '11',
     name: '家政阿姨张姐',
-    image: housekeeperPic,
+    image: getProfileImageUrl(IMAGE_NAMES.housekeeperPic),
     description: '专业家政服务人员，擅长家务整理和烹饪',
     position: '家政服务专家 / 生活整理达人',
     contentDirection: [
@@ -316,7 +326,7 @@ export const plazaProfiles: PlazaProfile[] = [
   {
     id: '12',
     name: '烘焙师小林',
-    image: bakerPic,
+    image: getProfileImageUrl(IMAGE_NAMES.bakerPic),
     description: '专业烘焙师，热爱创作美味甜点',
     position: '烘焙达人 / 甜点制作专家',
     contentDirection: [
@@ -341,7 +351,7 @@ export const plazaProfiles: PlazaProfile[] = [
   {
     id: '13',
     name: '农民伯伯老赵',
-    image: farmerPic,
+    image: getProfileImageUrl(IMAGE_NAMES.farmerPic),
     description: '经验丰富的农民，擅长农业种植和农产品加工',
     position: '农业专家 / 农产品加工师',
     contentDirection: [
@@ -366,7 +376,7 @@ export const plazaProfiles: PlazaProfile[] = [
   {
     id: '14',
     name: '医生王医生',
-    image: doctorPic,
+    image: getProfileImageUrl(IMAGE_NAMES.doctorPic),
     description: '专业医生，擅长健康科普和医疗知识分享',
     position: '健康科普专家 / 医疗顾问',
     contentDirection: [
@@ -391,7 +401,7 @@ export const plazaProfiles: PlazaProfile[] = [
   {
     id: '15',
     name: '电工师傅老李',
-    image: electricianPic,
+    image: getProfileImageUrl(IMAGE_NAMES.electricianPic),
     description: '资深电工，擅长电气维修和电路安装',
     position: '电气专家 / 电路安装顾问',
     contentDirection: [
@@ -416,7 +426,7 @@ export const plazaProfiles: PlazaProfile[] = [
   {
     id: '16',
     name: '会计师小周',
-    image: accountantPic,
+    image: getProfileImageUrl(IMAGE_NAMES.accountantPic),
     description: '专业会计师，擅长财务管理和税务筹划',
     position: '财务专家 / 税务顾问',
     contentDirection: [
@@ -441,7 +451,7 @@ export const plazaProfiles: PlazaProfile[] = [
   {
     id: '17',
     name: '幼儿园老师小丽',
-    image: kindergartenTeacherPic,
+    image: getProfileImageUrl(IMAGE_NAMES.kindergartenTeacherPic),
     description: '专业幼教老师，擅长幼儿教育和活动策划',
     position: '幼教专家 / 活动策划师',
     contentDirection: [
@@ -466,7 +476,7 @@ export const plazaProfiles: PlazaProfile[] = [
   {
     id: '18',
     name: '美发师小赵',
-    image: hairdresserPic,
+    image: getProfileImageUrl(IMAGE_NAMES.hairdresserPic),
     description: '专业美发师，擅长发型设计和造型技巧',
     position: '发型设计师 / 造型专家',
     contentDirection: [
@@ -491,7 +501,7 @@ export const plazaProfiles: PlazaProfile[] = [
   {
     id: '19',
     name: '出租车司机老马',
-    image: taxiDriverPic,
+    image: getProfileImageUrl(IMAGE_NAMES.taxiDriverPic),
     description: '资深出租车司机，熟悉城市道路和交通规则',
     position: '城市向导 / 交通顾问',
     contentDirection: [
@@ -516,7 +526,7 @@ export const plazaProfiles: PlazaProfile[] = [
   {
     id: '20',
     name: '主厨老刘',
-    image: chefPic,
+    image: getProfileImageUrl(IMAGE_NAMES.chefPic),
     description: '专业厨师，擅长烹饪技巧和菜品创新',
     position: '烹饪专家 / 菜品创新师',
     contentDirection: [
@@ -541,7 +551,7 @@ export const plazaProfiles: PlazaProfile[] = [
   {
     id: '21',
     name: '花艺师小慧',
-    image: floristPic,
+    image: getProfileImageUrl(IMAGE_NAMES.floristPic),
     description: '专业花艺师，擅长花艺设计和植物养护',
     position: '花艺设计师 / 植物养护专家',
     contentDirection: [
@@ -566,7 +576,7 @@ export const plazaProfiles: PlazaProfile[] = [
   {
     id: '22',
     name: '摄影师大鹏',
-    image: photographerPic,
+    image: getProfileImageUrl(IMAGE_NAMES.photographerPic),
     description: '专业摄影师，擅长人像摄影和风景拍摄',
     position: '摄影专家 / 视觉艺术家',
     contentDirection: [
@@ -591,7 +601,7 @@ export const plazaProfiles: PlazaProfile[] = [
   {
     id: '23',
     name: '网店店主小张',
-    image: shopOwnerPic,
+    image: getProfileImageUrl(IMAGE_NAMES.shopOwnerPic),
     description: '成功网店店主，擅长电商运营和产品推广',
     position: '电商专家 / 产品推广顾问',
     contentDirection: [
