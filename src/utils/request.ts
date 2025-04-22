@@ -36,28 +36,33 @@ request.interceptors.response.use(
     },
     (error) => {
         if (error.response) {
-            switch (error.response.status) {
-                case 403:
-                case 401:
-                    // 检查是否为管理员请求
-                    const isAdminRequest = error.config.url?.includes('/admin');
-                    console.log('响应拦截器检测到未授权:', { isAdminRequest });
-                    
-                    // 根据请求类型清除相应的登录信息
+            const status = error.response.status;
+            const config = error.config;
+            const isAdminRequest = config.url?.includes('/admin');
+            const errorMessage = error.response.data?.message || '请求失败';
+
+            switch (status) {
+                case 401: // 未授权
+                    console.log('响应拦截器检测到 401 未授权:', { isAdminRequest });
                     if (isAdminRequest) {
                         localStorage.removeItem('adminToken');
                         localStorage.removeItem('adminNickname');
                         localStorage.removeItem('isAdmin');
-                        message.error('管理员登录已过期，请重新登录');
+                        message.error('管理员登录状态失效，请重新登录');
                         window.location.href = '/admin/login';
                     } else {
                         localStorage.removeItem('userToken');
-                        message.error('用户登录已过期，请重新登录');
+                        message.error('用户登录状态失效，请重新登录');
                         window.location.href = '/login';
                     }
                     break;
+                case 403: // 禁止访问
+                    console.log('响应拦截器检测到 403 禁止访问:', { isAdminRequest, url: config.url });
+                    // 对于 403，只提示错误，不强制跳转或清除 token
+                    message.error(errorMessage || '您没有权限访问此资源');
+                    break;
                 default:
-                    message.error(error.response.data?.message || '请求失败');
+                    message.error(errorMessage);
             }
         } else {
             message.error('网络错误，请稍后重试');

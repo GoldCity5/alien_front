@@ -26,6 +26,8 @@ import PointsManagement from './components/admin/PointsManagement';
 import CreativeToolsPage from './components/CreativeToolsPage';
 import AnalyticsPage from './components/AnalyticsPage';
 import Sidebar from './components/Sidebar';
+import RegisterPage from './components/RegisterPage';
+import ResetPasswordPage from './components/ResetPasswordPage';
 import { getUserPointsInfo } from './services/pointsService';
 import './App.css';
 
@@ -219,11 +221,14 @@ const AdminProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 // 用户路由保护组件
 const UserProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = localStorage.getItem('userToken');
-  
+  console.log('UserProtectedRoute: Checking auth, token is:', isAuthenticated);
+
   if (!isAuthenticated) {
+    console.log('UserProtectedRoute: No token found, redirecting to /login');
     return <Navigate to="/login" replace />;
   }
-  
+
+  console.log('UserProtectedRoute: Token found, rendering children');
   return <>{children}</>;
 };
 
@@ -232,8 +237,13 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        {/* 管理员路由 */}
+        {/* 公开路由 */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/admin/login" element={<AdminLoginPage />} />
+        
+        {/* 管理员路由 */}
         <Route path="/admin" element={
           <AdminProtectedRoute>
             <AdminDashboard />
@@ -249,7 +259,6 @@ const App = () => {
         </Route>
         
         {/* 用户路由 */}
-        <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={
           <Layout style={{ minHeight: '100vh' }}>
             <AppHeader />

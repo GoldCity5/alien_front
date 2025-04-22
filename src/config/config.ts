@@ -32,7 +32,8 @@ const config: EnvConfig = {
 */
 const config: EnvConfig = {
     development: {
-        apiBaseUrl: 'http://14.103.160.4:8080/api',
+        // apiBaseUrl: 'http://14.103.160.4:8080/api',
+        apiBaseUrl: 'http://127.0.0.1:8080/api', // 开发环境API地址
         cdnBaseUrl: 'https://front-static-test-1309544882.cos.ap-shanghai.myqcloud.com/profiles%2Fprofiles%2F'
     },
     production: {
